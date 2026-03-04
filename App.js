@@ -1,10 +1,13 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import DBTable from "./database.json"
 import { useState } from "react";
 
+const borderColor =  "#4C7DC0";
+const textColor = '#EBF8E7';
 export default function App() {
 
   //const [data, setData] = useState(DBTable);
+  
   const data = [{
     day: "26.02.26",
     RWC: { "reps1": 50, "rest1": 7, "reps2": 50, "rest2": 7 },
@@ -12,13 +15,14 @@ export default function App() {
     WSC: { "reps1": 72, "rest1": 8, "reps2": 72, "rest2": 6 },
     WP: { "reps1": 25, "rest1": 8, "reps2": 36, "rest2": 0 }
   }];
+  
 
   const Item = ({item}) => {
     const exerciseNames = Object.keys(item).filter(key => key !== 'day');
     return(
       <View>
-        <View style={{borderColor:'#4C7DC0',borderWidth:1.2,height:20,}}>
-            <Text style={{textAlign:'center',color:'#EBF8E7',fontWeight:800}}>{item.day}</Text>
+        <View style={{borderColor:borderColor,borderWidth:1.2,height:20,}}>
+            <Text style={{textAlign:'center',color:textColor,fontWeight:800}}>{item.day}</Text>
         </View>
         <View style={styles.table}>
           <View style={[styles.rowName]}>
@@ -30,20 +34,125 @@ export default function App() {
           <View style={{flex:3,flexDirection:'column'}}>
             {exerciseNames.map((name)=>(
               <View key={name} style={styles.row}>
-                <Text style={styles.cell}>{item[name].reps1}</Text>
-                <Text style={styles.cell}>{item[name].rest1}</Text>
-                <Text style={styles.cell}>{item[name].reps2}</Text>
-                <Text style={styles.cell}>{item[name].rest2}</Text>
+                <Pressable style={styles.pressableCell} onPress={()=>console.log("help")}>
+                  <Text style={styles.cell}>{item[name].reps1}</Text>
+                </Pressable>
+                <Pressable style={styles.pressableCell}>
+                  <Text style={styles.cell}>{item[name].rest1}</Text>
+                </Pressable>
+                <Pressable style={styles.pressableCell}>
+                  <Text style={styles.cell}>{item[name].reps2}</Text>
+                </Pressable>
+                <Pressable style={styles.pressableCell}>
+                  <Text style={styles.cell}>{item[name].rest2}</Text>
+                </Pressable>
               </View>
             ))}
 
               
           </View>
         </View>
+        {false && <View style={{position:'absolute',borderColor:'red',borderWidth:1,height:"40%",width:'100%',marginTop:500,backgroundColor:'rgba(46,52,110,0.9)'}}>
+            <View style={styles.numberPanelTable}>
+              <View style={styles.numberPanelRow}>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>normal</Text>
+                  </Pressable>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>green</Text>
+                  </Pressable>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>red</Text>
+                  </Pressable>
+
+                  </View>
+              <View style={styles.numberPanelRow}>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>1</Text>
+                  </Pressable>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>2</Text>
+                  </Pressable>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>3</Text>
+                  </Pressable>
+
+              </View>
+              <View style={styles.numberPanelRow}>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>4</Text>
+                  </Pressable>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>5</Text>
+                  </Pressable>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>6</Text>
+                  </Pressable>
+
+              </View>
+
+              <View style={styles.numberPanelRow}>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>7</Text>
+                  </Pressable>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>8</Text>
+                  </Pressable>
+
+                  <Pressable >
+                    <Text style={styles.numberPanelCell}>9</Text>
+                  </Pressable>
+
+              </View>
+
+              <View style={styles.numberPanelRow}>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>Okey</Text>
+                  </Pressable>
+
+                  <Pressable>
+                    <Text style={styles.numberPanelCell}>Null</Text>
+                  </Pressable>
+
+                  <Pressable >
+                    <Text style={styles.numberPanelCell}>Nope</Text>
+                  </Pressable>
+
+              </View>
+              
+              
+            </View>
+            
+          </View>}
       </View>
     )
   }  
 
+  /*
+<Pressable>
+                    <Text style={styles.cell}>Okey</Text>
+                  </Pressable>
+
+                  <Pressable>
+                    <Text style={styles.cell}>Null</Text>
+                  </Pressable>
+
+                  <Pressable>
+                    <Text style={styles.cell}>Nope</Text>
+                  </Pressable>
+  */
   return (
     <View style={{height:'100%',width:'100%', backgroundColor: '#2E346E',alignItems:'center', }}>
       <FlatList
@@ -52,6 +161,7 @@ export default function App() {
         renderItem={({item}) => <Item item={item} />}
         keyExtractor={(item)=> item.day}
       />
+      
     </View>
   );
 }
@@ -72,7 +182,7 @@ const styles = StyleSheet.create({
 },
 table:{
   //borderContent: 'none',
-  borderColor:'#4C7DC0',
+  borderColor:borderColor,
   borderWidth:1,
   flexDirection:'row',
   height:250,
@@ -85,26 +195,65 @@ table:{
 rowName:{
   flex:0.5,
   flexDirection:'column',
-  borderColor:'#4C7DC0',
+  borderColor:borderColor,
   borderWidth:0.1,
 },
 row:{
   //color:'#EBF8E7',
   flex:1,
   flexDirection:'row',
-  borderColor:'#4C7DC0',
+  borderColor:borderColor,
   borderWidth:0.1,
 },
 
 cell:{
-  color:'#EBF8E7',
   flex:1,
-  
-  borderColor:'#4C7DC0',
+  color:textColor,
+  borderColor:borderColor,
   borderWidth:1,
   textAlign:'center',
   textAlignVertical:'center',
   
+},
+pressableCell:{
+  flex:1,
+  borderColor:borderColor,
+  borderWidth:0.1,
+},
+
+
+numberPanelTable:{
+  height:'100%',
+  width:'100%',
+  borderColor:"green",
+  borderWidth:2,
+  flexDirection:'column',
+
+  backgroundColor:'rgba(0,0,0,0.1)',
+},
+numberPanelRow:{
+  //height:'14%',
+  height:'71',
+  justifyContent:'center',
+  flexDirection:'row',
+  borderColor:"yellow",
+  borderWidth:1,
+},
+numberPanelCell:{
+  height:'100%',
+  width:'133',
+  color:textColor,
+  borderColor:borderColor,
+  borderWidth:1,
+  textAlign:'center',
+  textAlignVertical:'center',
+  fontWeight:'bold',
+  fontSize:30,
+},
+
+numberPanelPressable:{
+  borderColor:'purple',
+  borderWidth:2,
 }
  
 });
