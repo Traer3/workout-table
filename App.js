@@ -1,12 +1,19 @@
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import DBTable from "./database.json"
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { TextInput } from "react-native-web";
 
 const borderColor =  "#4C7DC0";
 const textColor = '#EBF8E7';
 export default function App() {
 
   //const [data, setData] = useState(DBTable);
+  const [numberPad, setNumberPad] = useState(false);
+  //const nummerPadValue = useRef(null);
+  const [numberPadValue, setNummerPadValue] = useState(null)
+  //let numberPadValue;
+  
+  
   
   const data = [{
     day: "26.02.26",
@@ -16,14 +23,49 @@ export default function App() {
     WP: { "reps1": 25, "rest1": 8, "reps2": 36, "rest2": 0 }
   }];
   
+  const changeValue = (valueToChange) => {
+    console.log("Item name: ",valueToChange)
+    console.log("New value: ",numberPadValue)
+    setNumberPad(!numberPad)
+    //console.log("Find: ",data.find(d => d))
+    
+   
+  }
+  
+  
+
+  const inputValue = (newValue) =>{
+    setNummerPadValue(prev => prev + newValue)
+    console.log("numberPadValue",numberPadValue)
+    return numberPadValue;
+    
+  }
 
   const Item = ({item}) => {
+    const [isEditing, setIsEditing] = useState(false);
     const exerciseNames = Object.keys(item).filter(key => key !== 'day');
+    const [values, setValues] = useState(item)
+
+    const updateValue = (exName, field, text) => {
+      setValues({
+        ...values,
+        [exName]:{
+          ...values[exName],
+          [field]:text
+        }
+      });
+    };
+
     return(
-      <View>
+      <View style={{borderColor:'red',borderWidth:1,}}>
+        <Pressable onPressIn={()=>{setNumberPad(false) /*console.log("если нажал не на таблицу и не панель с кнопками , выключить кнопку ") */}}>
+
+        
+        {true && <>
         <View style={{borderColor:borderColor,borderWidth:1.2,height:20,}}>
             <Text style={{textAlign:'center',color:textColor,fontWeight:800}}>{item.day}</Text>
         </View>
+
         <View style={styles.table}>
           <View style={[styles.rowName]}>
               {exerciseNames.map((name)=>(
@@ -33,8 +75,33 @@ export default function App() {
           </View>
           <View style={{flex:3,flexDirection:'column'}}>
             {exerciseNames.map((name)=>(
-              <View key={name} style={styles.row}>
-                <Pressable style={styles.pressableCell} onPress={()=>console.log("help")}>
+              <View key={name} style={styles.row}> 
+                {['reps1','rest1','reps2','rest2'].map((field)=>(
+                  isEditing ? (
+                    <TextInput
+                      key={field}
+                      style={[styles.cell,styles.input]}
+                      keyboardType="numeric"
+                      value={String(values[name][field])}
+                      onChange={(text)=> updateValue(name,field,text)}
+                    />
+                  ) : (
+                    <Text key={field} style={styles.cell}>
+                      {values[name][field]}
+                    </Text>
+                  )
+                ))}
+              </View>
+            ))}
+
+              
+          </View>
+        </View>
+
+        {
+          /*
+          <View key={name} style={styles.row}>
+                <Pressable style={styles.pressableCell} onPress={()=>{ changeValue(item[name].reps1);}}>
                   <Text style={styles.cell}>{item[name].reps1}</Text>
                 </Pressable>
                 <Pressable style={styles.pressableCell}>
@@ -47,12 +114,11 @@ export default function App() {
                   <Text style={styles.cell}>{item[name].rest2}</Text>
                 </Pressable>
               </View>
-            ))}
-
-              
-          </View>
-        </View>
-        {false && <View style={{position:'absolute',borderColor:'red',borderWidth:1,height:"40%",width:'100%',marginTop:500,backgroundColor:'rgba(46,52,110,0.9)'}}>
+          */
+        }
+        </>
+        }
+        {numberPad && <View style={{borderColor:'green',borderWidth:1,flex:1,marginTop:"55%",backgroundColor:'rgba(46,52,110,0.9)'}}>
             <View style={styles.numberPanelTable}>
               <View style={styles.numberPanelRow}>
 
@@ -71,7 +137,7 @@ export default function App() {
                   </View>
               <View style={styles.numberPanelRow}>
 
-                  <Pressable>
+                  <Pressable onPressIn={()=>inputValue("1")}>
                     <Text style={styles.numberPanelCell}>1</Text>
                   </Pressable>
 
@@ -127,7 +193,7 @@ export default function App() {
                   </Pressable>
 
                   <Pressable >
-                    <Text style={styles.numberPanelCell}>Nope</Text>
+                    <Text style={styles.numberPanelCell}>⟵</Text>
                   </Pressable>
 
               </View>
@@ -136,9 +202,10 @@ export default function App() {
             </View>
             
           </View>}
+          </Pressable>
       </View>
     )
-  }  
+  }
 
   /*
 <Pressable>
@@ -182,7 +249,8 @@ const styles = StyleSheet.create({
 },
 table:{
   //borderContent: 'none',
-  borderColor:borderColor,
+  //borderColor:borderColor,
+  borderColor:"yellow",
   borderWidth:1,
   flexDirection:'row',
   height:250,
