@@ -17,7 +17,25 @@ export default  function App() {
     };
     initLoad();
   },[])
+
+
+  const bigData = [{
+    day: "26.02.26",
+    RWC: { 
+      "reps1": {
+        color:"",
+        value: 0,
+      }, 
+    },
+  }];
  
+  const exercise = "RWC";
+  const field = "reps1";
+
+  bigData[0][exercise][field].value = 15
+
+  console.log(bigData[0].RWC.reps1.value)
+  
   /*
   const data = [{
     day: "26.02.26",
