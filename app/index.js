@@ -1,9 +1,12 @@
 
 import App from "../App";
+import { AssistantProvider } from "../StyleAssistant";
 
 export default function Page() {
   return (
-    <App/>
+    <AssistantProvider>
+        <App/>
+    </AssistantProvider>
   );
 }
 
