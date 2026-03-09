@@ -6,12 +6,13 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
     if(!data) return null;
     const {RedBorder,YellowBorder} = useTools();
 
-    const [isEditing, setIsEditing] = useState(false); 
+    const [editingCell, setEditingCell] = useState(null);
     const exerciseNames = Object.keys(item).filter(key => key !== 'day');
     const [values, setValues] = useState(item)
     
     const updateValue = (exName, field, text) => {
-    const numericValue = text === '' ? 0 : parseInt(text) || 0;
+    
+    const numericValue = text === '' ? 0 : parseFloat(text) || 0;
     const newValues = {
             ...values,
             [exName]:{
@@ -26,7 +27,6 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
     const newData = [...data];
     newData[index] = newValues;
     setData(newData);
-    saveToPhone(newData);
     };
     
     
@@ -37,7 +37,7 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
             <Text style={[styles.textStyle]}>{item.day}</Text>
         </View>
             
-        <View style={[styles.table, YellowBorder]}>
+        <View style={[styles.table, YellowBorder,{zIndex:1}]}>
 
             <View style={[styles.rowName]}>
                 {exerciseNames.map((name)=>(
@@ -48,44 +48,61 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
             <View style={{flex:3,flexDirection:'column'}}>
                 {exerciseNames.map((name)=>(
                   <View key={name} style={styles.row}> 
-                    {['reps1','rest1','reps2','rest2'].map((field)=>(
-                      <Pressable 
-                        key={field}
-                        style={styles.pressableCell}  
-                        onPress={()=> setIsEditing(!isEditing)}>
-                          {
-                          isEditing ? (
-                            <TextInput
-                             
-                              style={[styles.cell, styles.input, styles.textStyle]}
-                              keyboardType="numeric"
-                              //autoFocus={true}
-                              value={String(
-                                typeof values[name][field] === 'object'
-                                  ? values[name][field].value
-                                  : values[name][field]
-                              )}
-                              onChangeText={(text)=> updateValue(name,field,text)}
-                              onBlur={()=> setIsEditing(false)}
-                              //onSubmitEditing={()=>{setIsEditing(false)}}
-                              //onEndEditing={()=>{setIsEditing(false)}}
-                            />
-                          ) : (
-                          
-                              <Text style={[
-                                styles.textStyle,
-                                styles.cell,
-                                {color: values[name][field]?.color || textColor}
-                                ]}>
-                                {typeof values[name][field] === 'object'
-                                  ? values[name][field].value
-                                  : values[name][field]
-                                }
-                              </Text>
-                          
-                          )}
-                    </Pressable>
-                    ))}
+                    {['reps1','rest1','reps2','rest2'].map((field)=>{
+                      const cellId = `${name}-${field}`;
+                      const isThisCellEditing = editingCell === cellId;
+
+                      return(
+                        <Pressable 
+                          key={field}
+                          style={[styles.pressableCell,{zIndex:5}]}  
+                          onPress={()=> setEditingCell(cellId)}>
+                            {
+                            isThisCellEditing ? (
+                              <>
+                                <TextInput
+                                  
+                                  style={[styles.cell, styles.input, styles.textStyle]}
+                                  keyboardType="numeric"
+                                  autoFocus={true}
+                                  value={String(
+                                    typeof values[name][field] === 'object'
+                                      ? values[name][field].value
+                                      : values[name][field]
+                                  )}
+                                  onChangeText={(text)=> updateValue(name,field,text)}
+                                  onBlur={()=> setEditingCell(null)}
+                                  //onSubmitEditing={()=>{setIsEditing(false)}}
+                                  onEndEditing={()=>{saveToPhone(data)}}
+                                />
+
+                                <View style={[YellowBorder, {position:'absolute',zIndex:10 ,bottom:-60,flexDirection:'row'}]}>
+                                  <Pressable style={[RedBorder, {height:60,width:60,backgroundColor:'red'}]}/>
+
+                                  <Pressable style={[RedBorder, {height:60,width:60,backgroundColor:'green'}]}/>
+
+                                  <Pressable style={[RedBorder, {height:60,width:60,backgroundColor:'#EBF8E7'}]}/>
+                                  
+                                </View>
+                                
+                              </>
+                            ) : (
+                            
+                                <Text style={[
+                                  styles.textStyle,
+                                  styles.cell,
+                                  {color: values[name][field]?.color || textColor}
+                                  ]}>
+                                  {typeof values[name][field] === 'object'
+                                    ? values[name][field].value
+                                    : values[name][field]
+                                  }
+                                </Text>
+                            
+                            )}
+                      </Pressable>
+                      )
+                    })}
                   </View>
                 ))}
     
