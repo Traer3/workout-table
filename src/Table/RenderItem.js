@@ -75,7 +75,8 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
                                   //onSubmitEditing={()=>{setIsEditing(false)}}
                                   onEndEditing={()=>{saveToPhone(data)}}
                                 />
-
+                                    {//FIX
+                                    }
                                 <View style={[YellowBorder, {position:'absolute',zIndex:10 ,bottom:-60,flexDirection:'row'}]}>
                                   <Pressable style={[RedBorder, {height:60,width:60,backgroundColor:'red'}]}/>
 
