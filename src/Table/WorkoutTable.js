@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import DBTable from "../../database.json"
+import DBTable from "./database.json"
 import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RenderItem from "./RenderItem";
