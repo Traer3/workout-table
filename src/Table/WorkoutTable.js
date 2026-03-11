@@ -51,6 +51,7 @@ export default  function WorkoutTable() {
   return (
     <View style={{height:'100%',width:'100%', backgroundColor: backgroundColor,alignItems:'center', }}>
       <FlatList
+        keyboardShouldPersistTaps="handled"
         style={styles.conteiner}
         data={data}
         renderItem={renderItem}

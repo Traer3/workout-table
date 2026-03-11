@@ -9,7 +9,7 @@ export default  function App() {
   const {YellowBorder} = useTools();
 
   return (
-    <View style={YellowBorder}>
+    <View >
       <WorkoutTable/>
     </View>
   );

@@ -12,7 +12,7 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
     
     const updateValue = (exName, field, text) => {
     
-    const numericValue = text === '' ? 0 : parseFloat(text) || 0;
+    const numericValue = text 
     const newValues = {
             ...values,
             [exName]:{
@@ -28,16 +28,41 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
     newData[index] = newValues;
     setData(newData);
     };
+
+    const toogleSave = (data) =>{
+      saveToPhone(data)
+      setEditingCell(null)
+    }
     
+    const updateColor = (exName, field, newColor) =>{
+      console.log("Color: ",newColor)
+      const newValues = {
+        ...values,
+          [exName]:{
+            ...values[exName],
+            [field]:{
+              ...values[exName][field],
+              color: newColor
+            }
+          }
+      }
+
+      setValues(newValues);
+      const newData = [...data];
+      newData[index] = newValues;
+      setData(newData);
+      saveToPhone(newData);
+    };
+
     
     return(
-        <View style={RedBorder}>
+        <View style={[{marginBottom:64}]}>
     
         <View style={{borderColor:borderColor,borderWidth:1.2,height:20,}}>
             <Text style={[styles.textStyle]}>{item.day}</Text>
         </View>
             
-        <View style={[styles.table, YellowBorder,{zIndex:1}]}>
+        <View style={[styles.table, ]}>
 
             <View style={[styles.rowName]}>
                 {exerciseNames.map((name)=>(
@@ -45,67 +70,79 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
                 ))} 
             </View>
 
-            <View style={{flex:3,flexDirection:'column'}}>
-                {exerciseNames.map((name)=>(
-                  <View key={name} style={styles.row}> 
-                    {['reps1','rest1','reps2','rest2'].map((field)=>{
-                      const cellId = `${name}-${field}`;
-                      const isThisCellEditing = editingCell === cellId;
+            <View style={{flex:3,flexDirection:'column',zIndex:1
+              }}>
+                {exerciseNames.map((name)=>{
+                  const isRowEditing = editingCell && editingCell.startsWith(name);
 
-                      return(
-                        <Pressable 
-                          key={field}
-                          style={[styles.pressableCell,{zIndex:5}]}  
-                          onPress={()=> setEditingCell(cellId)}>
-                            {
-                            isThisCellEditing ? (
-                              <>
-                                <TextInput
+                  return(
+                    <View key={name} style={[styles.row , {
+                      //overflow:'hidden'
+                      zIndex:isRowEditing ? 100 : 1
+                      }]}> 
+                      {['reps1','rest1','reps2','rest2'].map((field)=>{
+                        const cellId = `${name}-${field}`;
+                        const isThisCellEditing = editingCell === cellId;
+  
+                        return(
+                          <Pressable 
+                            key={field}
+                            style={[styles.pressableCell,{
+                              overflow:'visible',
+                              //borderColor:'red',
+                              //borderWidth:1
+                            }]}  
+                            onPress={()=> setEditingCell(cellId)}>
+                              {
+                              isThisCellEditing ? (
+                                <View style={{position:'absolute',height:"100%",width:'100%',overflow:'visible',zIndex:120,}}>
+                                  <TextInput
+                                    
+                                    style={[styles.cell, styles.input, styles.textStyle,{}]}
+                                    keyboardType="numeric"
+                                    autoFocus={true}
+                                    value={String(
+                                      typeof values[name][field] === 'object'
+                                        ? values[name][field].value
+                                        : values[name][field]
+                                    )}
+                                    onChangeText={(text)=> updateValue(name,field,text)}
+                                    //onBlur={()=> setEditingCell(null)}
+                                    onSubmitEditing={()=>{toogleSave(data)}}
+                                    onEndEditing={()=>{saveToPhone(data)}}
+                                  />
                                   
-                                  style={[styles.cell, styles.input, styles.textStyle]}
-                                  keyboardType="numeric"
-                                  autoFocus={true}
-                                  value={String(
-                                    typeof values[name][field] === 'object'
+                                  <View style={[ {position:'absolute' ,bottom:-63,left:-70,flexDirection:'row',zIndex:999,elevation:5,}]}>
+                                    <Pressable style={[styles.coloredBox, {backgroundColor:'red',}]} onPressIn={()=> updateColor(name, field, "red")}/>
+  
+                                    <Pressable style={[ styles.coloredBox,{backgroundColor:'green',}]} onPressIn={()=> updateColor(name, field, "green")}/>
+  
+                                    <Pressable style={[styles.coloredBox, {backgroundColor:'#EBF8E7',}]} onPressIn={()=> updateColor(name, field, "#EBF8E7")}/>
+                                    
+                                  </View>
+
+                                </View>
+                               
+                              ) : (
+                              
+                                  <Text style={[
+                                    styles.textStyle,
+                                    styles.cell,
+                                    {color: values[name][field]?.color || textColor}
+                                    ]}>
+                                    {typeof values[name][field] === 'object'
                                       ? values[name][field].value
                                       : values[name][field]
-                                  )}
-                                  onChangeText={(text)=> updateValue(name,field,text)}
-                                  onBlur={()=> setEditingCell(null)}
-                                  //onSubmitEditing={()=>{setIsEditing(false)}}
-                                  onEndEditing={()=>{saveToPhone(data)}}
-                                />
-                                    {//FIX
                                     }
-                                <View style={[YellowBorder, {position:'absolute',zIndex:10 ,bottom:-60,flexDirection:'row'}]}>
-                                  <Pressable style={[RedBorder, {height:60,width:60,backgroundColor:'red'}]}/>
-
-                                  <Pressable style={[RedBorder, {height:60,width:60,backgroundColor:'green'}]}/>
-
-                                  <Pressable style={[RedBorder, {height:60,width:60,backgroundColor:'#EBF8E7'}]}/>
-                                  
-                                </View>
-                                
-                              </>
-                            ) : (
-                            
-                                <Text style={[
-                                  styles.textStyle,
-                                  styles.cell,
-                                  {color: values[name][field]?.color || textColor}
-                                  ]}>
-                                  {typeof values[name][field] === 'object'
-                                    ? values[name][field].value
-                                    : values[name][field]
-                                  }
-                                </Text>
-                            
-                            )}
-                      </Pressable>
-                      )
-                    })}
-                  </View>
-                ))}
+                                  </Text>
+                              
+                              )}
+                        </Pressable>
+                        )
+                      })}
+                    </View>
+                  )
+                })}
     
                   
               </View>
@@ -161,6 +198,7 @@ const styles = StyleSheet.create({
   
   cell:{
     flex:1,
+    
     borderColor:borderColor,
     borderWidth:1,
     
@@ -174,5 +212,12 @@ const styles = StyleSheet.create({
   input:{
     backgroundColor:'rgba(76,125,192,0.2)',
     color:'#fff',
+  },
+  coloredBox:{
+    zIndex:999,
+    height:60,
+    width:60,
+    elevation:5,
+
   }
 })
