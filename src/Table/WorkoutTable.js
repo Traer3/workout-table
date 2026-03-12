@@ -1,9 +1,822 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import DBTable from "./database.json"
+//import DBTable from "./database.json"
 import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RenderItem from "./RenderItem";
 import { useTools } from "../../StyleAssistant";
+
+const DBTable = [
+  {
+    "day": "26.02.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "27.02.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "01.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "02.03.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "04.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "05.03.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "07.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "08.03.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "10.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "11.03.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "13.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "14.03.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "16.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "17.03.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "19.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "20.03.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "22.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "23.03.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "25.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "26.03.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "28.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "29.03.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "31.03.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "01.04.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "03.04.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "04.04.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "06.04.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "07.04.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "09.04.26",
+    "RWC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WSC": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "WP": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  },
+  {
+    "day": "10.04.26",
+    "SU": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "Sq": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "ETK": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    },
+    "SCR": {
+      "reps1": { "color": "", "value": 0 },
+      "rest1": { "color": "", "value": 0 },
+      "reps2": { "color": "", "value": 0 },
+      "rest2": { "color": "", "value": 0 }
+    }
+  }
+]
 
 export default  function WorkoutTable() {
   const {backgroundColor} = useTools();
@@ -71,4 +884,5 @@ conteiner: {
 },
  
 });
+
 
