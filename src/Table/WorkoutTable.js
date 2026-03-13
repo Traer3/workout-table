@@ -1,10 +1,11 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, View,Text } from "react-native";
 //import DBTable from "./database.json"
 import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RenderItem from "./RenderItem";
 import { useTools } from "../../StyleAssistant";
-
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing'
 const DBTable = [
   {
     "day": "26.02.26",
@@ -850,6 +851,34 @@ export default  function WorkoutTable() {
       console.error("Error while loading data");
     }
   }
+
+  const uploadToDrive = async (jsonData) => {
+      try{
+        const docDir = FileSystem.Paths.document;
+        const docDirUri = docDir.uri;
+        console.log("Path: ", docDirUri);
+
+        const fileUri = docDirUri.endsWith('/')
+          ? `${docDirUri}workout_data.json`
+          : `${docDirUri}/workout_data.json`;
+        
+        console.log("Final path: ", fileUri);
+
+        const jsonString = JSON.stringify(jsonData,null,2);
+
+        if(await Sharing.isAvailableAsync()){
+          await Sharing.shareAsync(fileUri,{
+            mimeType:'application/json',
+            dialogTitle:'Backup save'
+          });
+        }
+      }catch(err){
+        console.error("Error: ",err);
+        
+      }
+
+      
+  }
   
   const renderItem = useCallback(({item, index }) => (
       <RenderItem 
@@ -863,6 +892,9 @@ export default  function WorkoutTable() {
 
   return (
     <View style={{height:'100%',width:'100%', backgroundColor: backgroundColor,alignItems:'center', }}>
+      <Pressable style={{borderBlockColor:'red',height:200,width:200,borderWidth:2}}onPressIn={()=>{uploadToDrive(data)}}>
+        <Text>load</Text>
+      </Pressable>
       <FlatList
         keyboardShouldPersistTaps="handled"
         style={styles.conteiner}
