@@ -1,11 +1,12 @@
-import { FlatList, Pressable, StyleSheet, View,Text } from "react-native";
+import { FlatList, Pressable, StyleSheet, View,Text, Image } from "react-native";
 //import DBTable from "./database.json"
 import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RenderItem from "./RenderItem";
-import { useTools } from "../../StyleAssistant";
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing'
+import { useTools } from "../../StyleAssistant";
+import shareIcon from "../../assets/share.png"
 const DBTable = [
   {
     "day": "26.02.26",
@@ -865,6 +866,8 @@ export default  function WorkoutTable() {
         console.log("Final path: ", fileUri);
 
         const jsonString = JSON.stringify(jsonData,null,2);
+        const file = new FileSystem.File(fileUri);
+        file.write(jsonString);
 
         if(await Sharing.isAvailableAsync()){
           await Sharing.shareAsync(fileUri,{
@@ -891,17 +894,28 @@ export default  function WorkoutTable() {
   ));
 
   return (
-    <View style={{height:'100%',width:'100%', backgroundColor: backgroundColor,alignItems:'center', }}>
-      <Pressable style={{borderBlockColor:'red',height:200,width:200,borderWidth:2}}onPressIn={()=>{uploadToDrive(data)}}>
-        <Text>load</Text>
+    <View style={{height:'100%',width:'100%', backgroundColor: backgroundColor,}}>
+      <Pressable 
+        style={{
+          marginTop:35,
+          height:50,
+          width:50,
+          marginBottom:-40,
+        }}
+        onPressIn={()=>{uploadToDrive(data)}}
+        >
+        <Image source={shareIcon} style={{width:40, height:40}}resizeMode="contain"/>
       </Pressable>
-      <FlatList
-        keyboardShouldPersistTaps="handled"
-        style={styles.conteiner}
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item)=> item.day}
-      />
+      <View style={{alignItems:'center'}}>
+        <FlatList
+          keyboardShouldPersistTaps="handled"
+          style={styles.conteiner}
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item)=> item.day}
+        />
+      </View>
+      
       
     </View>
   );
