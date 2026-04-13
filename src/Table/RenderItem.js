@@ -1,14 +1,14 @@
 import { memo, useState } from "react";
-import { StyleSheet,Pressable, Text, View,TextInput } from "react-native";
+import { StyleSheet,Pressable, Text, View,TextInput, } from "react-native";
 import { useTools } from "../../StyleAssistant";
 
-const RenderItem = ({item, index, data, setData, saveToPhone}) => {
+const RenderItem = ({item, index, data, setData, saveToPhone, flatListRef}) => {
     if(!data) return null;
     const {RedBorder,YellowBorder} = useTools();
 
     const [editingCell, setEditingCell] = useState(null);
     const exerciseNames = Object.keys(item).filter(key => key !== 'day');
-    const [values, setValues] = useState(item)
+    const [values, setValues] = useState(item);
     
     const updateValue = (exName, field, text) => {
     
@@ -54,12 +54,42 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
       saveToPhone(newData);
     };
 
+    const toogleEditingCell = (cellId) => {
+      
+      setEditingCell(cellId);
+      flatListRef.current?.scrollToIndex({
+        index:index,
+        animated:true,
+        viewPosition: 0,
+      })
+    }
+    
+
     
     return(
-        <View style={[{marginBottom:64}]}>
+        <View style={{marginBottom:64,}}>
     
         <View style={{borderColor:borderColor,borderWidth:1.2,height:20,}}>
-            <Text style={[styles.textStyle]}>{item.day}</Text>
+          <Pressable 
+            style={{
+              margin:'-10'
+            }}
+            onPress={()=>{console.log("Presed!")}}
+          >
+            <TextInput 
+              style={[styles.textStyle]}
+              onChangeText={(text)=> {
+                item.day = text; // мутабельная срань , потом поменяю ^_^
+              }
+              }
+              onSubmitEditing={()=>{toogleSave(data)}}
+              onEndEditing={()=>{saveToPhone(data)}}
+              >
+                  {item.day}
+            </TextInput>
+
+          </Pressable>
+            
         </View>
             
         <View style={[styles.table, ]}>
@@ -92,7 +122,7 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
                               //borderColor:'red',
                               //borderWidth:1
                             }]}  
-                            onPress={()=> setEditingCell(cellId)}>
+                            onPress={()=> toogleEditingCell(cellId)}>
                               {
                               isThisCellEditing ? (
                                 <View style={{position:'absolute',height:"100%",width:'100%',overflow:'visible',zIndex:120,}}>
@@ -107,7 +137,7 @@ const RenderItem = ({item, index, data, setData, saveToPhone}) => {
                                         : values[name][field]
                                     )}
                                     onChangeText={(text)=> updateValue(name,field,text)}
-                                    //onBlur={()=> setEditingCell(null)}
+                                    onBlur={()=> setEditingCell(null)}
                                     onSubmitEditing={()=>{toogleSave(data)}}
                                     onEndEditing={()=>{saveToPhone(data)}}
                                   />
