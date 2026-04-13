@@ -857,17 +857,15 @@ export default  function WorkoutTable() {
       try{
         const docDir = FileSystem.Paths.document;
         const docDirUri = docDir.uri;
-        console.log("Path: ", docDirUri);
 
         const fileUri = docDirUri.endsWith('/')
           ? `${docDirUri}workout_data.json`
           : `${docDirUri}/workout_data.json`;
         
-        console.log("Final path: ", fileUri);
-
         const jsonString = JSON.stringify(jsonData,null,2);
+
         const file = new FileSystem.File(fileUri);
-        file.write(jsonString);
+        await file.write(jsonString);
 
         if(await Sharing.isAvailableAsync()){
           await Sharing.shareAsync(fileUri,{
@@ -875,12 +873,10 @@ export default  function WorkoutTable() {
             dialogTitle:'Backup save'
           });
         }
+
       }catch(err){
         console.error("Error: ",err);
-        
-      }
-
-      
+      } 
   }
   
   const renderItem = useCallback(({item, index }) => (
