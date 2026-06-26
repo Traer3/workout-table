@@ -3,13 +3,18 @@ import { StyleSheet, Pressable, Text, View, TextInput, } from "react-native";
 import { useTools } from "../../StyleAssistant";
 
 const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) => {
-  if(!item || typeof item !== 'object') return null
+  if (!item || typeof item !== 'object') return null
   if (!data) return null;
   const { RedBorder, YellowBorder } = useTools();
 
   const [editingCell, setEditingCell] = useState(null);
   const exerciseNames = Object.keys(item).filter(key => key !== 'day');
   const [values, setValues] = useState(item);
+  let heightValue = false;
+  const renderItemLength = Object.keys(item).length
+  if (renderItemLength > 2) { // переделать эту хуйню 
+    heightValue = true;
+  }
 
   const updateValue = (exName, field, text) => {
 
@@ -65,8 +70,6 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
     })
   }
 
-
-
   return (
     <View style={{ marginBottom: 64, }}>
 
@@ -93,7 +96,9 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
 
       </View>
 
-      <View style={[styles.table,]}>
+      <View style={[styles.table, { height: heightValue ? 250 : 50 }
+        // сделать нормальную адаптацию размера 
+      ]}>
 
         <View style={[styles.rowName]}>
           {exerciseNames.map((name) => (

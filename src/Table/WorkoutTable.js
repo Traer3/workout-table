@@ -1,4 +1,4 @@
-import { FlatList, Pressable, StyleSheet, View,Text, Image } from "react-native";
+import { FlatList, Pressable, StyleSheet, View, Text, Image } from "react-native";
 //import DBTable from "./database.json"
 import { useCallback, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,7 +7,9 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing'
 import { useTools } from "../../StyleAssistant";
 import shareIcon from "../../assets/share.png"
-const DBTable = [    
+
+//сделать нормальную генерацию , а не эту хуйню 
+const DBTable = [
   {
     "day": "25.06.26",
     "PU": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
@@ -263,120 +265,121 @@ const DBTable = [
   }
 ];
 
-export default  function WorkoutTable() {
-  const {backgroundColor} = useTools();
+export default function WorkoutTable() {
+  const { backgroundColor } = useTools();
 
   const [data, setData] = useState(null);
 
   const flatListRef = useRef(null);
 
-  useEffect(()=>{
-    const initLoad = async () =>{
-      await AsyncStorage.removeItem('@workout_data')
-      await AsyncStorage.removeItem('@workout_data22')
+  useEffect(() => {
+    const initLoad = async () => {
+      //await AsyncStorage.removeItem('@workout_data')
+      //await AsyncStorage.removeItem('@workout_data22')
       const loadedData = await loadFromPhone();
+      //console.log("workout_data : ",loadedData)
       setData(loadedData);
     };
     initLoad();
-  },[])
+  }, [])
 
   const saveToPhone = async (newData) => {
-    try{
+    try {
       const jsonValue = JSON.stringify(newData);
-      //await AsyncStorage.setItem('@workout_data22',jsonValue);
+      await AsyncStorage.setItem('@workout_data', jsonValue);
       console.log("Data saved!");
-    }catch(err){
-      console.error("Error saving data: ",err);
+    } catch (err) {
+      console.error("Error saving data: ", err);
     }
   }
 
   const loadFromPhone = async () => {
-    try{
+    try {
       let jsonValue
-      jsonValue = await AsyncStorage.getItem('@workout_data22');
+      jsonValue = await AsyncStorage.getItem('@workout_data');
       return jsonValue != null ? JSON.parse(jsonValue) : DBTable
-    }catch(err){
+    } catch (err) {
       console.error("Error while loading data");
     }
   }
 
   const uploadToDrive = async (jsonData) => {
-      try{
-        const docDir = FileSystem.Paths.document;
-        const docDirUri = docDir.uri;
+    try {
+      const docDir = FileSystem.Paths.document;
+      const docDirUri = docDir.uri;
 
-        const fileUri = docDirUri.endsWith('/')
-          ? `${docDirUri}workout_data22.json`
-          : `${docDirUri}/workout_data22.json`;
-        
-        const jsonString = JSON.stringify(jsonData,null,2);
+      const fileUri = docDirUri.endsWith('/')
+        ? `${docDirUri}workout_data.json`
+        : `${docDirUri}/workout_data.json`;
 
-        const file = new FileSystem.File(fileUri);
-        await file.write(jsonString);
+      const jsonString = JSON.stringify(jsonData, null, 2);
 
-        if(await Sharing.isAvailableAsync()){
-          await Sharing.shareAsync(fileUri,{
-            mimeType:'application/json',
-            dialogTitle:'Backup save'
-          });
-        }
+      const file = new FileSystem.File(fileUri);
+      await file.write(jsonString);
 
-      }catch(err){
-        console.error("Error: ",err);
-      } 
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(fileUri, {
+          mimeType: 'application/json',
+          dialogTitle: 'Backup save'
+        });
+      }
+
+    } catch (err) {
+      console.error("Error: ", err);
+    }
   }
-  
-  const renderItem = useCallback(({item, index }) => (
-      <RenderItem 
-          item={item} 
-          index={index} 
-          data={data} 
-          setData={setData} 
-          saveToPhone={saveToPhone}
-          flatListRef={flatListRef}
-      />
+
+  const renderItem = useCallback(({ item, index }) => (
+    <RenderItem
+      item={item}
+      index={index}
+      data={data}
+      setData={setData}
+      saveToPhone={saveToPhone}
+      flatListRef={flatListRef}
+    />
   ));
 
   return (
-    <View style={{height:'100%',width:'100%', backgroundColor: backgroundColor}}>
-      <Pressable 
+    <View style={{ height: '100%', width: '100%', backgroundColor: backgroundColor }}>
+      <Pressable
         style={{
-          marginTop:35,
-          height:50,
-          width:50,
-          marginBottom:-40,
+          marginTop: 35,
+          height: 50,
+          width: 50,
+          marginBottom: -40,
         }}
-        onPressIn={()=>{
+        onPressIn={() => {
           uploadToDrive(data)
         }}
-        >
-        <Image source={shareIcon} style={{width:40, height:40}}resizeMode="contain"/>
+      >
+        <Image source={shareIcon} style={{ width: 40, height: 40 }} resizeMode="contain" />
       </Pressable>
-      <View style={{alignItems:'center',marginBottom:100}}>
+      <View style={{ alignItems: 'center', marginBottom: 100 }}>
         <FlatList
           ref={flatListRef}
           keyboardShouldPersistTaps="handled"
           style={styles.conteiner}
           data={data}
           renderItem={renderItem}
-          keyExtractor={(item)=> item.day}
+          keyExtractor={(item) => item.day}
         />
       </View>
-      
-      
+
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-conteiner: {
-    height:"100%",
-    width:'100%',
-    borderWidth:0.1,
-    marginTop:40,
-   
-},
- 
+  conteiner: {
+    height: "100%",
+    width: '100%',
+    borderWidth: 0.1,
+    marginTop: 40,
+
+  },
+
 });
 
 
