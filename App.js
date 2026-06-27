@@ -6,12 +6,12 @@ import WorkoutTable from "./src/Table/WorkoutTable";
 import { useTools } from "./StyleAssistant";
 
 
-export default  function App() {
-  const {YellowBorder} = useTools();
+export default function App() {
+  const { YellowBorder } = useTools();
 
   return (
     <View >
-      <WorkoutTable/>
+      <WorkoutTable />
     </View>
   );
 }

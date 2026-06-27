@@ -5,7 +5,7 @@ import { AssistantProvider } from "../StyleAssistant";
 export default function Page() {
   return (
     <AssistantProvider>
-        <App/>
+      <App />
     </AssistantProvider>
   );
 }
