@@ -3,15 +3,15 @@
 import { View } from "react-native";
 
 import WorkoutTable from "./src/Table/WorkoutTable";
-import { useTools } from "./StyleAssistant";
+import { useDatabase } from "./DatabaseContext";
 
 
 export default function App() {
-  const { YellowBorder } = useTools();
+  const {loading} = useDatabase()
 
   return (
     <View >
-      <WorkoutTable />
+      {!loading && <WorkoutTable />}
     </View>
   );
 }
