@@ -10,6 +10,7 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
   const [editingCell, setEditingCell] = useState(null);
   const exerciseNames = Object.keys(item).filter(key => key !== 'day');
   const [values, setValues] = useState(item);
+  
   let heightValue = false;
   const renderItemLength = Object.keys(item).length
   if (renderItemLength > 2) { // переделать эту хуйню 
