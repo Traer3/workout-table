@@ -4,13 +4,15 @@ import { View } from "react-native";
 
 import WorkoutTable from "./src/Table/WorkoutTable";
 import { useDatabase } from "./DatabaseContext";
+import { useTools } from "./StyleAssistant";
 
 
 export default function App() {
   const {loading} = useDatabase()
+  const { backgroundColor } = useTools();
 
   return (
-    <View >
+    <View style={{ height: '100%', width: '100%', backgroundColor: backgroundColor }}>
       {!loading && <WorkoutTable />}
     </View>
   );
