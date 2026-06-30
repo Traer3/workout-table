@@ -1,9 +1,9 @@
-import { FlatList, StyleSheet, View } from "react-native";
 import { useCallback, useRef, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 
-import RenderItem from "./RenderItem";
 import { useDatabase } from "../../DatabaseContext";
 import IconButton from "../IconButton.js";
+import RenderItem from "./RenderItem/RenderItem.js";
 
 export default function WorkoutTable() {
   const { uploadToDrive, info, saveDataToPhone } = useDatabase()

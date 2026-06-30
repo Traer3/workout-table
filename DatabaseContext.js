@@ -15,7 +15,7 @@ const initTable = [ //сделать нормальную генерацию , �
         "WC": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "WSC": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "WP": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WS": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } }
+        "WS": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
     },
     {
         "day": "28.06.26",
@@ -64,7 +64,7 @@ export const DatabaseProvider = ({ children }) => {
     const loadFromPhone = async () => {
         try {
             let jsonValue
-            jsonValue = await AsyncStorage.getItem(STORAGE_NAME);
+            //jsonValue = await AsyncStorage.getItem(STORAGE_NAME);
             return jsonValue != null ? JSON.parse(jsonValue) : initTable
         } catch (err) {
             console.error("Error while loading data");
@@ -75,7 +75,7 @@ export const DatabaseProvider = ({ children }) => {
         try {
             const jsonValue = JSON.stringify(newData);
             await AsyncStorage.setItem(STORAGE_NAME, jsonValue);
-            console.log("Data saved!");
+            //console.log("Data saved!");
         } catch (err) {
             console.error("Error saving data: ", err);
         }
