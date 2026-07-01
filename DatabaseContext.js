@@ -8,39 +8,39 @@ export const DatabaseContext = createContext()
 const STORAGE_NAME = '@workout_dataTEST';
 
 const initTable = [ //сделать нормальную генерацию , а не эту хуйню 
-    {
-        "day": "25.06.26",
-        "PU": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "RWC": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WC": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WSC": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WP": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WS": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-    },
-    {
-        "day": "28.06.26",
-        "SU": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "Sq": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "ETK": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "SCR": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "BSS": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "LR": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "EP": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } }
-    },
-    {
-        "day": "29.06.26",
-        "BR": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } }
-    },
-    {
-        "day": "01.07.26",
-        "PU": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "RWC": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WC": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WSC": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WP": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WS": { "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } }
-    },
-]
+        {
+          "day": "25.06.26",
+          "PU": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "RWC": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "WC": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "WSC": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "WP": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "WS": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } }
+        },
+        {
+          "day": "28.06.26",
+          "SU": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "Sq": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "ETK": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "SCR": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "BSS": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "LR": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "EP": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } }
+        },
+        {
+          "day": "29.06.26",
+          "BR": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } }
+        },
+        {
+          "day": "01.07.26",
+          "PU": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "RWC": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "WC": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "WSC": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "WP": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+          "WS": { "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } }
+        }
+      ];
 export const DatabaseProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [info, setInfo] = useState(null);

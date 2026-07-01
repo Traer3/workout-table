@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import { useDatabase } from "../../DatabaseContext";
@@ -10,6 +10,32 @@ export default function WorkoutTable() {
 
   const flatListRef = useRef(null);
   const [data, setData] = useState(info);
+
+  useEffect(() => {
+    const index = getInitialIndex(data);
+    setTimeout(() => {
+      flatListRef.current.scrollToIndex({
+        index: index,
+        animated: false,
+      });
+    }, 100);
+  }, [])
+
+  function getInitialIndex(data) {
+    let index = 0
+    for (let i = 0; i < data.length; i++) {
+      const day = data[i];
+      const exercise = Object.keys(day).find(key => key !== 'day');
+      if (exercise) {
+        const exerciseData = day[exercise];
+        if (exerciseData.reps1.value === 0 && exerciseData.reps2.value === 0) {
+          index = i;
+          return index;
+        }
+      }
+    }
+    return index;
+  }
 
   const uploadToCloud = async (data) => {
     await uploadToDrive(data);
@@ -34,14 +60,16 @@ export default function WorkoutTable() {
     <View>
       <IconButton buttFunction={() => uploadToCloud(data)} />
       <View style={{ alignItems: 'center', marginBottom: 100 }}>
-          <FlatList
-            ref={flatListRef}
-            keyboardShouldPersistTaps="handled"
-            style={styles.conteiner}
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.day}
-          />
+        <FlatList
+          ref={flatListRef}
+          keyboardShouldPersistTaps="handled"
+          style={styles.conteiner}
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.day}
+          initialNumToRender={data.length //меня ебет чет другое делать
+          }
+        />
       </View>
     </View>
   );
