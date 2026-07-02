@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
 import { Pressable, Text, TextInput, View, } from "react-native";
-import styles,{TextColor,BorderColor} from './renderItemStyles.js'
+import styles, { TextColor, BorderColor } from './renderItemStyles.js'
 import DateBlock from "./DateBlock.js";
 import ColorPanel from "./ColorPanel.js";
 
@@ -11,6 +11,7 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
   const [editingCell, setEditingCell] = useState(null);
   const exerciseNames = Object.keys(item).filter(key => key !== 'day');
   const [values, setValues] = useState(item);
+  const [showName, setShowName] = useState(false);
 
   const updateValue = (exName, field, text) => {
     const numericValue = text
@@ -46,25 +47,32 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
   }
 
   return (
-    <View style={{ marginBottom: 64,}}>
-      <View style={{borderColor:BorderColor, borderWidth: 1.2, height: 20, }}>
-          <DateBlock item={item} toogleSave={()=>{toogleSave(data)}} saveToPhone={()=>{saveToPhone(data)}}/>
+    <View style={{ marginBottom: 64, }}>
+      <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20, }}>
+        <DateBlock item={item} toogleSave={() => { toogleSave(data) }} saveToPhone={() => { saveToPhone(data) }} />
       </View>
 
       <View style={[styles.table]}>
-
-        <View style={[styles.rowName,{}]}>
-          {exerciseNames.map((name) => (
-            <Text key={name} style={[styles.cell, styles.textStyle, {}]}>{name}</Text>
-          ))}
+        <View style={[styles.rowName, {}]}>
+          {exerciseNames.map((name) => {
+            const fullName = values[name].fullName
+            return (
+              <Pressable
+                style={[styles.pressableCell, { overflow: 'visible' }]}
+                onPressIn={() => { setShowName(!showName) }}
+              >
+                <Text key={name} style={[styles.cell, styles.textStyle, {}]}>{showName ? fullName : name}</Text>
+              </Pressable>
+            )
+          })}
         </View>
 
-        <View style={{ flex: 3, flexDirection: 'column', zIndex: 1}}>
+        <View style={{ flex: 3, flexDirection: 'column', zIndex: 1 }}>
           {exerciseNames.map((name) => {
             const isRowEditing = editingCell && editingCell.startsWith(name);
 
             return (
-              <View key={name} style={[styles.row, {zIndex: isRowEditing ? 100 : 1 }]}>
+              <View key={name} style={[styles.row, { zIndex: isRowEditing ? 100 : 1 }]}>
                 {['reps1', 'rest1', 'reps2', 'rest2'].map((field) => {
                   const cellId = `${name}-${field}`;
                   const isThisCellEditing = editingCell === cellId;
@@ -72,7 +80,7 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
                   return (
                     <Pressable
                       key={field}
-                      style={[styles.pressableCell, { overflow: 'visible'}]}
+                      style={[styles.pressableCell, { overflow: 'visible' }]}
                       onPress={() => toogleEditingCell(cellId)}>
                       {
                         isThisCellEditing ? (
@@ -91,7 +99,7 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
                               onSubmitEditing={() => { toogleSave(data) }}
                               onEndEditing={() => { saveToPhone(data) }}
                             />
-                            <ColorPanel index={index} name={name} field={field} setValues={setValues} values={values} setData={setData} data={data} saveToPhone={saveToPhone}/>
+                            <ColorPanel index={index} name={name} field={field} setValues={setValues} values={values} setData={setData} data={data} saveToPhone={saveToPhone} />
                           </View>
                         ) : (
                           <Text style={[
