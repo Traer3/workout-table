@@ -15,7 +15,15 @@ const initTable = [ //сделать нормальную генерацию , �
         "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } }
+        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
+        "weights": {
+            "PU": { "color": "", "value": 0 },
+            "RWC": { "color": "", "value": 0 },
+            "WC": { "color": "", "value": 0 },
+            "WSC": { "color": "", "value": 0 },
+            "WP": { "color": "", "value": 0 },
+            "WS": { "color": "", "value": 0 },
+        }
     },
     {
         "day": "28.06.26",
@@ -25,11 +33,25 @@ const initTable = [ //сделать нормальную генерацию , �
         "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } }
+        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
+        "weights": {
+            "SU": { "color": "", "value": 0 },
+            "Sq": { "color": "", "value": 0 },
+            "ETK": { "color": "", "value": 0 },
+            "SCR": { "color": "", "value": 0 },
+            "BSS": { "color": "", "value": 0 },
+            "LR": { "color": "", "value": 0 },
+            "EP": { "color": "", "value": 0 },
+        }
     },
     {
         "day": "29.06.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } }
+        "BR": {
+            "fullName": "Barbell Row", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 },
+        },
+        "weights": {
+            "BR": { "color": "", "value": 0 },
+        }
     },
     {
         "day": "01.07.26",
@@ -38,7 +60,15 @@ const initTable = [ //сделать нормальную генерацию , �
         "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } }
+        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
+        "weights": {
+            "PU": { "color": "", "value": 0 },
+            "RWC": { "color": "", "value": 0 },
+            "WC": { "color": "", "value": 0 },
+            "WSC": { "color": "", "value": 0 },
+            "WP": { "color": "", "value": 0 },
+            "WS": { "color": "", "value": 0 },
+        }
     }
 ];
 export const DatabaseProvider = ({ children }) => {
