@@ -3,7 +3,9 @@ import styles,{TextColor} from './renderItemStyles.js'
 
 export default function ColorPanel({index,name,field,setValues, values, setData,data, saveToPhone}) {
     const updateColor = (exName, field, newColor) => {
-        console.log("Color: ", newColor)
+        console.log("exName:" ,exName)
+        console.log("field:" ,field)
+        console.log("newColor:" ,newColor)
         const newValues = {
           ...values,
           [exName]: {

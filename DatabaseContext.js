@@ -17,12 +17,12 @@ const initTable = [ //сделать нормальную генерацию , �
         "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "weights": {
-            "PU": { "color": "", "value": 0 },
-            "RWC": { "color": "", "value": 0 },
-            "WC": { "color": "", "value": 0 },
-            "WSC": { "color": "", "value": 0 },
-            "WP": { "color": "", "value": 0 },
-            "WS": { "color": "", "value": 0 },
+            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 50 } },
+            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 35 } },
+            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 40 } },
+            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 2.5 } },
         }
     },
     {
@@ -35,13 +35,13 @@ const initTable = [ //сделать нормальную генерацию , �
         "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "weights": {
-            "SU": { "color": "", "value": 0 },
-            "Sq": { "color": "", "value": 0 },
-            "ETK": { "color": "", "value": 0 },
-            "SCR": { "color": "", "value": 0 },
-            "BSS": { "color": "", "value": 0 },
-            "LR": { "color": "", "value": 0 },
-            "EP": { "color": "", "value": 0 },
+            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 0 } },
+            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 0 } },
+            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 0 } },
+            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 0 } },
+            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 0 } },
+            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 0 } },
+            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 0 } },
         }
     },
     {
@@ -50,7 +50,7 @@ const initTable = [ //сделать нормальную генерацию , �
             "fullName": "Barbell Row", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 },
         },
         "weights": {
-            "BR": { "color": "", "value": 0 },
+            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 0 } },
         }
     },
     {
@@ -62,12 +62,12 @@ const initTable = [ //сделать нормальную генерацию , �
         "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
         "weights": {
-            "PU": { "color": "", "value": 0 },
-            "RWC": { "color": "", "value": 0 },
-            "WC": { "color": "", "value": 0 },
-            "WSC": { "color": "", "value": 0 },
-            "WP": { "color": "", "value": 0 },
-            "WS": { "color": "", "value": 0 },
+            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 50 } },
+            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 35 } },
+            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 40 } },
+            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 2.5 } },
         }
     }
 ];

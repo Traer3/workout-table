@@ -7,25 +7,22 @@ import { useTools } from "../../../StyleAssistant.js";
 
 
 export default function InfoBlock({ 
-    exerciseNames, 
-    editingCell, 
-    setEditingCell, 
+    exerciseNames,
+    exerciseKeys,
     values, 
     setValues, 
     data, 
     setData, 
+    editingCell, 
+    setEditingCell, 
     index,
-    changeWeight, 
-    setChangeWeight, 
     saveToPhone, 
     flatListRef, 
-    toogleSave, }) {
-    const weightsKey = Object.keys(values).filter(key => key === 'weights')
-    const [weightsValues, setWeightValues] = useState(values[weightsKey])
-    //console.log("weightsValues : ",weightsKey)
-    const weightsKyes = Object.keys(weightsValues)
+    toogleSave, 
+    color,
+}) {
     
-    const { backgroundColor } = useTools(); 
+   // console.log("uniqueExerciseKeys", exerciseKeys)
 
     const updateValue = (exName, field, text) => {
         const numericValue = text
@@ -54,33 +51,13 @@ export default function InfoBlock({
         })
     }
     return (
-        <View style={{ flex: 3, flexDirection: 'column', zIndex: 1 }}>
-            {changeWeight && 
-                <View style={[styles.table, {position:'absolute', zIndex:999, backgroundColor: backgroundColor, borderColor:'red',borderWidth:1}]}>
-                    <NamesBlock exerciseNames={exerciseNames} values={values}/>
-                    {weightsKyes.map((key)=>{
-                        const isRowEditing = editingCell && editingCell.startsWith(key);
-                        return(
-                            <Pressable
-                                key={key}
-                                style={[styles.pressableCell, { overflow: 'visible' }]}
-                                onPress={() => toogleEditingCell(cellId)}
-                            >
-                                <View key={key} style={[styles.row, { zIndex: isRowEditing ? 100 : 1 , borderColor:'red',borderWidth:1}]}>
-                                    <Text>{weightsValues[key].value}</Text>
-                                </View>
-                            </Pressable>
-                        )
-                    })}
-                </View>
-                
-            }
+        <View style={{ flex: 3, flexDirection: 'column', zIndex: 1 , backgroundColor: color ? "red": ""}}>
             {exerciseNames.map((name) => {
                 const isRowEditing = editingCell && editingCell.startsWith(name);
 
                 return (
-                    <View key={name} style={[styles.row, { zIndex: isRowEditing ? 100 : 1 }]}>
-                        {['reps1', 'rest1', 'reps2', 'rest2'].map((field) => {
+                    <View key={name} style={[styles.row, { zIndex: isRowEditing ? 100 : 1}]}>
+                        {exerciseKeys.map((field) => {
                             const cellId = `${name}-${field}`;
                             const isThisCellEditing = editingCell === cellId;
 
