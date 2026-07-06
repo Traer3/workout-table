@@ -17,22 +17,22 @@ export default function InfoBlock({
     setEditingCell, 
     index,
     saveToPhone, 
-    flatListRef, 
+    flatListRef,
+    mode, 
     toogleSave, 
-    color,
 }) {
     
-   // console.log("uniqueExerciseKeys", exerciseKeys)
-
+  
     const updateValue = (exName, field, text) => {
         const numericValue = text
         const newValues = {
             ...values,
             [exName]: {
                 ...values[exName],
-                [field]: typeof values[exName][field] === 'object'
-                    ? { ...values[exName][field], value: numericValue }
-                    : numericValue
+                [field]:{
+                    ...values[exName]?.[field],
+                    value: numericValue
+                }
             }
         };
         setValues(newValues);
@@ -51,24 +51,26 @@ export default function InfoBlock({
         })
     }
     return (
-        <View style={{ flex: 3, flexDirection: 'column', zIndex: 1 , backgroundColor: color ? "red": ""}}>
+        <View style={{ flex: 3, flexDirection: 'column', zIndex: 1}}>
             {exerciseNames.map((name) => {
                 const isRowEditing = editingCell && editingCell.startsWith(name);
-
+                const type = mode ? 'exec' : 'weight' 
+                const rowKey = `row-${index}-${name}-${type}`
                 return (
-                    <View key={name} style={[styles.row, { zIndex: isRowEditing ? 100 : 1}]}>
+                    <View key={rowKey} style={[styles.row, { zIndex: isRowEditing ? 100 : 1}]}>
                         {exerciseKeys.map((field) => {
                             const cellId = `${name}-${field}`;
                             const isThisCellEditing = editingCell === cellId;
-
+                            const cellKey = `cell-${index}-${type}-${name}-${field}`
+                            //console.log("cellKey", cellKey)
                             return (
                                 <Pressable
-                                    key={field}
+                                    key={cellKey}
                                     style={[styles.pressableCell, { overflow: 'visible' }]}
                                     onPress={() => toogleEditingCell(cellId)}>
                                     {
                                         isThisCellEditing ? (
-                                            <View style={{ position: 'absolute', height: "100%", width: '100%', overflow: 'visible', zIndex: 120, }}>
+                                            <View style={{  flex:1, overflow: 'visible', zIndex: 120}}>
                                                 <TextInput
                                                     style={[styles.cell, styles.input, styles.textStyle, {}]}
                                                     keyboardType="numeric"

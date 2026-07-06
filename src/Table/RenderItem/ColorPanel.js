@@ -3,9 +3,6 @@ import styles,{TextColor} from './renderItemStyles.js'
 
 export default function ColorPanel({index,name,field,setValues, values, setData,data, saveToPhone}) {
     const updateColor = (exName, field, newColor) => {
-        console.log("exName:" ,exName)
-        console.log("field:" ,field)
-        console.log("newColor:" ,newColor)
         const newValues = {
           ...values,
           [exName]: {
@@ -24,7 +21,7 @@ export default function ColorPanel({index,name,field,setValues, values, setData,
         saveToPhone(newData);
       };
     return (
-        <View style={[{ position: 'absolute', bottom: -63, left: -70, flexDirection: 'row', zIndex: 999, elevation: 5, }]}>
+        <View style={[{ position: 'absolute', bottom: -63, left: -70, flexDirection: 'row', zIndex: 999, elevation: 5}]}>
             <Pressable style={[styles.coloredBox, { backgroundColor: 'red', }]} onPressIn={() => updateColor(name, field, "red")} />
 
             <Pressable style={[styles.coloredBox, { backgroundColor: 'green', }]} onPressIn={() => updateColor(name, field, "green")} />

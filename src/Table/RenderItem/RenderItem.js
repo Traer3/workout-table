@@ -19,15 +19,10 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
 
   const [changeWeight, setChangeWeight] = useState(false);
 
-  //const weightsKey = Object.keys(values).filter(key => key === 'weights')
-  const [weightsValues, setWeightValues] = useState(values['weights'])
-  const weightsNames = Object.keys(weightsValues)
+  const [weightsValues, setWeightValues] = useState(values['weights']  || {})
+  const weightsNames = weightsValues ? Object.keys(weightsValues) : []
   const weightsNamesKyes = weightsNames.map(key => Object.keys(weightsValues[key]).filter(filterKey => filterKey !== "fullName")).flat()
   const weightsKeys = [...new Set(weightsNamesKyes.map(key => key))];
-
-  
-
-  const { backgroundColor } = useTools()
 
   const toogleSave = (data) => {
     saveToPhone(data)
@@ -37,7 +32,7 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
 
 
   return (
-    <View style={{ marginBottom: 64, borderColor: 'red', borderWidth: 1 }}>
+    <View style={{ marginBottom: 64, }}>
       <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
         <DateBlock
           item={item}
@@ -62,9 +57,9 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
               setEditingCell={setEditingCell}
               index={index}
               saveToPhone={saveToPhone}
+              mode = {changeWeight}
               flatListRef={flatListRef}
               toogleSave={toogleSave}
-              color={true}
             />
           </>
         ) : (

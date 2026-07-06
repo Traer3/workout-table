@@ -13,6 +13,7 @@ export default function WorkoutTable() {
 
   useEffect(() => {
     const index = getInitialIndex(data);
+    console.log("index",index)
     setTimeout(() => {
       flatListRef.current.scrollToIndex({
         index: index,
@@ -66,9 +67,13 @@ export default function WorkoutTable() {
           style={styles.conteiner}
           data={data}
           renderItem={renderItem}
+          initialNumToRender={data.length //меня ебет чет другое делать
+          }
+          /*
           keyExtractor={(item) => item.day}
           initialNumToRender={data.length //меня ебет чет другое делать
           }
+          */
         />
       </View>
     </View>

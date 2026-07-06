@@ -11,7 +11,7 @@ export default function NamesBlock({exerciseNames, values}) {
                 const fullName = values[name].fullName
                 return (
                     <Pressable
-                        key={name}
+                        key={Math.random()}
                         style={[styles.pressableCell, { overflow: 'visible' }]}
                         onPressIn={() => { setShowName(!showName) }}
                     >
