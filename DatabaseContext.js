@@ -68,8 +68,9 @@ const initTable = [ //сделать нормальную генерацию , �
             "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
         }
     },
-    /*
+   
     {
+         /*
         "day": "04.07.26",
         "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
         "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
@@ -481,8 +482,9 @@ const initTable = [ //сделать нормальную генерацию , �
         "weights": {
             "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
         }
-    }
     */
+    }
+    
 ];
 export const DatabaseProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);

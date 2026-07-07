@@ -1,0 +1,67 @@
+import { createRealmContext, Realm } from '@realm/react'
+
+export class Action extends Realm.Object {
+    static schema = {
+        name: 'Action',
+        properties: {
+            color: 'string',
+            value: 'double',
+        },
+    };
+}
+
+export class Exercise extends Realm.Object {
+    static schema = {
+        name: 'Exercise',
+        properties: {
+            fullName: 'string',
+            reps1: 'Action',
+            rest1: 'Action',
+            reps2: 'Action',
+            rest2: 'Action',
+        },
+    };
+}
+
+export class WorkoutDay extends Realm.Object {
+    static schema = {
+        name: 'WorkoutDay',
+        primaryKey: 'day',
+        properties:{
+            day: 'string',
+            PU:'Exercise?',
+            RWC: 'Exercise?',
+            WC: 'Exercise?',
+            WSC: 'Exercise?',
+            WP: 'Exercise?',
+            WS: 'Exercise?',
+            SU: 'Exercise?',
+            Sq: 'Exercise?',
+            ETK: 'Exercise?',
+            SCR: 'Exercise?',
+            BSS: 'Exercise?',
+            LR: 'Exercise?',
+            EP: 'Exercise?',
+            BR: 'Exercise?',
+        },
+    };
+};
+
+export class ExerciseWeightHistory extends Realm.Object {
+    static  schema ={
+        name : 'ExerciseWeightHistory',
+        primaryKey: 'id',
+        properties: {
+            id: 'string',
+            exerciseName: 'string',
+            weightValue: 'double',
+            dateChanged: 'string',
+            timestamp: 'int',
+        },
+    };
+}
+
+export const { RealmProvider, useRealm, useQuery, useObject } = createRealmContext({
+    schema: [Action, Exercise, WorkoutDay, ExerciseWeightHistory],
+    schemaVersion: 1,
+})
