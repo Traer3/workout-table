@@ -5,6 +5,7 @@ import DateBlock from "./DateBlock.js";
 import NamesBlock from "./NamesBlock.js";
 import InfoBlock from "./InfoBlock.js";
 import { useTools } from "../../../StyleAssistant.js";
+import { useObject, useQuery } from "../../db/realm.js";
 
 const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) => {
   if (!item || typeof item !== 'object') return null
@@ -28,6 +29,13 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
     saveToPhone(data)
     setEditingCell(null)
   }
+
+
+  const weightHistory = useQuery('ExerciseWeightHistory').sorted('timestamp',true);
+  //console.log("weightHistory", weightHistory);
+  const currentDayData = useObject('WorkoutDay','09.07.26');
+  const currentDayDataKeys = Object.keys(currentDayData);
+  console.log("DataKeys",currentDayData['PU'])
 
 
 

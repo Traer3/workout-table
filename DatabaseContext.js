@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing'
+import { useRealm } from "./src/db/realm";
 
 export const DatabaseContext = createContext()
 
@@ -487,6 +488,79 @@ const initTable = [ //сделать нормальную генерацию , �
     
 ];
 export const DatabaseProvider = ({ children }) => {
+    const realm = useRealm();
+    /*
+     "day": "28.06.26",
+        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+        
+    */
+    const saveDemoWorkout = () => {
+        realm.write(()=>{
+            realm.create('WorkoutDay',{
+                day: '09.07.26',
+                PU: {
+                    fullName: 'Push Ups',
+                    reps1: {color:'green', value: 1},
+                    rest1: {color:'', value: 1},
+                    reps2: {color:'', value: 1},
+                    rest2: {color:'', value: 1},
+                },
+                RWC: {
+                    fullName: 'Reverse Wrist Curl',
+                    reps1: {color:'green', value: 1},
+                    rest1: {color:'', value: 1},
+                    reps2: {color:'', value: 1},
+                    rest2: {color:'', value: 1},
+                },
+                WC: {
+                    fullName: 'Wrist Curl',
+                    reps1: {color:'green', value: 1},
+                    rest1: {color:'', value: 1},
+                    reps2: {color:'', value: 1},
+                    rest2: {color:'', value: 1},
+                },
+                WSC: {
+                    fullName: 'Wrist Side Curl',
+                    reps1: {color:'green', value: 1},
+                    rest1: {color:'', value: 1},
+                    reps2: {color:'', value: 1},
+                    rest2: {color:'', value: 1},
+                },
+                WP: {
+                    fullName: 'Wrist Pronation',
+                    reps1: {color:'green', value: 1},
+                    rest1: {color:'', value: 1},
+                    reps2: {color:'', value: 1},
+                    rest2: {color:'', value: 1},
+                },
+                WS: {
+                    fullName: 'Wrist Suplination',
+                    reps1: {color:'green', value: 1},
+                    rest1: {color:'', value: 1},
+                    reps2: {color:'', value: 1},
+                    rest2: {color:'', value: 1},
+                },
+            });
+        
+        realm.create('ExerciseWeightHistory',{
+            id: Math.random().toString(36).substring(7),//замени на приходящию комбинацию day, name , reps1, value 
+            exerciseName: 'Wrist Suplination',
+            weightValue: 7.5,
+            dateChanged: '09.07.26',
+            timestamp: Math.floor(Date.now()/1000),
+        });
+        });
+        console.log("Data successfully saved! ");
+    };
+
+
+
     const [loading, setLoading] = useState(true);
     const [info, setInfo] = useState(null);
     useEffect(() => {
@@ -504,6 +578,7 @@ export const DatabaseProvider = ({ children }) => {
             }
         };
         initLoad();
+        //saveDemoWorkout();
     }, [])
 
     const loadFromPhone = async () => {

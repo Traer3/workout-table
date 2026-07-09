@@ -13,7 +13,7 @@ export default function WorkoutTable() {
 
   useEffect(() => {
     const index = getInitialIndex(data);
-    console.log("index",index)
+    //console.log("index",index)
     setTimeout(() => {
       flatListRef.current.scrollToIndex({
         index: index,
