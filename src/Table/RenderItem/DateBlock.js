@@ -1,8 +1,24 @@
 import { Pressable, TextInput, } from "react-native";
 import styles from './renderItemStyles.js'
+import { useObject, useRealm } from "../../db/realm.js";
+import { useState } from "react";
 
 
 export default function DateBlock({ item, changeWeight, setChangeWeight, toogleSave, saveToPhone, }) {
+    const [data, setData] = useState(item || 'no data')
+    const realm = useRealm();
+    const currentDay = useObject('WorkoutDay', `${item}`);
+
+    function changeDay(currentDay, day, value) {
+        console.log("day: ",day)
+        console.log("value: ",value)
+        realm.write(() => {
+            currentDay[day] = value
+            console.log("Data change!")
+        });
+        
+    }
+
     return (
         <Pressable
             style={{
@@ -13,7 +29,10 @@ export default function DateBlock({ item, changeWeight, setChangeWeight, toogleS
                 justifyContent: 'center',
                 alignItems: 'center'
             }}
-            onPress={() => { setChangeWeight(!changeWeight) }}
+            onPress={() => {
+                console.log("setChangeWeight(!changeWeight)")
+                //setChangeWeight(!changeWeight) 
+            }}
         >
             <Pressable
                 style={{
@@ -23,13 +42,13 @@ export default function DateBlock({ item, changeWeight, setChangeWeight, toogleS
                 <TextInput
                     style={[styles.textStyle]}
                     onChangeText={(text) => {
-                        item.day = text; // мутабельная срань , потом поменяю ^_^
+                        setData(text)
                     }
                     }
-                    onSubmitEditing={() => { toogleSave() }}
-                    onEndEditing={() => { saveToPhone() }}
+                    onSubmitEditing={() => { changeDay(currentDay, item, data) }}
+                    //onEndEditing={() => { saveToPhone() }}
                 >
-                    {item.day}
+                    {data}
                 </TextInput>
             </Pressable>
 

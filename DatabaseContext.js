@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing'
-import { useRealm } from "./src/db/realm";
+import { useQuery, useRealm } from "./src/db/realm";
 
 export const DatabaseContext = createContext()
 
@@ -69,500 +69,517 @@ const initTable = [ //сделать нормальную генерацию , �
             "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
         }
     },
-   
+
     {
-         /*
-        "day": "04.07.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
-            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
-            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
-            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
-            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
-            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
-            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "05.07.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "07.07.26",
-        "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
-            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
-            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
-            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
-            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
-            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
-        }
-    },
-    {
-        "day": "10.07.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
-            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
-            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
-            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
-            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
-            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
-            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "11.07.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "13.07.26",
-        "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
-            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
-            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
-            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
-            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
-            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
-        }
-    },
-    {
-        "day": "16.07.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
-            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
-            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
-            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
-            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
-            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
-            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "17.07.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "19.07.26",
-        "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
-            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
-            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
-            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
-            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
-            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
-        }
-    },
-    {
-        "day": "22.07.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
-            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
-            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
-            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
-            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
-            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
-            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "23.07.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "25.07.26",
-        "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
-            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
-            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
-            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
-            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
-            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
-        }
-    },
-    {
-        "day": "28.07.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
-            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
-            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
-            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
-            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
-            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
-            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "29.07.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "31.07.26",
-        "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
-            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
-            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
-            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
-            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
-            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
-        }
-    },
-    {
-        "day": "03.08.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
-            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
-            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
-            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
-            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
-            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
-            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "04.08.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "06.08.26",
-        "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
-            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
-            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
-            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
-            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
-            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
-        }
-    },
-    {
-        "day": "09.08.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
-            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
-            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
-            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
-            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
-            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
-            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "10.08.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "12.08.26",
-        "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
-            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
-            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
-            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
-            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
-            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
-        }
-    },
-    {
-        "day": "15.08.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
-            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
-            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
-            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
-            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
-            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
-            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "16.08.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "18.08.26",
-        "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
-            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
-            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
-            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
-            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
-            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
-        }
-    },
-    {
-        "day": "21.08.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
-            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
-            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
-            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
-            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
-            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
-            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "22.08.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "24.08.26",
-        "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
-            "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
-            "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
-            "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
-            "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
-            "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
-        }
-    },
-    {
-        "day": "27.08.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "weights": {
-            "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
-            "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
-            "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
-            "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
-            "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
-            "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
-            "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
-        }
-    },
-    {
-        "day": "28.08.26",
-        "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
-        "weights": {
-            "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
-        }
-    */
+        /*
+       "day": "04.07.26",
+       "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
+           "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
+           "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
+           "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
+           "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
+           "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
+           "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "05.07.26",
+       "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "07.07.26",
+       "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
+           "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
+           "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
+           "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+           "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+           "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
+       }
+   },
+   {
+       "day": "10.07.26",
+       "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
+           "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
+           "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
+           "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
+           "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
+           "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
+           "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "11.07.26",
+       "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "13.07.26",
+       "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
+           "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
+           "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
+           "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+           "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+           "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
+       }
+   },
+   {
+       "day": "16.07.26",
+       "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
+           "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
+           "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
+           "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
+           "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
+           "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
+           "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "17.07.26",
+       "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "19.07.26",
+       "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
+           "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
+           "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
+           "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+           "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+           "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
+       }
+   },
+   {
+       "day": "22.07.26",
+       "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
+           "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
+           "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
+           "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
+           "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
+           "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
+           "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "23.07.26",
+       "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "25.07.26",
+       "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
+           "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
+           "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
+           "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+           "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+           "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
+       }
+   },
+   {
+       "day": "28.07.26",
+       "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
+           "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
+           "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
+           "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
+           "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
+           "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
+           "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "29.07.26",
+       "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "31.07.26",
+       "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
+           "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
+           "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
+           "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+           "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+           "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
+       }
+   },
+   {
+       "day": "03.08.26",
+       "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
+           "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
+           "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
+           "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
+           "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
+           "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
+           "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "04.08.26",
+       "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "06.08.26",
+       "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
+           "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
+           "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
+           "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+           "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+           "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
+       }
+   },
+   {
+       "day": "09.08.26",
+       "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
+           "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
+           "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
+           "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
+           "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
+           "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
+           "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "10.08.26",
+       "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "12.08.26",
+       "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
+           "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
+           "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
+           "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+           "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+           "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
+       }
+   },
+   {
+       "day": "15.08.26",
+       "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
+           "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
+           "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
+           "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
+           "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
+           "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
+           "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "16.08.26",
+       "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "18.08.26",
+       "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
+           "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
+           "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
+           "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+           "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+           "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
+       }
+   },
+   {
+       "day": "21.08.26",
+       "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
+           "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
+           "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
+           "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
+           "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
+           "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
+           "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "22.08.26",
+       "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "24.08.26",
+       "PU": { "fullName": "Push Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "RWC": { "fullName": "Reverse Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WC": { "fullName": "Wrist Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WSC": { "fullName": "Wrist Side Curl", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WP": { "fullName": "Wrist Pronation", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "WS": { "fullName": "Wrist Suplination", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "PU": { "fullName": "Push Ups", "data": { "color": "green", "value": 10 } },
+           "RWC": { "fullName": "Reverse Wrist Curl", "data": { "color": "blue", "value": 15 } },
+           "WC": { "fullName": "Wrist Curl", "data": { "color": "", "value": 10 } },
+           "WSC": { "fullName": "Wrist Side Curl", "data": { "color": "", "value": 15 } },
+           "WP": { "fullName": "Wrist Pronation", "data": { "color": "", "value": 10 } },
+           "WS": { "fullName": "Wrist Suplination", "data": { "color": "", "value": 1.5 } }
+       }
+   },
+   {
+       "day": "27.08.26",
+       "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
+       "weights": {
+           "SU": { "fullName": "Sit-Ups", "data": { "color": "", "value": 1 } },
+           "Sq": { "fullName": "Squats", "data": { "color": "", "value": 1 } },
+           "ETK": { "fullName": "Elbow To Knee", "data": { "color": "", "value": 1 } },
+           "SCR": { "fullName": "Standing Calf Raise", "data": { "color": "", "value": 1 } },
+           "BSS": { "fullName": "Bulgarian Slit Squats", "data": { "color": "", "value": 1 } },
+           "LR": { "fullName": "Leg Raises", "data": { "color": "", "value": 1 } },
+           "EP": { "fullName": "Elbow Plank", "data": { "color": "", "value": 1 } }
+       }
+   },
+   {
+       "day": "28.08.26",
+       "BR": { "fullName": "Barbell Row", "reps1": { "color": "", "value": 0 }, "rest1": { "color": "", "value": 0 }, "reps2": { "color": "", "value": 0 }, "rest2": { "color": "", "value": 0 } },
+       "weights": {
+           "BR": { "fullName": "Barbell Row", "data": { "color": "", "value": 1 } }
+       }
+   */
     }
-    
+
 ];
 export const DatabaseProvider = ({ children }) => {
     const realm = useRealm();
-    /*
-     "day": "28.06.26",
-        "SU": { "fullName": "Sit-Ups", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "Sq": { "fullName": "Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "ETK": { "fullName": "Elbow To Knee", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "SCR": { "fullName": "Standing Calf Raise", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "BSS": { "fullName": "Bulgarian Slit Squats", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "LR": { "fullName": "Leg Raises", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        "EP": { "fullName": "Elbow Plank", "reps1": { "color": "", "value": 1 }, "rest1": { "color": "", "value": 1 }, "reps2": { "color": "", "value": 1 }, "rest2": { "color": "", "value": 1 } },
-        
-    */
     const saveDemoWorkout = () => {
-        realm.write(()=>{
-            realm.create('WorkoutDay',{
+        realm.write(() => {
+            realm.create('WorkoutDay', {
                 day: '09.07.26',
                 PU: {
                     fullName: 'Push Ups',
-                    reps1: {color:'green', value: 1},
-                    rest1: {color:'', value: 1},
-                    reps2: {color:'', value: 1},
-                    rest2: {color:'', value: 1},
+                    reps1: { color: 'green', value: 1 },
+                    rest1: { color: '', value: 1 },
+                    reps2: { color: '', value: 1 },
+                    rest2: { color: '', value: 1 },
                 },
                 RWC: {
                     fullName: 'Reverse Wrist Curl',
-                    reps1: {color:'green', value: 1},
-                    rest1: {color:'', value: 1},
-                    reps2: {color:'', value: 1},
-                    rest2: {color:'', value: 1},
+                    reps1: { color: 'green', value: 1 },
+                    rest1: { color: '', value: 1 },
+                    reps2: { color: '', value: 1 },
+                    rest2: { color: '', value: 1 },
                 },
                 WC: {
                     fullName: 'Wrist Curl',
-                    reps1: {color:'green', value: 1},
-                    rest1: {color:'', value: 1},
-                    reps2: {color:'', value: 1},
-                    rest2: {color:'', value: 1},
+                    reps1: { color: 'green', value: 1 },
+                    rest1: { color: '', value: 1 },
+                    reps2: { color: '', value: 1 },
+                    rest2: { color: '', value: 1 },
                 },
                 WSC: {
                     fullName: 'Wrist Side Curl',
-                    reps1: {color:'green', value: 1},
-                    rest1: {color:'', value: 1},
-                    reps2: {color:'', value: 1},
-                    rest2: {color:'', value: 1},
+                    reps1: { color: 'green', value: 1 },
+                    rest1: { color: '', value: 1 },
+                    reps2: { color: '', value: 1 },
+                    rest2: { color: '', value: 1 },
                 },
                 WP: {
                     fullName: 'Wrist Pronation',
-                    reps1: {color:'green', value: 1},
-                    rest1: {color:'', value: 1},
-                    reps2: {color:'', value: 1},
-                    rest2: {color:'', value: 1},
+                    reps1: { color: 'green', value: 1 },
+                    rest1: { color: '', value: 1 },
+                    reps2: { color: '', value: 1 },
+                    rest2: { color: '', value: 1 },
                 },
                 WS: {
                     fullName: 'Wrist Suplination',
-                    reps1: {color:'green', value: 1},
-                    rest1: {color:'', value: 1},
-                    reps2: {color:'', value: 1},
-                    rest2: {color:'', value: 1},
+                    reps1: { color: 'green', value: 1 },
+                    rest1: { color: '', value: 1 },
+                    reps2: { color: '', value: 1 },
+                    rest2: { color: '', value: 1 },
                 },
-            });
-        
-        realm.create('ExerciseWeightHistory',{
-            id: Math.random().toString(36).substring(7),//замени на приходящию комбинацию day, name , reps1, value 
-            exerciseName: 'Wrist Suplination',
-            weightValue: 7.5,
-            dateChanged: '09.07.26',
-            timestamp: Math.floor(Date.now()/1000),
-        });
+            }, 'modified');
+            
+
+            realm.create('WorkoutDay', {
+                day: '29.06.26',
+                BR: { fullName: 'Barbell Row', reps1: { color: '', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+            }, 'modified');
+
+
+            realm.create('WorkoutDay', {
+                day: '01.07.26',
+                PU: { fullName: 'Push Ups', reps1: { color: '', value: 1 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                RWC: { fullName: 'Reverse Wrist Curl', reps1: { color: '', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+                WC: { fullName: 'Wrist Curl', reps1: { color: '', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+                WSC: { fullName: 'Wrist Side Curl', reps1: { color: '', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+                WP: { fullName: 'Wrist Pronation', reps1: { color: '', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+                WS: { fullName: 'Wrist Suplination', reps1: { color: '', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+            }, 'modified');
+            realm.create('WorkoutDay', {
+                day: '10.07.26',
+                PU: { fullName: 'Push Ups', reps1: { color: 'green', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+                RWC: { fullName: 'Reverse Wrist Curl', reps1: { color: 'green', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+                WC: { fullName: 'Wrist Curl', reps1: { color: 'green', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+                WSC: { fullName: 'Wrist Side Curl', reps1: { color: 'green', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+                WP: { fullName: 'Wrist Pronation', reps1: { color: 'green', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+                WS: { fullName: 'Wrist Suplination', reps1: { color: 'green', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
+            }, 'modified');
+
+            realm.create('ExerciseWeightHistory', {
+                id: Math.random().toString(36).substring(7),//замени на приходящию комбинацию day, name , reps1, value 
+                exerciseName: 'Wrist Suplination',
+                weightValue: 7.5,
+                dateChanged: '09.07.26',
+                timestamp: Math.floor(Date.now() / 1000),
+            }, 'modified');
         });
         console.log("Data successfully saved! ");
     };
 
 
 
-    const [loading, setLoading] = useState(true);
-    const [info, setInfo] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const info = useQuery('WorkoutDay')
+    //const [info, setInfo] = useState(null);
+    /*
     useEffect(() => {
         const initLoad = async () => {
             try {
@@ -580,7 +597,8 @@ export const DatabaseProvider = ({ children }) => {
         initLoad();
         //saveDemoWorkout();
     }, [])
-
+    
+    
     const loadFromPhone = async () => {
         try {
             let jsonValue
@@ -590,8 +608,11 @@ export const DatabaseProvider = ({ children }) => {
             console.error("Error while loading data");
         }
     }
+    */
 
     const saveDataToPhone = async (newData) => {
+        console.log("saveDataToPhone WORKED!")
+        /*
         try {
             const jsonValue = JSON.stringify(newData);
             await AsyncStorage.setItem(STORAGE_NAME, jsonValue);
@@ -599,8 +620,11 @@ export const DatabaseProvider = ({ children }) => {
         } catch (err) {
             console.error("Error saving data: ", err);
         }
+        */
     }
     const uploadToDrive = async (jsonData) => {
+        console.log("uploadToDrive WORKED!")
+        /*
         try {
             const docDir = FileSystem.Paths.document;
             const docDirUri = docDir.uri;
@@ -624,11 +648,13 @@ export const DatabaseProvider = ({ children }) => {
         } catch (err) {
             console.error("Error: ", err);
         }
+            */
     }
+    
 
     return (
         <DatabaseContext.Provider
-            value={{                
+            value={{
                 uploadToDrive,
                 saveDataToPhone,
                 info,

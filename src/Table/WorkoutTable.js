@@ -9,8 +9,9 @@ export default function WorkoutTable() {
   const { uploadToDrive, info, saveDataToPhone } = useDatabase()
 
   const flatListRef = useRef(null);
-  const [data, setData] = useState(info);
+  //const [data, setData] = useState(info);
 
+  /*
   useEffect(() => {
     const index = getInitialIndex(data);
     //console.log("index",index)
@@ -37,6 +38,17 @@ export default function WorkoutTable() {
     }
     return index;
   }
+  */
+
+  const allDays = getAllDays(info);
+  console.log("days: ", allDays)
+  function getAllDays(allData) {
+    const days = []
+    allData.forEach(obj => {
+      days.push(obj["day"])
+    });
+    return days
+  }
 
   const uploadToCloud = async (data) => {
     await uploadToDrive(data);
@@ -48,10 +60,10 @@ export default function WorkoutTable() {
 
   const renderItem = useCallback(({ item, index }) => (
     <RenderItem
-      item={item}
+      item={item} // это уже сам день "09.07.26"
       index={index}
-      data={data}
-      setData={setData}
+      //data={data}
+      //setData={setData}
       saveToPhone={saveToPhone}
       flatListRef={flatListRef}
     />
@@ -65,10 +77,12 @@ export default function WorkoutTable() {
           ref={flatListRef}
           keyboardShouldPersistTaps="handled"
           style={styles.conteiner}
-          data={data}
+          data={allDays}
           renderItem={renderItem}
+          /*
           initialNumToRender={data.length //меня ебет чет другое делать
           }
+          */
           /*
           keyExtractor={(item) => item.day}
           initialNumToRender={data.length //меня ебет чет другое делать
