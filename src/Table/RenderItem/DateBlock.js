@@ -13,7 +13,7 @@ export default function DateBlock({ item, changeWeight, setChangeWeight, toogleS
         console.log("day: ",day)
         console.log("value: ",value)
         realm.write(() => {
-            currentDay[day] = value
+            currentDay[day] = value //бля
             console.log("Data change!")
         });
         
