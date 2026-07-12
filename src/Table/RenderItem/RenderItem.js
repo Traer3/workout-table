@@ -69,8 +69,6 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
           item={item}
           //changeWeight={changeWeight}
           //setChangeWeight={setChangeWeight}
-          toogleSave={() => { toogleSave(data) }}
-          saveToPhone={() => { saveToPhone(data) }}
         />
       </View>
       <View style={[styles.table]}>

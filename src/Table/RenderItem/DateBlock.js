@@ -4,19 +4,21 @@ import { useObject, useRealm } from "../../db/realm.js";
 import { useState } from "react";
 
 
-export default function DateBlock({ item, changeWeight, setChangeWeight, toogleSave, saveToPhone, }) {
+export default function DateBlock({ item, changeWeight, setChangeWeight}) {
     const [data, setData] = useState(item || 'no data')
     const realm = useRealm();
     const currentDay = useObject('WorkoutDay', `${item}`);
 
-    function changeDay(currentDay, day, value) {
-        console.log("day: ",day)
-        console.log("value: ",value)
-        realm.write(() => {
-            currentDay[day] = value //бля
-            console.log("Data change!")
-        });
-        
+    function changeDay(oldDayObject, newDateValue) {
+        if(!oldDayObject || oldDayObject.day === newDateValue) return;
+        const plainObj = oldDayObject.toJSON()
+        realm.write(()=>{
+            realm.create('WorkoutDay',{
+                ...plainObj,
+                day: newDateValue,
+            },'modified');
+            realm.delete(oldDayObject)
+        })
     }
 
     return (
@@ -41,15 +43,13 @@ export default function DateBlock({ item, changeWeight, setChangeWeight, toogleS
             >
                 <TextInput
                     style={[styles.textStyle]}
-                    onChangeText={(text) => {
-                        setData(text)
-                    }
-                    }
-                    onSubmitEditing={() => { changeDay(currentDay, item, data) }}
+                    value={data}
+                    onChangeText={(text) => setData(text)}
+                    onSubmitEditing={() => { changeDay(currentDay, data) }}
                     //onEndEditing={() => { saveToPhone() }}
-                >
-                    {data}
-                </TextInput>
+                />
+                    
+                
             </Pressable>
 
         </Pressable>
