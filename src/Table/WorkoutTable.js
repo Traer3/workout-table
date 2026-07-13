@@ -9,7 +9,6 @@ export default function WorkoutTable() {
   const { uploadToDrive, info, saveDataToPhone } = useDatabase()
 
   const flatListRef = useRef(null);
-  //const [data, setData] = useState(info);
 
   /*
   useEffect(() => {
@@ -41,7 +40,6 @@ export default function WorkoutTable() {
   */
 
   const allDays = getAllDays(info);
-  console.log("days: ", allDays)
   function getAllDays(allData) {
     const days = []
     allData.forEach(obj => {
@@ -62,8 +60,6 @@ export default function WorkoutTable() {
     <RenderItem
       item={item} // это уже сам день "09.07.26"
       index={index}
-      //data={data}
-      //setData={setData}
       saveToPhone={saveToPhone}
       flatListRef={flatListRef}
     />
@@ -79,15 +75,15 @@ export default function WorkoutTable() {
           style={styles.conteiner}
           data={allDays}
           renderItem={renderItem}
-          /*
-          initialNumToRender={data.length //меня ебет чет другое делать
-          }
-          */
-          /*
-          keyExtractor={(item) => item.day}
-          initialNumToRender={data.length //меня ебет чет другое делать
-          }
-          */
+        /*
+        initialNumToRender={data.length //меня ебет чет другое делать
+        }
+        */
+        /*
+        keyExtractor={(item) => item.day}
+        initialNumToRender={data.length //меня ебет чет другое делать
+        }
+        */
         />
       </View>
     </View>

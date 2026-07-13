@@ -4,62 +4,48 @@ import styles, { TextColor, BorderColor } from './renderItemStyles.js'
 import DateBlock from "./DateBlock.js";
 import NamesBlock from "./NamesBlock.js";
 import InfoBlock from "./InfoBlock.js";
-import { useTools } from "../../../StyleAssistant.js";
 import { useObject, useQuery, useRealm } from "../../db/realm.js";
 
 const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) => {
   if (!item) return null
   const realm = useRealm();
+  const currentDayData = useObject('WorkoutDay', `${item}`);
+  const dayData = readData(currentDayData)
 
   const [editingCell, setEditingCell] = useState(null);
   const [values, setValues] = useState(item);
 
-  const exerciseNames = Object.keys(item).filter(key => key !== 'day' && key !== 'weights');
-  const exerciseNamesKyes = exerciseNames.map(key => Object.keys(values[key]).filter(filterKey => filterKey !== "fullName")).flat()
-  const exerciseKeys = [...new Set(exerciseNamesKyes.map(key => key))];
-
+  const exerciseKeys = []
 
   const toogleSave = (data) => {
     saveToPhone(data)
     setEditingCell(null)
   }
-  
 
-  const weightHistory = useQuery('ExerciseWeightHistory').sorted('timestamp',true);
+
+  const weightHistory = useQuery('ExerciseWeightHistory').sorted('timestamp', true);
   //console.log("weightHistory", weightHistory);
-
-
-  const currentDayData = useObject('WorkoutDay',`${item}`);
-  //console.log("currentDayData: ",currentDayData)
-  
-  const dayData = readData(currentDayData)
-  //console.log("dayData",dayData.keys)
-  //console.log("dayData",dayData.data)
 
 
   function readData(currentDay) {
     const keys = [];
     const data = [];
+    const fullDay = [];
     const currentDayDataKeys = Object.keys(currentDay);
     currentDayDataKeys.map(key => {
-      if(currentDay[key] !== null || currentDay[key] !== ''){
+      if (currentDay[key] !== null && key !== 'day') {
         keys.push(key);
         data.push(currentDay[key])
+        fullDay.push({ [key]: currentDay[key] })
       }
     });
+
     const dayData = {
       keys: keys,
-      data: data
+      data: data,
+      fullDay: fullDay,
     }
     return dayData
-  }
-
-  function changeValue(currentDay,key,value){
-    if(currentDay?.key){
-      realm.write(()=>{
-        currentDay.key.value = value;
-      });
-    }
   }
 
   return (
@@ -67,26 +53,27 @@ const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) =>
       <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
         <DateBlock
           item={item}
-          //changeWeight={changeWeight}
-          //setChangeWeight={setChangeWeight}
+          currentDayData={currentDayData}
+        //changeWeight={changeWeight}
+        //setChangeWeight={setChangeWeight}
         />
       </View>
       <View style={[styles.table]}>
-            <NamesBlock exerciseNames={exerciseNames} values={values} />
-            <InfoBlock
-              exerciseNames={exerciseNames}
-              exerciseKeys={exerciseKeys}
-              values={values}
-              setValues={setValues}
-              data={data}
-              setData={setData}
-              editingCell={editingCell}
-              setEditingCell={setEditingCell}
-              index={index}
-              saveToPhone={saveToPhone}
-              flatListRef={flatListRef}
-              toogleSave={toogleSave}
-            />
+        <NamesBlock values={dayData} />
+        <InfoBlock
+          exerciseNames={dayData.keys}
+          exerciseKeys={exerciseKeys}
+          values={values}
+          setValues={setValues}
+          data={data}
+          setData={setData}
+          editingCell={editingCell}
+          setEditingCell={setEditingCell}
+          index={index}
+          saveToPhone={saveToPhone}
+          flatListRef={flatListRef}
+          toogleSave={toogleSave}
+        />
       </View>
     </View>
   )

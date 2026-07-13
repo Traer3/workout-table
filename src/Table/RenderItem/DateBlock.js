@@ -3,11 +3,11 @@ import styles from './renderItemStyles.js'
 import { useObject, useRealm } from "../../db/realm.js";
 import { useState } from "react";
 
-
-export default function DateBlock({ item, changeWeight, setChangeWeight}) {
+// После того как отобразишь все объекты в таблице , проверь как меняется дата , если значение не AA.BB.XX , а например AA.BB.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//У меня была ошибка 
+export default function DateBlock({ item,currentDayData, changeWeight, setChangeWeight}) {
     const [data, setData] = useState(item || 'no data')
     const realm = useRealm();
-    const currentDay = useObject('WorkoutDay', `${item}`);
 
     function changeDay(oldDayObject, newDateValue) {
         if(!oldDayObject || oldDayObject.day === newDateValue) return;
@@ -45,7 +45,7 @@ export default function DateBlock({ item, changeWeight, setChangeWeight}) {
                     style={[styles.textStyle]}
                     value={data}
                     onChangeText={(text) => setData(text)}
-                    onSubmitEditing={() => { changeDay(currentDay, data) }}
+                    onSubmitEditing={() => { changeDay(currentDayData, data) }}
                     //onEndEditing={() => { saveToPhone() }}
                 />
                     

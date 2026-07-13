@@ -3,22 +3,26 @@ import styles from './renderItemStyles.js'
 import { useState } from "react";
 
 
-export default function NamesBlock({exerciseNames, values}) {
-      const [showName, setShowName] = useState(false);
+export default function NamesBlock({ values }) {
+    const [showName, setShowName] = useState(false);
+    const dayData = values.fullDay;
+    
     return (
         <View style={[styles.rowName, {}]}>
-            {exerciseNames.map((name) => {
-                const fullName = values[name].fullName
+            {dayData.map((element) => {
+                const name = Object.keys(element);
+                const fullName = element[name]["fullName"]
                 return (
                     <Pressable
                         key={Math.random()}
                         style={[styles.pressableCell, { overflow: 'visible' }]}
                         onPressIn={() => { setShowName(!showName) }}
                     >
-                        <Text key={name} style={[styles.cell, styles.textStyle, {}]}>{showName ? fullName : name}</Text>
+                        <Text key={element} style={[styles.cell, styles.textStyle, {}]}>{showName ? fullName : name}</Text>
                     </Pressable>
                 )
             })}
         </View>
     )
+    
 }
