@@ -2,103 +2,93 @@ import { Pressable, Text, TextInput, View, } from "react-native";
 import styles, { TextColor, BorderColor } from './renderItemStyles.js'
 import ColorPanel from "./ColorPanel";
 import { useState } from "react";
-import NamesBlock from "./NamesBlock.js";
-import { useTools } from "../../../StyleAssistant.js";
+import { useRealm } from "../../db/realm.js";
 
 
-export default function InfoBlock({ 
-    exerciseNames,
-    exerciseKeys,
-    values, 
-    setValues, 
-    data, 
-    setData, 
-    editingCell, 
-    setEditingCell, 
+export default function InfoBlock({
+    currentDayData,
+    dayData,
+    editingCell,
+    setEditingCell,
     index,
-    saveToPhone, 
     flatListRef,
-    mode, 
-    toogleSave, 
+    mode,
 }) {
-    
-  
-    const updateValue = (exName, field, text) => {
-        const numericValue = text
-        const newValues = {
-            ...values,
-            [exName]: {
-                ...values[exName],
-                [field]:{
-                    ...values[exName]?.[field],
-                    value: numericValue
-                }
-            }
-        };
-        setValues(newValues);
+    const realm = useRealm();
+    const fullDay = dayData.fullDay
+    const exerciseKeys = dayData.exerciseKeys
 
-        const newData = [...data];
-        newData[index] = newValues;
-        setData(newData);
-    };
-    const toogleEditingCell = (cellId) => {
+    const [textData, setTextData] = useState("");
 
+    const toogleEditingCell = (cellId, initialValue) => {
         setEditingCell(cellId);
+        setTextData(String(initialValue ?? ""))
         flatListRef.current?.scrollToIndex({
             index: index,
             animated: true,
             viewPosition: 0,
         })
     }
+
+    const updateValue = (exKey, fieldKey, text) => {
+        //console.log("exKey: ", exKey)
+        //console.log("fieldKey: ", fieldKey)
+        //console.log("text: ", text)
+        if (!currentDayData) return;
+        realm.write(() => {
+            if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
+                currentDayData[exKey][fieldKey].value = Number(text) || 0;
+            }
+        })
+        setEditingCell(null);
+    }
     return (
-        <View style={{ flex: 3, flexDirection: 'column', zIndex: 1}}>
-            {exerciseNames.map((name) => {
+        <View style={{ flex: 3, flexDirection: 'column', zIndex: 1 }}>
+            {fullDay.map((element) => {
+                const name = Object.keys(element)[0]
+                if (!name) return null;
                 const isRowEditing = editingCell && editingCell.startsWith(name);
-                const type = mode ? 'exec' : 'weight' 
+                const type = mode ? 'exec' : 'weight'
                 const rowKey = `row-${index}-${name}-${type}`
                 return (
-                    <View key={rowKey} style={[styles.row, { zIndex: isRowEditing ? 100 : 1}]}>
+                    <View key={rowKey} style={[styles.row, { zIndex: isRowEditing ? 100 : 1 }]}>
                         {exerciseKeys.map((field) => {
                             const cellId = `${name}-${field}`;
                             const isThisCellEditing = editingCell === cellId;
                             const cellKey = `cell-${index}-${type}-${name}-${field}`
-                            //console.log("cellKey", cellKey)
+                            const currentValue = typeof element[name][field] === 'object'
+                                ? element[name][field]?.value
+                                : element[name][field];
                             return (
                                 <Pressable
                                     key={cellKey}
                                     style={[styles.pressableCell, { overflow: 'visible' }]}
-                                    onPress={() => toogleEditingCell(cellId)}>
+                                    onPress={() => toogleEditingCell(cellId, currentValue)}>
                                     {
                                         isThisCellEditing ? (
-                                            <View style={{  flex:1, overflow: 'visible', zIndex: 120}}>
+                                            <View style={{ flex: 1, overflow: 'visible', zIndex: 120 }}>
                                                 <TextInput
                                                     style={[styles.cell, styles.input, styles.textStyle, {}]}
                                                     keyboardType="numeric"
                                                     autoFocus={true}
-                                                    value={String(
-                                                        typeof values[name][field] === 'object'
-                                                            ? values[name][field].value
-                                                            : values[name][field]
-                                                    )}
-                                                    onChangeText={(text) => updateValue(name, field, text)}
+                                                    value={textData}
+                                                    onChangeText={(text) => { setTextData(text) }}
                                                     onBlur={() => setEditingCell(null)}
-                                                    onSubmitEditing={() => { toogleSave(data) }}
-                                                    onEndEditing={() => { saveToPhone(data) }}
+                                                    onSubmitEditing={() => { updateValue(name, field, textData) }}
+                                                //onEndEditing={() => { saveToPhone(data) }}
                                                 />
-                                                <ColorPanel index={index} name={name} field={field} setValues={setValues} values={values} setData={setData} data={data} saveToPhone={saveToPhone} />
+                                                <ColorPanel currentDayData={currentDayData} name={name} field={field} />
                                             </View>
                                         ) : (
                                             <Text style={[
                                                 styles.textStyle,
                                                 styles.cell,
-                                                { color: values[name][field]?.color || TextColor }
+                                                { color: element[name][field]?.color || TextColor }
                                             ]}>
-                                                {typeof values[name][field] === 'object'
-                                                    ? values[name][field].value
-                                                    : values[name][field]
-                                                }
+                                                {currentValue}
                                             </Text>
-                                        )}
+                                        )
+                                    }
                                 </Pressable>
                             )
                         })}
