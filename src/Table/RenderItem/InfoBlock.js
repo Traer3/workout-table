@@ -5,15 +5,8 @@ import { useState } from "react";
 import { useRealm } from "../../db/realm.js";
 
 
-export default function InfoBlock({
-    currentDayData,
-    dayData,
-    editingCell,
-    setEditingCell,
-    index,
-    flatListRef,
-    mode,
-}) {
+export default function InfoBlock({ currentDayData, dayData, editingCell, setEditingCell, index, flatListRef, mode, }) {
+    
     const realm = useRealm();
     const fullDay = dayData.fullDay
     const exerciseKeys = dayData.exerciseKeys

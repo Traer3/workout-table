@@ -577,7 +577,23 @@ export const DatabaseProvider = ({ children }) => {
 
 
     const [loading, setLoading] = useState(false);
-    const info = useQuery('WorkoutDay')
+    const [info, setInfo] = useState([]);
+    //const info = useQuery('WorkoutDay')
+    /*
+    if(!info || info.isValid()){
+        console.log("DatabaseContext.js\nLoading info")
+        //return null;
+    }
+    */
+    useEffect(()=>{
+        try{
+
+        }catch(err){
+
+        }finally{
+            setLoading(false);
+        }
+    })
     //const [info, setInfo] = useState(null);
     /*
     useEffect(() => {

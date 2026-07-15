@@ -9,6 +9,7 @@ import { useObject, useQuery, useRealm } from "../../db/realm.js";
 const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) => {
   if (!item) return null
   const currentDayData = useObject('WorkoutDay', `${item}`);
+  
   const dayData = readData(currentDayData)
 
   const [editingCell, setEditingCell] = useState(null);

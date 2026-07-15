@@ -7,6 +7,7 @@ import RenderItem from "./RenderItem/RenderItem.js";
 
 export default function WorkoutTable() {
   const { uploadToDrive, info, saveDataToPhone } = useDatabase()
+ 
 
   const flatListRef = useRef(null);
 

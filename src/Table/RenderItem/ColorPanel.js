@@ -3,12 +3,13 @@ import styles, { TextColor } from './renderItemStyles.js'
 import { useRealm } from "../../db/realm.js";
 
 export default function ColorPanel({ currentDayData, name, field }) {
+    
     const realm = useRealm();
     const updateColor = (exKey, fieldKey, text) => {
       //console.log("exKey: ", exKey)
       //console.log("fieldKey: ", fieldKey)
       //console.log("text: ", text)
-      if (!currentDayData) return;
+      
       realm.write(() => {
         if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
           currentDayData[exKey][fieldKey].color = String(text) || "";

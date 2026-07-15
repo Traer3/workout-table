@@ -1,4 +1,4 @@
-import { Pressable, TextInput, } from "react-native";
+import { Pressable, TextInput, View, } from "react-native";
 import styles from './renderItemStyles.js'
 import { useObject, useRealm } from "../../db/realm.js";
 import { useState } from "react";
@@ -6,6 +6,13 @@ import { useState } from "react";
 // После того как отобразишь все объекты в таблице , проверь как меняется дата , если значение не AA.BB.XX , а например AA.BB.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //У меня была ошибка 
 export default function DateBlock({ item,currentDayData, changeWeight, setChangeWeight}) {
+    if(!currentDayData || !currentDayData.isValid()){
+        return(
+            <View style={{flex:1}}>
+                <Text>Loaging</Text>
+            </View>
+        )
+    }
     const [data, setData] = useState(item || 'no data')
     const realm = useRealm();
 
