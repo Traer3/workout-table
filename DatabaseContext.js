@@ -575,69 +575,24 @@ export const DatabaseProvider = ({ children }) => {
     };
 
 
-
     const [loading, setLoading] = useState(false);
-    const [info, setInfo] = useState([]);
-    //const info = useQuery('WorkoutDay')
-    /*
-    if(!info || info.isValid()){
-        console.log("DatabaseContext.js\nLoading info")
-        //return null;
-    }
-    */
+    const [info, setInfo] = useState();
+
+    function initialLoad() {
+        const info = useQuery('WorkoutDay')
+        if(!info && !info.isValid()){
+            return []
+        }else{
+            return info;
+        }
+    };
+
     useEffect(()=>{
-        try{
+       const realmTable =  initialLoad();
+       setInfo(realmTable);
+    },[])
 
-        }catch(err){
 
-        }finally{
-            setLoading(false);
-        }
-    })
-    //const [info, setInfo] = useState(null);
-    /*
-    useEffect(() => {
-        const initLoad = async () => {
-            try {
-                //await AsyncStorage.removeItem('@workout_data')
-                //await AsyncStorage.removeItem('@workout_data22')
-                const loadedData = await loadFromPhone();
-                //console.log("workout_data : ",loadedData)
-                setInfo(loadedData);
-            } catch (err) {
-                console.error(`Error while loading AsyncStorage item :${STORAGE_NAME}\n ${err}`)
-            } finally {
-                setLoading(false);
-            }
-        };
-        initLoad();
-        //saveDemoWorkout();
-    }, [])
-    
-    
-    const loadFromPhone = async () => {
-        try {
-            let jsonValue
-            //jsonValue = await AsyncStorage.getItem(STORAGE_NAME);
-            return jsonValue != null ? JSON.parse(jsonValue) : initTable
-        } catch (err) {
-            console.error("Error while loading data");
-        }
-    }
-    */
-
-    const saveDataToPhone = async (newData) => {
-        console.log("saveDataToPhone WORKED!")
-        /*
-        try {
-            const jsonValue = JSON.stringify(newData);
-            await AsyncStorage.setItem(STORAGE_NAME, jsonValue);
-            //console.log("Data saved!");
-        } catch (err) {
-            console.error("Error saving data: ", err);
-        }
-        */
-    }
     const uploadToDrive = async (jsonData) => {
         console.log("uploadToDrive WORKED!")
         /*
@@ -672,7 +627,6 @@ export const DatabaseProvider = ({ children }) => {
         <DatabaseContext.Provider
             value={{
                 uploadToDrive,
-                saveDataToPhone,
                 info,
                 loading
             }}

@@ -6,7 +6,7 @@ import NamesBlock from "./NamesBlock.js";
 import InfoBlock from "./InfoBlock.js";
 import { useObject, useQuery, useRealm } from "../../db/realm.js";
 
-const RenderItem = ({ item, index, data, setData, saveToPhone, flatListRef }) => {
+const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   if (!item) return null
   const currentDayData = useObject('WorkoutDay', `${item}`);
   

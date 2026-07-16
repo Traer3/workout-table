@@ -6,7 +6,7 @@ import IconButton from "../IconButton.js";
 import RenderItem from "./RenderItem/RenderItem.js";
 
 export default function WorkoutTable() {
-  const { uploadToDrive, info, saveDataToPhone } = useDatabase()
+  const { uploadToDrive, info,  } = useDatabase()
  
 
   const flatListRef = useRef(null);
@@ -41,6 +41,7 @@ export default function WorkoutTable() {
   */
 
   const allDays = getAllDays(info);
+  console.log("AllDays: ", allDays);
   function getAllDays(allData) {
     const days = []
     allData.forEach(obj => {
@@ -53,15 +54,11 @@ export default function WorkoutTable() {
     await uploadToDrive(data);
   }
 
-  const saveToPhone = async (newData) => {
-    await saveDataToPhone(newData)
-  }
 
   const renderItem = useCallback(({ item, index }) => (
     <RenderItem
       item={item} // это уже сам день "09.07.26"
       index={index}
-      saveToPhone={saveToPhone}
       flatListRef={flatListRef}
     />
   ));
