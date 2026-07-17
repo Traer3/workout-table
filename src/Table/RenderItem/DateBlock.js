@@ -3,29 +3,37 @@ import styles from './renderItemStyles.js'
 import { useObject, useRealm } from "../../db/realm.js";
 import { useState } from "react";
 
-// После того как отобразишь все объекты в таблице , проверь как меняется дата , если значение не AA.BB.XX , а например AA.BB.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//У меня была ошибка 
 export default function DateBlock({ item,currentDayData, changeWeight, setChangeWeight}) {
-    if(!currentDayData || !currentDayData.isValid()){
-        return(
-            <View style={{flex:1}}>
-                <Text>Loaging</Text>
-            </View>
-        )
-    }
     const [data, setData] = useState(item || 'no data')
     const realm = useRealm();
 
+    if(!currentDayData || !currentDayData.isValid()){
+        return null;
+    }
+
     function changeDay(oldDayObject, newDateValue) {
-        if(!oldDayObject || oldDayObject.day === newDateValue) return;
+        if(!oldDayObject || !oldDayObject.isValid() || oldDayObject.day === newDateValue) return;
+
+        const oldDayKey = oldDayObject.day
+
         const plainObj = oldDayObject.toJSON()
+
         realm.write(()=>{
             realm.create('WorkoutDay',{
                 ...plainObj,
                 day: newDateValue,
             },'modified');
-            realm.delete(oldDayObject)
         })
+
+        setTimeout(()=>{
+            const dayToDelete = realm.objectForPrimaryKey('WorkoutDay',oldDayKey)
+            realm.write(()=>{
+                if(oldDayKey && dayToDelete.isValid()){
+                    realm.delete(dayToDelete);
+                    console.log("Old day deleted!");
+                }
+            })
+        },300);
     }
 
     return (

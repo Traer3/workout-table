@@ -7,7 +7,7 @@ import InfoBlock from "./InfoBlock.js";
 import { useObject, useQuery, useRealm } from "../../db/realm.js";
 
 const RenderItem = ({ item, index, data, setData, flatListRef }) => {
-  if (!item) return null
+  
   const currentDayData = useObject('WorkoutDay', `${item}`);
   
   const dayData = readData(currentDayData)
@@ -18,6 +18,12 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
 
   const weightHistory = useQuery('ExerciseWeightHistory').sorted('timestamp', true);
   //console.log("weightHistory", weightHistory);
+
+  if(!currentDayData || !currentDayData.isValid()){
+    return null;
+  }
+  if (!item) return null
+
 
   function readData(currentDay) {
     const keys = [];

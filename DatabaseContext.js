@@ -576,21 +576,9 @@ export const DatabaseProvider = ({ children }) => {
 
 
     const [loading, setLoading] = useState(false);
-    const [info, setInfo] = useState();
-
-    function initialLoad() {
-        const info = useQuery('WorkoutDay')
-        if(!info && !info.isValid()){
-            return []
-        }else{
-            return info;
-        }
-    };
-
-    useEffect(()=>{
-       const realmTable =  initialLoad();
-       setInfo(realmTable);
-    },[])
+    
+    const info = useQuery('WorkoutDay')
+    
 
 
     const uploadToDrive = async (jsonData) => {

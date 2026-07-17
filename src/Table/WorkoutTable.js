@@ -6,8 +6,7 @@ import IconButton from "../IconButton.js";
 import RenderItem from "./RenderItem/RenderItem.js";
 
 export default function WorkoutTable() {
-  const { uploadToDrive, info,  } = useDatabase()
- 
+  const { uploadToDrive, info, } = useDatabase()
 
   const flatListRef = useRef(null);
 
@@ -41,11 +40,15 @@ export default function WorkoutTable() {
   */
 
   const allDays = getAllDays(info);
-  console.log("AllDays: ", allDays);
+
   function getAllDays(allData) {
     const days = []
+    if(!allData) return days;
+
     allData.forEach(obj => {
-      days.push(obj["day"])
+      if(obj && obj.isValid()){
+        days.push(obj["day"])
+      }
     });
     return days
   }
@@ -65,25 +68,25 @@ export default function WorkoutTable() {
 
   return (
     <View>
-      <IconButton buttFunction={() => uploadToCloud(data)} />
-      <View style={{ alignItems: 'center', marginBottom: 100 }}>
-        <FlatList
-          ref={flatListRef}
-          keyboardShouldPersistTaps="handled"
-          style={styles.conteiner}
-          data={allDays}
-          renderItem={renderItem}
-        /*
-        initialNumToRender={data.length //меня ебет чет другое делать
-        }
-        */
-        /*
-        keyExtractor={(item) => item.day}
-        initialNumToRender={data.length //меня ебет чет другое делать
-        }
-        */
-        />
-      </View>
+        <IconButton buttFunction={() => uploadToCloud(data)} />
+        <View style={{ alignItems: 'center', marginBottom: 100 }}>
+          <FlatList
+            ref={flatListRef}
+            keyboardShouldPersistTaps="handled"
+            style={styles.conteiner}
+            data={allDays}
+            renderItem={renderItem}
+          /*
+          initialNumToRender={data.length //меня ебет чет другое делать
+          }
+          */
+          /*
+          keyExtractor={(item) => item.day}
+          initialNumToRender={data.length //меня ебет чет другое делать
+          }
+          */
+          />
+        </View>
     </View>
   );
 }

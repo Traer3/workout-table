@@ -6,12 +6,15 @@ import { useRealm } from "../../db/realm.js";
 
 
 export default function InfoBlock({ currentDayData, dayData, editingCell, setEditingCell, index, flatListRef, mode, }) {
-    
     const realm = useRealm();
     const fullDay = dayData.fullDay
     const exerciseKeys = dayData.exerciseKeys
 
     const [textData, setTextData] = useState("");
+
+    if(!currentDayData || !currentDayData.isValid()){
+        return null;
+      }
 
     const toogleEditingCell = (cellId, initialValue) => {
         setEditingCell(cellId);
