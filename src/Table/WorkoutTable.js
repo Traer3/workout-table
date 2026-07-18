@@ -6,7 +6,7 @@ import IconButton from "../IconButton.js";
 import RenderItem from "./RenderItem/RenderItem.js";
 
 export default function WorkoutTable() {
-  const { uploadToDrive, info, } = useDatabase()
+  const { uploadToDrive, info, loading, setLoading } = useDatabase()
 
   const flatListRef = useRef(null);
 
@@ -39,14 +39,17 @@ export default function WorkoutTable() {
   }
   */
 
+  //console.log("WorkoutTable AWAKE!")
+
+  //console.log("info: ", info)
   const allDays = getAllDays(info);
 
   function getAllDays(allData) {
     const days = []
-    if(!allData) return days;
+    if (!allData) return days;
 
     allData.forEach(obj => {
-      if(obj && obj.isValid()){
+      if (obj && obj.isValid()) {
         days.push(obj["day"])
       }
     });
@@ -67,27 +70,27 @@ export default function WorkoutTable() {
   ));
 
   return (
-    <View>
-        <IconButton buttFunction={() => uploadToCloud(data)} />
-        <View style={{ alignItems: 'center', marginBottom: 100 }}>
-          <FlatList
-            ref={flatListRef}
-            keyboardShouldPersistTaps="handled"
-            style={styles.conteiner}
-            data={allDays}
-            renderItem={renderItem}
-          /*
-          initialNumToRender={data.length //меня ебет чет другое делать
-          }
-          */
-          /*
-          keyExtractor={(item) => item.day}
-          initialNumToRender={data.length //меня ебет чет другое делать
-          }
-          */
-          />
+        <View>
+          <IconButton buttFunction={() => uploadToCloud(data)} />
+          <View style={{ alignItems: 'center', marginBottom: 100 }}>
+            <FlatList
+              ref={flatListRef}
+              keyboardShouldPersistTaps="handled"
+              style={styles.conteiner}
+              data={allDays}
+              renderItem={renderItem}
+            /*
+            initialNumToRender={data.length //меня ебет чет другое делать
+            }
+            */
+            /*
+            keyExtractor={(item) => item.day}
+            initialNumToRender={data.length //меня ебет чет другое делать
+            }
+            */
+            />
+          </View>
         </View>
-    </View>
   );
 }
 

@@ -5,11 +5,15 @@ import DateBlock from "./DateBlock.js";
 import NamesBlock from "./NamesBlock.js";
 import InfoBlock from "./InfoBlock.js";
 import { useObject, useQuery, useRealm } from "../../db/realm.js";
+import { useDatabase } from "../../../DatabaseContext.js";
+import IconButton from "../../IconButton.js"; 
+import Loading from "./Loading.js";
 
 const RenderItem = ({ item, index, data, setData, flatListRef }) => {
-  
+  const [loading, setLoading] = useState(false);
+
   const currentDayData = useObject('WorkoutDay', `${item}`);
-  
+
   const dayData = readData(currentDayData)
 
   const [editingCell, setEditingCell] = useState(null);
@@ -19,11 +23,12 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   const weightHistory = useQuery('ExerciseWeightHistory').sorted('timestamp', true);
   //console.log("weightHistory", weightHistory);
 
-  if(!currentDayData || !currentDayData.isValid()){
+  if (!currentDayData || !currentDayData.isValid()) {
     return null;
   }
   if (!item) return null
 
+  //console.log("RenderItem AWAKE!: ",item)
 
   function readData(currentDay) {
     const keys = [];
@@ -36,18 +41,15 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
         keys.push(key);
         data.push(currentDay[key])
         fullDay.push({ [key]: currentDay[key] })
-        const currentExerciseKeys =  Object.keys(currentDay[key])
+        const currentExerciseKeys = Object.keys(currentDay[key])
         currentExerciseKeys.map(key => {
-          if(key !== 'fullName'){
+          if (key !== 'fullName') {
             exerciseKeys.add(key);
           }
         })
       }
     });
-    
-    //console.log("exerciseKeys: ",exerciseKeys)
-    //exerciseKeys.map(key => console.log(key))
-    //const uniqueExerciseKeys = new Set()
+
     const dayData = {
       keys: keys,
       data: data,
@@ -58,28 +60,35 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   }
 
   return (
-    <View style={{ marginBottom: 64, }}>
-      <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
-        <DateBlock
-          item={item}
-          currentDayData={currentDayData}
-        //changeWeight={changeWeight}
-        //setChangeWeight={setChangeWeight}
-        />
+    <>{loading ? (
+      <Loading dayData={dayData} index={index}/>
+      ) : (
+        <View style={{ marginBottom: 64, }}>
+        <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
+          <DateBlock
+            item={item}
+            currentDayData={currentDayData}
+          //changeWeight={changeWeight}
+          //setChangeWeight={setChangeWeight}
+            loading={loading}
+            setLoading={setLoading}
+          />
+        </View>
+        <View style={[styles.table]}>
+          <NamesBlock values={dayData} />
+          <InfoBlock
+            currentDayData={currentDayData}
+            dayData={dayData}
+            exerciseKeys={exerciseKeys}
+            editingCell={editingCell}
+            setEditingCell={setEditingCell}
+            index={index}
+            flatListRef={flatListRef}
+          />
+        </View>
       </View>
-      <View style={[styles.table]}>
-        <NamesBlock values={dayData} />
-        <InfoBlock
-          currentDayData = {currentDayData}
-          dayData={dayData}
-          exerciseKeys={exerciseKeys}
-          editingCell={editingCell}
-          setEditingCell={setEditingCell}
-          index={index}
-          flatListRef={flatListRef}
-        />
-      </View>
-    </View>
+      )
+    }</>
   )
 
 }

@@ -575,7 +575,7 @@ export const DatabaseProvider = ({ children }) => {
     };
 
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     
     const info = useQuery('WorkoutDay')
     
@@ -616,7 +616,8 @@ export const DatabaseProvider = ({ children }) => {
             value={{
                 uploadToDrive,
                 info,
-                loading
+                loading,
+                setLoading
             }}
         >
             {children}
