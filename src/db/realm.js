@@ -23,7 +23,7 @@ export class Exercise extends Realm.Object {
     };
 }
 
-export class WorkoutDay extends Realm.Object {
+export class WorkoutDay extends Realm.Object { //Разобратся как добавлять новые треши , без хардкода 
     static schema = {
         name: 'WorkoutDay',
         primaryKey: 'day',

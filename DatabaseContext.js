@@ -579,7 +579,9 @@ export const DatabaseProvider = ({ children }) => {
     
     const info = useQuery('WorkoutDay')
     
-
+    useEffect(()=>{
+        //saveDemoWorkout()
+    },[])
 
     const uploadToDrive = async (jsonData) => {
         console.log("uploadToDrive WORKED!")
