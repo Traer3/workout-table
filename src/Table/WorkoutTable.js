@@ -6,7 +6,7 @@ import IconButton from "../IconButton.js";
 import RenderItem from "./RenderItem/RenderItem.js";
 
 export default function WorkoutTable() {
-  const { uploadToDrive, info, loading, setLoading } = useDatabase()
+  const { uploadToDrive, workoutTable, weightHistory } = useDatabase()
 
   const flatListRef = useRef(null);
 
@@ -41,8 +41,11 @@ export default function WorkoutTable() {
 
   //console.log("WorkoutTable AWAKE!")
 
-  //console.log("info: ", info)
-  const allDays = getAllDays(info);
+  //console.log("weightHistory: ", weightHistory)
+  const allDays = getAllDays(workoutTable);
+  //console.log("allDays: ",allDays)
+  const weightDays = getAllDays(weightHistory);
+  //console.log("weightHistory: ", weightDays)
 
   function getAllDays(allData) {
     const days = []

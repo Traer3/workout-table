@@ -8,6 +8,7 @@ import { useObject, useQuery, useRealm } from "../../db/realm.js";
 import { useDatabase } from "../../../DatabaseContext.js";
 import IconButton from "../../IconButton.js"; 
 import Loading from "./Loading.js";
+import WeightTable from "./WeightTable.js";
 
 const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   const [loading, setLoading] = useState(false);
@@ -19,6 +20,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   const [editingCell, setEditingCell] = useState(null);
 
   const exerciseKeys = []
+  //console.log("item: ",item)
 
   const weightHistory = useQuery('ExerciseWeightHistory').sorted('timestamp', true);
   //console.log("weightHistory", weightHistory);
@@ -64,6 +66,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
       <Loading dayData={dayData} index={index}/>
       ) : (
         <View style={{ marginBottom: 64, }}>
+          <WeightTable/>
         <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
           <DateBlock
             item={item}

@@ -563,13 +563,21 @@ export const DatabaseProvider = ({ children }) => {
                 WS: { fullName: 'Wrist Suplination', reps1: { color: 'green', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
             }, 'modified');
 
+            
             realm.create('ExerciseWeightHistory', {
-                id: Math.random().toString(36).substring(7),//замени на приходящию комбинацию day, name , reps1, value 
-                exerciseName: 'Wrist Suplination',
-                weightValue: 7.5,
-                dateChanged: '09.07.26',
+                id: 4 ,
+                exerciseName: 'Wrist Pronation',
+                weightValue: 20,
+                day: '15.05.26',
                 timestamp: Math.floor(Date.now() / 1000),
             }, 'modified');
+            
+            
+
+                /*
+                const deletee = realm.objectForPrimaryKey('ExerciseWeightHistory', 1)
+                realm.delete(deletee);
+                */
         });
         console.log("Data successfully saved! ");
     };
@@ -577,7 +585,8 @@ export const DatabaseProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(true);
     
-    const info = useQuery('WorkoutDay')
+    const workoutTable = useQuery('WorkoutDay')
+    const weightHistory = useQuery('ExerciseWeightHistory')
     
     useEffect(()=>{
         //saveDemoWorkout()
@@ -617,7 +626,8 @@ export const DatabaseProvider = ({ children }) => {
         <DatabaseContext.Provider
             value={{
                 uploadToDrive,
-                info,
+                workoutTable,
+                weightHistory,
                 loading,
                 setLoading
             }}

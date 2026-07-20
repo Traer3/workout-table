@@ -1,4 +1,5 @@
 import { createRealmContext, Realm } from '@realm/react'
+import { schemaVersion } from 'realm';
 
 export class Action extends Realm.Object {
     static schema = {
@@ -52,16 +53,23 @@ export class ExerciseWeightHistory extends Realm.Object {
         name : 'ExerciseWeightHistory',
         primaryKey: 'id',
         properties: {
-            id: 'string',
+            id: 'int',
             exerciseName: 'string',
             weightValue: 'double',
-            dateChanged: 'string',
+            day: 'string',
             timestamp: 'int',
         },
     };
 }
 
+
+
 export const { RealmProvider, useRealm, useQuery, useObject } = createRealmContext({
     schema: [Action, Exercise, WorkoutDay, ExerciseWeightHistory],
-    schemaVersion: 1,
+    schemaVersion: 3,
+    /*
+    onMigration:(oldRealm, newRealm) => {
+        console.log("New version realm table")
+    }
+    */
 })
