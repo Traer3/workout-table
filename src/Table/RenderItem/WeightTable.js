@@ -2,10 +2,29 @@ import { View } from "react-native"
 import InfoBlock from "./InfoBlock"
 import { useDatabase } from "../../../DatabaseContext"
 import { useRealm } from "../../db/realm";
+import styles, { TextColor, BorderColor } from './renderItemStyles.js'
+import { useState } from "react";
+import NamesBlock from "./NamesBlock";
 
 
 
-export default function WeightTable ({exerciseKeys}) {
+export default function WeightTable ({dayData}) {
+
+    //Я могу получать данные из приходящего дня 
+    //Фильтровать пустые строки "BSS": null, "EP": null, "ETK": null, "LR": null, "SCR": null, "SU": null, "Sq": null, 
+    //Собрать массив с ключами , полными именнами и трешей 
+
+    // currentDayData:  
+    // {"BR": {"fullName": "Barbell Row", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]},
+    //  "BSS": null, "EP": null, "ETK": null, "LR": null, 
+    // "PU": {"fullName": "Push Ups", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]}, 
+    // "RWC": {"fullName": "Reverse Wrist Curl", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]}, 
+    // "SCR": null, "SU": null, "Sq": null, 
+    // "WC": {"fullName": "Wrist Curl", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]},
+    // "WP": {"fullName": "Wrist Pronation", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]}, 
+    // "WS": {"fullName": "Wrist Suplination", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]}, 
+    // "WSC": {"fullName": "Wrist Side Curl", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]}, 
+    // "day": "29.06.26"}
 
     //Получаю ключи exerciseKeys ["PU", "WC", "WS"]    //надо получать полные имена 
     //Прохожусь по всему weightHistory и выбираю только самые актуальные значение к эти ключам 
@@ -16,6 +35,7 @@ export default function WeightTable ({exerciseKeys}) {
     // {"day": "15.05.26", "exerciseName": "Wrist Pronation", "id": 3, "timestamp": 1784493669, "weightValue": 15}, 
     // {"day": "15.05.26", "exerciseName": "Wrist Pronation", "id": 4, "timestamp": 1784493685, "weightValue": 20}]
     const {weightHistory} = useDatabase();
+      const [editingCell, setEditingCell] = useState(null); 
     //console.log("weightHistory: ", weightHistory)
     const realm = useRealm();
     /*
@@ -34,10 +54,23 @@ export default function WeightTable ({exerciseKeys}) {
     })
     */
     
+    //console.log("dayData.keys: ", dayData.keys)
+
     
     return(
-        <View>
-            
+        <View style={{borderColor:'red', borderWidth:1}}>
+            {dayData.fullDay.map(exercise => {
+                const exerciseKeys = dayData.keys
+                //console.log("exerciseKeys: ",exerciseKeys)
+
+            })&&
+            <View style={[styles.table]}>
+                <NamesBlock values={dayData}/>
+                <InfoBlock currentDayData={weightHistory} dayData={dayData} />
+            </View>
+                
+                
+            }
         </View>
     )
 }

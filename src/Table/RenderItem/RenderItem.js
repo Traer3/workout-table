@@ -19,10 +19,9 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
 
   const [editingCell, setEditingCell] = useState(null);
 
-  const exerciseKeys = []
-  //console.log("item: ",item)
+  //console.log("currentDayData: ",currentDayData)
 
-  const weightHistory = useQuery('ExerciseWeightHistory').sorted('timestamp', true);
+  //const weightHistory = useQuery('ExerciseWeightHistory').sorted('timestamp', true);
   //console.log("weightHistory", weightHistory);
 
   if (!currentDayData || !currentDayData.isValid()) {
@@ -62,11 +61,12 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   }
 
   return (
-    <>{loading ? (
-      <Loading dayData={dayData} index={index}/>
+    <>{true ? (//loading
+      //<Loading dayData={dayData} index={index}/>
+      <WeightTable dayData={dayData}/>
       ) : (
         <View style={{ marginBottom: 64, }}>
-          <WeightTable/>
+          
         <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
           <DateBlock
             item={item}
@@ -82,7 +82,6 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
           <InfoBlock
             currentDayData={currentDayData}
             dayData={dayData}
-            exerciseKeys={exerciseKeys}
             editingCell={editingCell}
             setEditingCell={setEditingCell}
             index={index}
