@@ -7,43 +7,10 @@ import RenderItem from "./RenderItem/RenderItem.js";
 
 export default function WorkoutTable() {
   const { uploadToDrive, workoutTable, weightHistory } = useDatabase()
-
   const flatListRef = useRef(null);
-
-  /*
-  useEffect(() => {
-    const index = getInitialIndex(data);
-    //console.log("index",index)
-    setTimeout(() => {
-      flatListRef.current.scrollToIndex({
-        index: index,
-        animated: false,
-      });
-    }, 100);
-  }, [])
-
-  function getInitialIndex(data) {
-    let index = 0
-    for (let i = 0; i < data.length; i++) {
-      const day = data[i];
-      const exercise = Object.keys(day).find(key => key !== 'day');
-      if (exercise) {
-        const exerciseData = day[exercise];
-        if (exerciseData.reps1.value === 0 && exerciseData.reps2.value === 0) {
-          index = i;
-          return index;
-        }
-      }
-    }
-    return index;
-  }
-  */
-
   //console.log("WorkoutTable AWAKE!")
 
-  //console.log("weightHistory: ", weightHistory)
   const allDays = getAllDays(workoutTable);
-  //console.log("allDays: ",allDays)
   const weightDays = getAllDays(weightHistory);
   //console.log("weightHistory: ", weightDays)
 
@@ -73,27 +40,27 @@ export default function WorkoutTable() {
   ));
 
   return (
-        <View>
-          <IconButton buttFunction={() => uploadToCloud(data)} />
-          <View style={{ alignItems: 'center', marginBottom: 100 }}>
-            <FlatList
-              ref={flatListRef}
-              keyboardShouldPersistTaps="handled"
-              style={styles.conteiner}
-              data={allDays}
-              renderItem={renderItem}
-            /*
-            initialNumToRender={data.length //меня ебет чет другое делать
-            }
-            */
-            /*
-            keyExtractor={(item) => item.day}
-            initialNumToRender={data.length //меня ебет чет другое делать
-            }
-            */
-            />
-          </View>
-        </View>
+    <View>
+      <IconButton buttFunction={() => uploadToCloud(data)} />
+      <View style={{ alignItems: 'center', marginBottom: 100 }}>
+        <FlatList
+          ref={flatListRef}
+          keyboardShouldPersistTaps="handled"
+          style={styles.conteiner}
+          data={allDays}
+          renderItem={renderItem}
+        /*
+        initialNumToRender={data.length //меня ебет чет другое делать
+        }
+        */
+        /*
+        keyExtractor={(item) => item.day}
+        initialNumToRender={data.length //меня ебет чет другое делать
+        }
+        */
+        />
+      </View>
+    </View>
   );
 }
 
@@ -106,5 +73,35 @@ const styles = StyleSheet.create({
   },
 
 });
+
+//OLD
+/*
+  useEffect(() => {
+    const index = getInitialIndex(data);
+    //console.log("index",index)
+    setTimeout(() => {
+      flatListRef.current.scrollToIndex({
+        index: index,
+        animated: false,
+      });
+    }, 100);
+  }, [])
+
+  function getInitialIndex(data) {
+    let index = 0
+    for (let i = 0; i < data.length; i++) {
+      const day = data[i];
+      const exercise = Object.keys(day).find(key => key !== 'day');
+      if (exercise) {
+        const exerciseData = day[exercise];
+        if (exerciseData.reps1.value === 0 && exerciseData.reps2.value === 0) {
+          index = i;
+          return index;
+        }
+      }
+    }
+    return index;
+  }
+  */
 
 

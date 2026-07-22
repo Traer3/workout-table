@@ -48,20 +48,42 @@ export class WorkoutDay extends Realm.Object { //Разобратся как д�
     };
 };
 
+  //{
+    // "day": "12.05.26",
+    // "id": 4,
+    // "timestamp": 1784493685, 
+    // "PU": {
+    //  "fullName": "Wrist Pronation",
+    //  "data": { 
+    //      "color": "green", 
+    //      "value": 10 
+    //  },
+    //}
+
 export class ExerciseWeightHistory extends Realm.Object {
     static  schema ={
         name : 'ExerciseWeightHistory',
         primaryKey: 'id',
         properties: {
             id: 'int',
-            exerciseName: 'string',
-            weightValue: 'double',
             day: 'string',
             timestamp: 'int',
+            key:{
+                
+            }
+            
         },
     };
 }
-
+/*
+{
+        "day": "09.07.26", 
+        "exerciseName": "Wrist Suplination", 
+        "id": 0, 
+        "timestamp": 1784491176, 
+        "weightValue": 7.5
+        }, 
+*/
 
 
 export const { RealmProvider, useRealm, useQuery, useObject } = createRealmContext({
