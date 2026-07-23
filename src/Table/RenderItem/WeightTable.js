@@ -8,12 +8,7 @@ import NamesBlock from "./NamesBlock";
 
 
 
-export default function WeightTable ({dayData}) {
-
-    //Я могу получать данные из приходящего дня 
-    //Фильтровать пустые строки "BSS": null, "EP": null, "ETK": null, "LR": null, "SCR": null, "SU": null, "Sq": null, 
-    //Собрать массив с ключами , полными именнами и трешей 
-
+export default function WeightTable({ dayData }) {
     /*
     currentDayData:  {
         "BR": null, "BSS": null, "EP": null, "ETK": null, "LR": null, 
@@ -29,6 +24,7 @@ export default function WeightTable ({dayData}) {
         "data": [[Object], [Object], [Object], [Object], [Object], [Object]], 
         "exerciseKeys": ["reps1", "rest1", "reps2", "rest2"], 
         "fullDay": [
+                                
             {"PU": [Exercise]},    //{"PU": {"fullName": "Push Ups", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]}}
             {"RWC": [Exercise]}, 
             {"WC": [Exercise]}, 
@@ -41,34 +37,63 @@ export default function WeightTable ({dayData}) {
     */
 
 
-    //{
-    // "day": "12.05.26",
-    // "id": 4,
-    // "timestamp": 1784493685, 
-    // "PU": {
-    //  "fullName": "Wrist Pronation",
-    //  "data": { 
-    //      "color": "green", 
-    //      "value": 10 
-    //  },
-    //}
-
-    /* [{
-        "day": "09.07.26", 
-        "exerciseName": "Wrist Suplination", 
-        "id": 0, 
-        "timestamp": 1784491176, 
-        "weightValue": 7.5
-        }, 
-        {"day": "10.05.26", "exerciseName": "Wrist Pronation", "id": 1, "timestamp": 1784493003, "weightValue": 10}, {"day": "11.05.26", "exerciseName": "Wrist Pronation", "id": 2, "timestamp": 1784493646, "weightValue": 1}, {"day": "15.05.26", "exerciseName": "Wrist Pronation", "id": 3, "timestamp": 1784493669, "weightValue": 15}, {"day": "15.05.26", "exerciseName": "Wrist Pronation", "id": 4, "timestamp": 1784493685, "weightValue": 20}]
-    */
- 
-    const {weightHistory} = useDatabase();
-
-    const [editingCell, setEditingCell] = useState(null); 
-    //console.log("weightHistory: ", weightHistory)
-    const realm = useRealm();
+    //Итоговый , будем собирать нужный объект внутри WeightTable.js 
     /*
+    {
+     "id": 4,
+     "day": "12.05.26", 
+     "timestamp": 1784493685, 
+     "fullName": "Wrist Pronation",
+     "weightData":{
+         "color": "green", 
+         "value": 10 
+     }
+     }
+    */
+
+    const { weightHistory } = useDatabase();
+
+    const [editingCell, setEditingCell] = useState(null);
+    //console.log("weightHistory: ", weightHistory)
+
+    /*
+        [
+            {
+                "day": "19.03.26", 
+                "fullName": "Wrist Pronation", 
+                "id": 0, 
+                "timestamp": 1784801814, 
+                "weightData": [Object]
+            }, 
+        ]
+    */
+
+    //console.log("dayData.keys: ", dayData.keys)
+
+
+    return (
+        <View style={{ borderColor: 'red', borderWidth: 1 }}>
+            {dayData.fullDay.map(exercise => {
+                const exerciseKeys = dayData.keys
+                //console.log("exerciseKeys: ",exerciseKeys)
+
+            }) &&
+                <View style={[styles.table]}>
+                    <NamesBlock values={dayData} />
+                    <InfoBlock currentDayData={weightHistory} dayData={dayData} />
+                </View>
+
+
+            }
+        </View>
+    )
+}
+
+
+
+/*
+    const realm = useRealm();
+    
     realm.write(()=>{
         const maxId = weightHistory.max('id')
         const nextId = maxId ? maxId + 1:1;
@@ -83,25 +108,3 @@ export default function WeightTable ({dayData}) {
         
     })
     */
-    
-    //console.log("dayData.keys: ", dayData.keys)
-
-    
-    return(
-        <View style={{borderColor:'red', borderWidth:1}}>
-            {dayData.fullDay.map(exercise => {
-                const exerciseKeys = dayData.keys
-                //console.log("exerciseKeys: ",exerciseKeys)
-
-            })&&
-            <View style={[styles.table]}>
-                <NamesBlock values={dayData}/>
-                <InfoBlock currentDayData={weightHistory} dayData={dayData} />
-            </View>
-                
-                
-            }
-        </View>
-    )
-}
-

@@ -1,5 +1,4 @@
 import { createRealmContext, Realm } from '@realm/react'
-import { schemaVersion } from 'realm';
 
 export class Action extends Realm.Object {
     static schema = {
@@ -24,13 +23,13 @@ export class Exercise extends Realm.Object {
     };
 }
 
-export class WorkoutDay extends Realm.Object { //Разобратся как добавлять новые треши , без хардкода 
+export class WorkoutDay extends Realm.Object { 
     static schema = {
         name: 'WorkoutDay',
         primaryKey: 'day',
-        properties:{
+        properties: {
             day: 'string',
-            PU:'Exercise?',
+            PU: 'Exercise?',
             RWC: 'Exercise?',
             WC: 'Exercise?',
             WSC: 'Exercise?',
@@ -48,50 +47,32 @@ export class WorkoutDay extends Realm.Object { //Разобратся как д�
     };
 };
 
-  //{
-    // "day": "12.05.26",
-    // "id": 4,
-    // "timestamp": 1784493685, 
-    // "PU": {
-    //  "fullName": "Wrist Pronation",
-    //  "data": { 
-    //      "color": "green", 
-    //      "value": 10 
-    //  },
-    //}
+
+
 
 export class ExerciseWeightHistory extends Realm.Object {
-    static  schema ={
-        name : 'ExerciseWeightHistory',
+    static schema = {
+        name: 'ExerciseWeightHistory',
         primaryKey: 'id',
         properties: {
             id: 'int',
             day: 'string',
             timestamp: 'int',
-            key:{
-                
-            }
-            
+            fullName:"string",
+            weightData: 'Action'
         },
     };
 }
-/*
-{
-        "day": "09.07.26", 
-        "exerciseName": "Wrist Suplination", 
-        "id": 0, 
-        "timestamp": 1784491176, 
-        "weightValue": 7.5
-        }, 
-*/
+
 
 
 export const { RealmProvider, useRealm, useQuery, useObject } = createRealmContext({
     schema: [Action, Exercise, WorkoutDay, ExerciseWeightHistory],
-    schemaVersion: 3,
+    schemaVersion: 4,
     /*
     onMigration:(oldRealm, newRealm) => {
         console.log("New version realm table")
     }
     */
+    
 })

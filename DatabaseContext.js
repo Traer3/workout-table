@@ -562,20 +562,47 @@ export const DatabaseProvider = ({ children }) => {
                 WP: { fullName: 'Wrist Pronation', reps1: { color: 'green', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
                 WS: { fullName: 'Wrist Suplination', reps1: { color: 'green', value: 1 }, rest1: { color: '', value: 1 }, reps2: { color: '', value: 1 }, rest2: { color: '', value: 1 } },
             }, 'modified');
-
             
             realm.create('ExerciseWeightHistory', {
-                id: 4 ,
-                exerciseName: 'Wrist Pronation',
-                weightValue: 20,
-                day: '15.05.26',
+                id: 0 ,
+                day: '19.03.26',
                 timestamp: Math.floor(Date.now() / 1000),
+                fullName: 'Wrist Pronation',
+                weightData: {
+                    color: "green", 
+                    value: 7.5 
+                }
+                
+            }, 'modified');
+
+            realm.create('ExerciseWeightHistory', {
+                id: 1 ,
+                day: '10.05.26',
+                timestamp: Math.floor(Date.now() / 1000),
+                fullName: 'Wrist Pronation',
+                weightData: {
+                    color: "green", 
+                    value: 10 
+                }
+                
+            }, 'modified');
+
+            realm.create('ExerciseWeightHistory', {
+                id: 2 ,
+                day: '08.06.26',
+                timestamp: Math.floor(Date.now() / 1000),
+                fullName: 'Reverse Wrist Curl',
+                weightData: {
+                    color: "green", 
+                    value: 35 
+                }
+                
             }, 'modified');
             
             
 
                 /*
-                const deletee = realm.objectForPrimaryKey('ExerciseWeightHistory', 1)
+                const deletee = realm.objectForPrimaryKey('ExerciseWeightHistory', 0)
                 realm.delete(deletee);
                 */
         });
