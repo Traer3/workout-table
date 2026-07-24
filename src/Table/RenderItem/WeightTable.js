@@ -9,6 +9,8 @@ import NamesBlock from "./NamesBlock";
 
 
 export default function WeightTable({ dayData }) {
+    //console.log("dayData: ", dayData["data"])
+
     /*
     currentDayData:  {
         "BR": null, "BSS": null, "EP": null, "ETK": null, "LR": null, 
@@ -50,12 +52,6 @@ export default function WeightTable({ dayData }) {
      }
      }
     */
-
-    const { weightHistory } = useDatabase();
-
-    const [editingCell, setEditingCell] = useState(null);
-    //console.log("weightHistory: ", weightHistory)
-
     /*
         [
             {
@@ -68,7 +64,36 @@ export default function WeightTable({ dayData }) {
         ]
     */
 
-    //console.log("dayData.keys: ", dayData.keys)
+    const { weightHistory } = useDatabase();
+    const [editingCell, setEditingCell] = useState(null);
+
+    //const videoFilesMap = new Map(videoFiles.map(video => [cleanName(deleteExtension(video.name)), video]))
+
+    const weightMap = new Map(weightHistory.map(day => [day["fullName"],day]))
+    
+    
+    const weightDayData = readData(dayData);
+
+    function readData(dayData) {
+        const exerciseKeys = dayData["keys"]
+        const exerciseWeightMap = new Map()
+        dayData.fullDay.map(exercise => {
+            const exerciseKey =  Object.keys(exercise)[0]
+            const currentFullName = exercise[exerciseKey]["fullName"]
+            const exerciseWeight = weightMap.get(currentFullName);
+            if(exerciseWeight){
+                console.log("exerciseWeight: ",exerciseWeight["id"])
+                const duplicate = exerciseWeightMap.has(exerciseWeight["id"])
+                if(!duplicate){
+                    exerciseWeightMap.set(exerciseWeight["id"],exerciseWeight)
+                }
+                
+            }
+            
+        })
+        //console.log("exerciseWeightMap: ", exerciseWeightMap)
+        
+    }
 
 
     return (

@@ -14,15 +14,14 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   const [loading, setLoading] = useState(false);
 
   const currentDayData = useObject('WorkoutDay', `${item}`);
+  
+
 
   const dayData = readData(currentDayData)
 
   const [editingCell, setEditingCell] = useState(null);
 
   //console.log("currentDayData: ",currentDayData)
-
-  //const weightHistory = useQuery('ExerciseWeightHistory').sorted('timestamp', true);
-  //console.log("weightHistory", weightHistory);
 
   if (!currentDayData || !currentDayData.isValid()) {
     return null;
@@ -37,8 +36,12 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
     const fullDay = [];
     const exerciseKeys = new Set();
     const currentDayDataKeys = Object.keys(currentDay);
+
+    //Я могу сразу тут собрать всю информацию так как уже прохожусь по нужным ключам 
     currentDayDataKeys.map(key => {
       if (currentDay[key] !== null && key !== 'day') {
+        const currentFullName = currentDay[key]["fullName"];
+        
         keys.push(key);
         data.push(currentDay[key])
         fullDay.push({ [key]: currentDay[key] })
