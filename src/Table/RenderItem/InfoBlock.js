@@ -16,7 +16,8 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
     if(!currentDayData || !currentDayData.isValid()){
         return null;
       }
-
+    
+    
     const toogleEditingCell = (cellId, initialValue) => {
         setEditingCell(cellId);
         setTextData(String(initialValue ?? ""))

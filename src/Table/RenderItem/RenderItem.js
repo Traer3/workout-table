@@ -64,9 +64,9 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   }
 
   return (
-    <>{true ? (//loading
+    <>{loading ? (//loading
       //<Loading dayData={dayData} index={index}/>
-      <WeightTable dayData={dayData}/>
+      <WeightTable exerciseDayData={dayData} item={item} loading={loading} setLoading={setLoading}/>
       ) : (
         <View style={{ marginBottom: 64, }}>
           
@@ -74,8 +74,6 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
           <DateBlock
             item={item}
             currentDayData={currentDayData}
-          //changeWeight={changeWeight}
-          //setChangeWeight={setChangeWeight}
             loading={loading}
             setLoading={setLoading}
           />

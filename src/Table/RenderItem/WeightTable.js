@@ -5,10 +5,11 @@ import { useRealm } from "../../db/realm";
 import styles, { TextColor, BorderColor } from './renderItemStyles.js'
 import { useState } from "react";
 import NamesBlock from "./NamesBlock";
+import DateBlock from "./DateBlock.js";
 
 
 
-export default function WeightTable({ dayData }) {
+export default function WeightTable({ exerciseDayData, item, loading, setLoading }) {
     //console.log("dayData: ", dayData["data"])
 
     /*
@@ -39,19 +40,23 @@ export default function WeightTable({ dayData }) {
     */
 
 
-    //Итоговый , будем собирать нужный объект внутри WeightTable.js 
-    /*
-    {
-     "id": 4,
-     "day": "12.05.26", 
-     "timestamp": 1784493685, 
-     "fullName": "Wrist Pronation",
-     "weightData":{
-         "color": "green", 
-         "value": 10 
-     }
-     }
-    */
+    const { weightHistory } = useDatabase();
+    const realm = useRealm()
+    const [editingCell, setEditingCell] = useState(null);
+    
+    
+    const weightDayData = createDayData(exerciseDayData);
+
+    function getExerciseData(exerciseName) {
+        //console.log("exerciseName: ",exerciseName)
+        const exerciseHistory = realm
+                .objects('ExerciseWeightHistory')
+                .filtered('fullName == $0', `${exerciseName}`)
+                .sorted('id',false);//Сортирует по возрастанию , я всегда создаю новую запись с новым id и новым весом 
+        return exerciseHistory;
+        
+    }
+
     /*
         [
             {
@@ -61,59 +66,73 @@ export default function WeightTable({ dayData }) {
                 "timestamp": 1784801814, 
                 "weightData": [Object]
             }, 
+            {
+                "day": "10.05.26", 
+                "fullName": "Wrist Pronation", 
+                "id": 1, 
+                "timestamp": 1784801814, 
+                "weightData": [Object]
+            }
         ]
     */
-
-    const { weightHistory } = useDatabase();
-    const [editingCell, setEditingCell] = useState(null);
-
-    //const videoFilesMap = new Map(videoFiles.map(video => [cleanName(deleteExtension(video.name)), video]))
-
-    const weightMap = new Map(weightHistory.map(day => [day["fullName"],day]))
     
-    
-    const weightDayData = readData(dayData);
 
-    function readData(dayData) {
-        const exerciseKeys = dayData["keys"]
-        const exerciseWeightMap = new Map()
-        dayData.fullDay.map(exercise => {
-            const exerciseKey =  Object.keys(exercise)[0]
-            const currentFullName = exercise[exerciseKey]["fullName"]
-            const exerciseWeight = weightMap.get(currentFullName);
-            if(exerciseWeight){
-                console.log("exerciseWeight: ",exerciseWeight["id"])
-                const duplicate = exerciseWeightMap.has(exerciseWeight["id"])
-                if(!duplicate){
-                    exerciseWeightMap.set(exerciseWeight["id"],exerciseWeight)
-                }
+    function createDayData(exerciseDayData) {
+        const keys = [];
+        const data = [];
+        const fullDay = [];
+        //console.log()
+        exerciseDayData.fullDay.map((exercise)=>{
+            const key = Object.keys(exercise)[0];
+            const fullName = exercise[key]?.["fullName"]
+                //Используя полное имя , находим значение в weightHistory
+            const exerciseHistory = getExerciseData(fullName)
+            if(exerciseHistory.length > 0){
+                 //Из массива нужно получить самое свежее значение
+                const freshExerciseData = exerciseHistory[exerciseHistory.length-1]
+                //Вот что получаю 
+                //{"day": "10.05.26", "fullName": "Wrist Pronation", "id": 1, "timestamp": 1784801814, "weightData": {"color": "green", "value": 10}}
                 
+                //Вот что нужно в fullDay записать 
+                //{"PU": {"fullName": "Push Ups", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]}}
+                keys.push(key)
+                fullDay.push({[key]: {
+                    ["fullName"]:freshExerciseData["fullName"],
+                    ["weightData"]: freshExerciseData["weightData"]
+                    }
+                    
+                })
             }
-            
         })
-        //console.log("exerciseWeightMap: ", exerciseWeightMap)
-        
+        //console.log("fullDay: ",fullDay)
+        //console.log("key: ",keys)
+        const dayData = {
+            keys: keys,
+            data: data,
+            fullDay: fullDay,
+            exerciseKeys: ["weightData"],
+          }
+        return dayData
     }
 
 
     return (
         <View style={{ borderColor: 'red', borderWidth: 1 }}>
-            {dayData.fullDay.map(exercise => {
-                const exerciseKeys = dayData.keys
-                //console.log("exerciseKeys: ",exerciseKeys)
-
-            }) &&
-                <View style={[styles.table]}>
-                    <NamesBlock values={dayData} />
-                    <InfoBlock currentDayData={weightHistory} dayData={dayData} />
-                </View>
-
-
-            }
+            <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
+                      <DateBlock
+                        item={item}
+                        currentDayData={weightHistory}
+                        loading={loading}
+                        setLoading={setLoading}
+                      />
+            </View>
+            <View style={[styles.table]}>
+                    <NamesBlock values={weightDayData} />
+                    <InfoBlock currentDayData={weightHistory} dayData={weightDayData} />
+            </View>
         </View>
     )
 }
-
 
 
 /*

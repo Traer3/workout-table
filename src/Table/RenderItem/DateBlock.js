@@ -3,7 +3,7 @@ import styles from './renderItemStyles.js'
 import {useRealm } from "../../db/realm.js";
 import { useRef } from "react";
 
-export default function DateBlock({ item, currentDayData, changeWeight, setChangeWeight, loading, setLoading }) {
+export default function DateBlock({ item, currentDayData, loading, setLoading }) {
     const data = useRef(item || 'no data')
     const realm = useRealm();
     //console.log("DateBlock AWAKE!: ", item)
@@ -49,7 +49,8 @@ export default function DateBlock({ item, currentDayData, changeWeight, setChang
                 alignItems: 'center'
             }}
             onPress={() => {
-                console.log("setChangeWeight(!changeWeight)")
+                setLoading(!loading)
+                //console.log("loading: ", loading)
             }}
         >
             <Pressable
