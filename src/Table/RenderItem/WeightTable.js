@@ -1,4 +1,4 @@
-import { View } from "react-native"
+import { Pressable, View } from "react-native"
 import InfoBlock from "./InfoBlock"
 import { useDatabase } from "../../../DatabaseContext"
 import { useRealm } from "../../db/realm";
@@ -107,6 +107,7 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
         //console.log("fullDay: ",fullDay)
         //console.log("key: ",keys)
         const dayData = {
+            day : item,
             keys: keys,
             data: data,
             fullDay: fullDay,
@@ -115,6 +116,33 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
         return dayData
     }
 
+    function writeNewWeight(exKey, fieldKey, text) {
+        console.log("Presed!")
+        /*
+         realm.write(() => {
+            if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
+                currentDayData[exKey][fieldKey].value = Number(text) || 0;
+            }
+        })
+        */
+        realm.write(()=>{
+            const maxId = weightHistory.max('id') //currentDayData
+            const nextId = maxId ? maxId + 1:1;
+            //console.log("maxId: ", maxId)
+            realm.create('ExerciseWeightHistory',{
+                id: nextId,
+                day: '10.05.26', //dayData["day"]
+                fullName:'Wrist Pronation',
+                timestamp: Math.floor(Date.now() / 1000),
+                weightData: {color: 'green' , value: 20}
+                
+                
+            })
+            
+        })
+    }
+
+    //console.log("weightDayData: ", weightDayData["day"])
 
     return (
         <View style={{ borderColor: 'red', borderWidth: 1 }}>
@@ -128,7 +156,8 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
             </View>
             <View style={[styles.table]}>
                     <NamesBlock values={weightDayData} />
-                    <InfoBlock currentDayData={weightHistory} dayData={weightDayData} />
+                    <InfoBlock currentDayData={weightHistory} dayData={weightDayData} mode={"weight"}/>
+                    <Pressable style={{height:'100%', width:'100%', borderColor:'green', borderWidth:1}} onPress={()=>{writeNewWeight()}}/>
             </View>
         </View>
     )

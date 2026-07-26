@@ -7,7 +7,7 @@ import { useRealm } from "../../db/realm.js";
 
 export default function InfoBlock({ currentDayData, dayData, editingCell, setEditingCell, index, flatListRef, mode, }) {
     const realm = useRealm();
-    //console.log("InfoBlock AWAKE!: ",index)
+    //console.log("InfoBlock AWAKE!: ",currentDayData["day"])
     const fullDay = dayData.fullDay
     const exerciseKeys = dayData.exerciseKeys
 
