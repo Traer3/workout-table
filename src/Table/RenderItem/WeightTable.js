@@ -9,7 +9,7 @@ import DateBlock from "./DateBlock.js";
 
 
 
-export default function WeightTable({ exerciseDayData, item, loading, setLoading }) {
+export default function WeightTable({ exerciseDayData, item, loading, setLoading,  editingCell, setEditingCell, flatListRef, index, }) {
     //console.log("dayData: ", dayData["data"])
 
     /*
@@ -42,10 +42,14 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
 
     const { weightHistory } = useDatabase();
     const realm = useRealm()
-    const [editingCell, setEditingCell] = useState(null);
+   
     
     
     const weightDayData = createDayData(exerciseDayData);
+
+    const maxId = weightHistory.max('id')
+
+    //console.log("weightHistory: ",weightHistory)
 
     function getExerciseData(exerciseName) {
         //console.log("exerciseName: ",exerciseName)
@@ -53,6 +57,7 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
                 .objects('ExerciseWeightHistory')
                 .filtered('fullName == $0', `${exerciseName}`)
                 .sorted('id',false);//Сортирует по возрастанию , я всегда создаю новую запись с новым id и новым весом 
+        console.log("exerciseHistory: ",exerciseHistory)
         return exerciseHistory;
         
     }
@@ -116,31 +121,7 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
         return dayData
     }
 
-    function writeNewWeight(exKey, fieldKey, text) {
-        console.log("Presed!")
-        /*
-         realm.write(() => {
-            if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
-                currentDayData[exKey][fieldKey].value = Number(text) || 0;
-            }
-        })
-        */
-        realm.write(()=>{
-            const maxId = weightHistory.max('id') //currentDayData
-            const nextId = maxId ? maxId + 1:1;
-            //console.log("maxId: ", maxId)
-            realm.create('ExerciseWeightHistory',{
-                id: nextId,
-                day: '10.05.26', //dayData["day"]
-                fullName:'Wrist Pronation',
-                timestamp: Math.floor(Date.now() / 1000),
-                weightData: {color: 'green' , value: 20}
-                
-                
-            })
-            
-        })
-    }
+
 
     //console.log("weightDayData: ", weightDayData["day"])
 
@@ -156,8 +137,17 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
             </View>
             <View style={[styles.table]}>
                     <NamesBlock values={weightDayData} />
-                    <InfoBlock currentDayData={weightHistory} dayData={weightDayData} mode={"weight"}/>
-                    <Pressable style={{height:'100%', width:'100%', borderColor:'green', borderWidth:1}} onPress={()=>{writeNewWeight()}}/>
+                    <InfoBlock 
+                        currentDayData={weightHistory} 
+                        dayData={weightDayData} 
+                        mode={"weight"}
+                        editingCell={editingCell}
+                        setEditingCell={setEditingCell}
+                        flatListRef={flatListRef}
+                        index={index}
+                        maxId={maxId}
+                        />
+                    
             </View>
         </View>
     )

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRealm } from "../../db/realm.js";
 
 
-export default function InfoBlock({ currentDayData, dayData, editingCell, setEditingCell, index, flatListRef, mode, }) {
+export default function InfoBlock({ currentDayData, dayData, editingCell, setEditingCell, index, flatListRef, mode, maxId }) {
     const realm = useRealm();
     //console.log("InfoBlock AWAKE!: ",currentDayData["day"])
     const fullDay = dayData.fullDay
@@ -19,6 +19,8 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
     
     
     const toogleEditingCell = (cellId, initialValue) => {
+        console.log("cellId: ",cellId)
+        console.log("currentValue: ", initialValue)
         setEditingCell(cellId);
         setTextData(String(initialValue ?? ""))
         flatListRef.current?.scrollToIndex({
@@ -29,29 +31,65 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
     }
 
     const updateValue = (exKey, fieldKey, text) => {
-        //console.log("exKey: ", exKey)
-        //console.log("fieldKey: ", fieldKey)
-        //console.log("text: ", text)
+        console.log("exKey: ", exKey)
+        console.log("fieldKey: ", fieldKey)
+        console.log("text: ", text)
         if (!currentDayData) return;
+        if(mode === "weight"){
+             console.log("Mode weight!")
+                    /*
+                     realm.write(() => {
+                        if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
+                            currentDayData[exKey][fieldKey].value = Number(text) || 0;
+                        }
+                    })
+                    */
+                   
+                    realm.write(()=>{
+                        //const maxId = weightHistory.max('id') //currentDayData
+                        const value = Number(text)
+                        const nextId = maxId ? maxId + 1:1;
+                        //console.log("maxId: ", maxId)
+                        realm.create('ExerciseWeightHistory',{
+                            id: nextId,
+                            day: '10.06.26', //dayData["day"]
+                            fullName:'Wrist Pronation', 
+                            timestamp: Math.floor(Date.now() / 1000),
+                            weightData: {color: 'green' , value: value}
+                            
+                            
+                        })
+                        console.log("created!")
+                    })
+                
+            setEditingCell(null);
+            return;
+        }
+
         realm.write(() => {
+            console.log("Mode exec!")
             if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
                 currentDayData[exKey][fieldKey].value = Number(text) || 0;
             }
         })
         setEditingCell(null);
+        return;
     }
     return (
         <View style={{ flex: 3, flexDirection: 'column', zIndex: 1 }}>
             {fullDay.map((element) => {
                 const name = Object.keys(element)[0]
                 if (!name) return null;
+                //console.log("name: ",name)
                 const isRowEditing = editingCell && editingCell.startsWith(name);
+                //console.log("isRowEditing: ", isRowEditing)
                 const type = mode ? 'exec' : 'weight'
                 const rowKey = `row-${index}-${name}-${type}`
                 return (
                     <View key={rowKey} style={[styles.row, { zIndex: isRowEditing ? 100 : 1 }]}>
                         {exerciseKeys.map((field) => {
                             const cellId = `${name}-${field}`;
+                            
                             const isThisCellEditing = editingCell === cellId;
                             const cellKey = `cell-${index}-${type}-${name}-${field}`
                             const currentValue = typeof element[name][field] === 'object'

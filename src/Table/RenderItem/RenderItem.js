@@ -66,7 +66,16 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   return (
     <>{loading ? (//loading
       //<Loading dayData={dayData} index={index}/>
-      <WeightTable exerciseDayData={dayData} item={item} loading={loading} setLoading={setLoading}/>
+      <WeightTable 
+            exerciseDayData={dayData} 
+            item={item} 
+            loading={loading} 
+            setLoading={setLoading}
+            editingCell={editingCell}
+            setEditingCell={setEditingCell}
+            flatListRef={flatListRef}
+            index={index}
+            />
       ) : (
         <View style={{ marginBottom: 64, }}>
           
