@@ -2,10 +2,12 @@ import { Pressable, Text, TextInput, View, } from "react-native";
 import styles, { TextColor, BorderColor } from './renderItemStyles.js'
 import ColorPanel from "./ColorPanel";
 import { useState } from "react";
-import { useRealm } from "../../db/realm.js";
+import { useObject, useRealm } from "../../db/realm.js";
+import { useDatabase } from "../../../DatabaseContext.js";
 
 
 export default function InfoBlock({ currentDayData, dayData, editingCell, setEditingCell, index, flatListRef, mode, maxId }) {
+    const { getFormattedDate, checkHours } = useDatabase();
     const realm = useRealm();
     //console.log("InfoBlock AWAKE!: ",currentDayData["day"])
     const fullDay = dayData.fullDay
@@ -13,13 +15,13 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
 
     const [textData, setTextData] = useState("");
 
-    if(!currentDayData || !currentDayData.isValid()){
+    if (!currentDayData || !currentDayData.isValid()) {
         return null;
-      }
-    
-    
+    }
+
+
     const toogleEditingCell = (cellId, initialValue) => {
-        console.log("cellId: ",cellId)
+        console.log("cellId: ", cellId)
         console.log("currentValue: ", initialValue)
         setEditingCell(cellId);
         setTextData(String(initialValue ?? ""))
@@ -30,44 +32,65 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
         })
     }
 
-    const updateValue = (exKey, fieldKey, text) => {
-        console.log("exKey: ", exKey)
-        console.log("fieldKey: ", fieldKey)
-        console.log("text: ", text)
+    const updateValue = (exKey, fieldKey, text, element) => {
+            //console.log("exKey: ", exKey)
+            //console.log("fieldKey: ", fieldKey)
+            //console.log("text: ", text)
         if (!currentDayData) return;
-        if(mode === "weight"){
-             console.log("Mode weight!")
+        const currentDate = getFormattedDate();
+        
+        if (mode === "weight") {
+            const id = element[exKey]["id"]
+
+
+
+            const currentDayData = useObject('ExerciseWeightHistory', `${id}`);
+
+
+
+
+            console.log("currentDayData: ",currentDayData)
+            
+            const timestamp = element[exKey]["timestamp"]
+            const checkTime = checkHours(24, timestamp);
+            const value = Number(text)
+            const fullName = element[exKey]["fullName"]
+            const nextId = maxId ? maxId + 1 : 1;
+
+            realm.write(() => {
+                if(!checkTime){
+                    //console.log("value: ",currentDayData)
                     /*
-                     realm.write(() => {
-                        if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
-                            currentDayData[exKey][fieldKey].value = Number(text) || 0;
-                        }
-                    })
+                    if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
+                        currentDayData[exKey][fieldKey].value = Number(text) || 0;
+                    }
                     */
-                   
-                    realm.write(()=>{
-                        //const maxId = weightHistory.max('id') //currentDayData
-                        const value = Number(text)
-                        const nextId = maxId ? maxId + 1:1;
-                        //console.log("maxId: ", maxId)
-                        realm.create('ExerciseWeightHistory',{
-                            id: nextId,
-                            day: '10.06.26', //dayData["day"]
-                            fullName:'Wrist Pronation', 
-                            timestamp: Math.floor(Date.now() / 1000),
-                            weightData: {color: 'green' , value: value}
-                            
-                            
-                        })
-                        console.log("created!")
+                    /*
+                    realm.create('ExerciseWeightHistory', {
+                        id: id,
+                        day: currentDate,
+                        fullName: fullName,
+                        timestamp: Math.floor(Date.now() / 1000),
+                        weightData: { color: '', value: value }
+                    }, 'modified')
+                    */
+                }else{
+                    realm.create('ExerciseWeightHistory', {
+                        id: nextId,
+                        day: currentDate,
+                        fullName: fullName,
+                        timestamp: Math.floor(Date.now() / 1000),
+                        weightData: { color: '', value: value }
                     })
-                
+                }
+            })
             setEditingCell(null);
             return;
         }
 
         realm.write(() => {
             console.log("Mode exec!")
+            console.log("ex: ",currentDayData)
             if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
                 currentDayData[exKey][fieldKey].value = Number(text) || 0;
             }
@@ -89,12 +112,13 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
                     <View key={rowKey} style={[styles.row, { zIndex: isRowEditing ? 100 : 1 }]}>
                         {exerciseKeys.map((field) => {
                             const cellId = `${name}-${field}`;
-                            
+
                             const isThisCellEditing = editingCell === cellId;
                             const cellKey = `cell-${index}-${type}-${name}-${field}`
                             const currentValue = typeof element[name][field] === 'object'
                                 ? element[name][field]?.value
                                 : element[name][field];
+                            
                             return (
                                 <Pressable
                                     key={cellKey}
@@ -110,7 +134,7 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
                                                     value={textData}
                                                     onChangeText={(text) => { setTextData(text) }}
                                                     onBlur={() => setEditingCell(null)}
-                                                    onSubmitEditing={() => { updateValue(name, field, textData) }}
+                                                    onSubmitEditing={() => { updateValue(name, field, textData, element) }}
                                                 //onEndEditing={() => { saveToPhone(data) }}
                                                 />
                                                 <ColorPanel currentDayData={currentDayData} name={name} field={field} />

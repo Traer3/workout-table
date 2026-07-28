@@ -647,6 +647,37 @@ export const DatabaseProvider = ({ children }) => {
         }
             */
     }
+
+    function getFormattedDate() {
+        return new Date().toLocaleDateString('ru-RU',{
+            day:'2-digit',
+            month:'2-digit',
+            year:'2-digit'
+        });
+    }
+
+    function checkHours(hours, lastCheck) {
+        if(!lastCheck){
+            console.log("checkHours need lastCheck: ",lastCheck)
+            return null;
+        };
+        
+        const lastCheckData = typeof lastCheck === 'number'
+            ? new Date(lastCheck * 1000)
+            : new Date(lastCheck);
+
+        const now = new Date();
+        const diffMs = now.getTime() - lastCheckData.getTime();
+        const diffHours = diffMs / (1000 * 60 * 60);
+
+        if(diffHours >= hours){
+            //console.log(`🕘 More than ${hours} hours have passed,  it's time to check  `);
+            return true
+        }else{
+            //console.log(`It's still early! It's only been ${diffHours.toFixed(1)} hours.`);
+            return false
+        }
+    }
     
 
     return (
@@ -656,7 +687,9 @@ export const DatabaseProvider = ({ children }) => {
                 workoutTable,
                 weightHistory,
                 loading,
-                setLoading
+                setLoading,
+                getFormattedDate,
+                checkHours
             }}
         >
             {children}
