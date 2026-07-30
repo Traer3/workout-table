@@ -79,8 +79,9 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
                 const name = Object.keys(element)[0]
                 if (!name) return null;
                 const isRowEditing = editingCell && editingCell.startsWith(name);
-                const type = mode ? 'exec' : 'weight'
+                const type = mode ?  'weight' : 'exec' 
                 const rowKey = `row-${index}-${name}-${type}`
+                //console.log("mode: ",mode)
                 return (
                     <View key={rowKey} style={[styles.row, { zIndex: isRowEditing ? 100 : 1 }]}>
                         {exerciseKeys.map((field) => {
@@ -114,7 +115,11 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
                                                     onBlur={() => setEditingCell(null)}
                                                     onSubmitEditing={() => updateValue(name, field, textData, element)}
                                                 />
-                                                <ColorPanel currentDayData={currentDayData} name={name} field={field} />
+                                                {mode ?
+                                                    <ColorPanel currentDayData={currentWeightDayData} name={name} field={field} mode={mode} />
+                                                    :
+                                                    <ColorPanel currentDayData={currentDayData} name={name} field={field} />
+                                                }
                                             </View>
                                         ) : (
                                             <Text style={[

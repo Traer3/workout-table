@@ -97,6 +97,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
             index={index}
             flatListRef={flatListRef}
           />
+          
         </View>
       </View>
       )

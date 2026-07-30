@@ -1,4 +1,4 @@
-import { Pressable, View } from "react-native"
+import { Pressable, View, TextInput } from "react-native"
 import InfoBlock from "./InfoBlock"
 import { useDatabase } from "../../../DatabaseContext"
 import { useRealm } from "../../db/realm";
@@ -6,6 +6,7 @@ import styles, { TextColor, BorderColor } from './renderItemStyles.js'
 import { useState } from "react";
 import NamesBlock from "./NamesBlock";
 import DateBlock from "./DateBlock.js";
+
 
 
 
@@ -62,7 +63,8 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
     }
 
     return (
-        <View style={{ borderColor: 'red', borderWidth: 1 }}>
+        <View //style={{ borderColor: 'red', borderWidth: 1 }}
+            >
             <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
                       <DateBlock
                         item={item}
@@ -83,6 +85,13 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
                         index={index}
                         maxId={maxId}
                         />
+                    <View style={[styles.row, {  }]}>
+                        <Pressable   style={[styles.pressableCell, { overflow: 'visible', borderColor:'red', borderWidth:1,}]}>
+                            <TextInput
+                             style={[styles.cell, styles.input, styles.textStyle, {}]}
+                            />
+                        </Pressable>
+                    </View>
                     
             </View>
         </View>
