@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { useDatabase } from "../../DatabaseContext";
 import IconButton from "../IconButton.js";
 import RenderItem from "./RenderItem/RenderItem.js";
+import { useRealm } from "../db/realm.js";
 
 export default function WorkoutTable() {
   const { uploadToDrive, workoutTable, weightHistory } = useDatabase()
@@ -11,8 +12,7 @@ export default function WorkoutTable() {
   //console.log("WorkoutTable AWAKE!")
 
   const allDays = getAllDays(workoutTable);
-  const weightDays = getAllDays(weightHistory);
-  //console.log("weightHistory: ", weightDays)
+  //console.log("workoutTable: ", workoutTable)
 
   function getAllDays(allData) {
     const days = []
@@ -26,9 +26,24 @@ export default function WorkoutTable() {
     return days
   }
 
-  const uploadToCloud = async (data) => {
-    await uploadToDrive(data);
+  const uploadToCloud = async () => {
+    await uploadToDrive();
   }
+  
+  
+  /*
+  const realm = useRealm(); 
+  const deleteAllDays = (allDays) => {
+    allDays.map(day =>{
+          console.log("Deleting day :" ,day)
+          realm.write(() => {
+            const deletee = realm.objectForPrimaryKey('WorkoutDay', day)
+            realm.delete(deletee);
+          })
+    })
+    <IconButton buttFunction={() => deleteAllDays(allDays)} color={true}/>
+  }
+  */
 
 
   const renderItem = useCallback(({ item, index }) => (
@@ -41,7 +56,8 @@ export default function WorkoutTable() {
 
   return (
     <View>
-      <IconButton buttFunction={() => uploadToCloud(data)} />
+      <IconButton buttFunction={() => uploadToCloud()} />
+      
       <View style={{ alignItems: 'center', marginBottom: 100 }}>
         <FlatList
           ref={flatListRef}

@@ -7,9 +7,6 @@ import { useState } from "react";
 import NamesBlock from "./NamesBlock";
 import DateBlock from "./DateBlock.js";
 
-
-
-
 export default function WeightTable({ exerciseDayData, item, loading, setLoading,  editingCell, setEditingCell, flatListRef, index, }) {
     const { weightHistory } = useDatabase();
     const realm = useRealm()
@@ -30,6 +27,21 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
         return exerciseHistory;
         
     }
+
+    function createDay(exerciseName) {
+        if(!exerciseName || !exerciseName === "") return
+        const maxId = weightHistory.max('id')
+        const nextId = maxId ? maxId + 1 : 1;
+        realm.write(() => {
+            realm.create('ExerciseWeightHistory', {
+                id: nextId,
+                day: "-1",
+                fullName: exerciseName,
+                timestamp: Math.floor(Date.now() / 1000),
+                weightData: { color: '', value: 0 }
+            })
+        })
+    }
     
     function createDayData(exerciseDayData) {
         const keys = [];
@@ -49,7 +61,9 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
                     ["timestamp"]:freshExerciseData["timestamp"]
                     }
                 })
-              
+            }else{
+             console.log(`New exercise: ${fullName} added!`)
+             createDay(fullName)
             }
         })
         const dayData = {
@@ -84,15 +98,7 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
                         flatListRef={flatListRef}
                         index={index}
                         maxId={maxId}
-                        />
-                    <View style={[styles.row, {  }]}>
-                        <Pressable   style={[styles.pressableCell, { overflow: 'visible', borderColor:'red', borderWidth:1,}]}>
-                            <TextInput
-                             style={[styles.cell, styles.input, styles.textStyle, {}]}
-                            />
-                        </Pressable>
-                    </View>
-                    
+                        /> 
             </View>
         </View>
     )
