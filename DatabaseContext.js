@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as FileSystem from 'expo-file-system';
+
 import * as Sharing from 'expo-sharing'
 import { useQuery, useRealm,  } from "./src/db/realm";
+import { Directory, File } from "expo-file-system";
 //import RNFS from 'react-native-fs'
 
 export const DatabaseContext = createContext()
@@ -83,9 +84,33 @@ export const DatabaseProvider = ({ children }) => {
 
     const uploadToDrive = async () => {
             //console.log("uploadToDrive WORKED!")
-        const realmFilePath = realm.path;
-        console.log("realmFilePath: ", realmFilePath,"\n");
+        const realmDB = realm.path
+        const oldRealmDB = realmDB.replace('default.realm', 'backup.realm');
+        console.log("realmDB: ", realmDB)
+        console.log("oldRealmDB: ", oldRealmDB)
         
+        try{
+            console.log("Trying new File")
+            const backupFile = new File({parentDirectory:oldRealmDB})
+            console.log("backupFile: ", backupFile)
+            if(backupFile.exists){
+                console.log("File exist! ")
+            }
+        }catch(err){
+            console.log("Error: ", err)
+        }
+        
+        return;
+        const backupPath = realm.path.replace('default.realm', 'backup.realm');
+
+        console.log("backupPath: ", backupPath,"\n");
+        
+        try{
+            realm.writeCopyTo({path: backupPath});
+            console.log("Backup created in: ", backupPath)
+        }catch(err){
+            console.error(`Error while creating backup!`, err);
+        }
         //const backupPath = `${}`
         /*
         try {
