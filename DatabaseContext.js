@@ -86,8 +86,8 @@ export const DatabaseProvider = ({ children }) => {
             //console.log("uploadToDrive WORKED!")
         const realmDB = realm.path
         const oldRealmDB = realmDB.replace('default.realm', 'backup.realm');
-        console.log("realmDB: ", realmDB)
-        console.log("oldRealmDB: ", oldRealmDB)
+            console.log("realmDB: ", realmDB)
+            console.log("oldRealmDB: ", oldRealmDB)
         
         try{
             console.log("Trying new File")
