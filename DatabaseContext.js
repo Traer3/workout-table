@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Realm } from "realm";
 
 import * as Sharing from 'expo-sharing'
 import { useQuery, useRealm,  } from "./src/db/realm";
@@ -83,60 +84,28 @@ export const DatabaseProvider = ({ children }) => {
 
 
     const uploadToDrive = async () => {
-            //console.log("uploadToDrive WORKED!")
-        const realmDB = realm.path
-        const oldRealmDB = realmDB.replace('default.realm', 'backup.realm');
-            console.log("realmDB: ", realmDB)
-            console.log("oldRealmDB: ", oldRealmDB)
-        
+    //console.log("uploadToDrive WORKED!")
+        const backupUri = realm.path.replace('default.realm', 'backup.realm');
+        const formattedUri = backupUri.startsWith('file://') ? backupUri : `file://${backupUri}`;
+        const backupFile = new File(formattedUri);
         try{
-            console.log("Trying new File")
-            const backupFile = new File({parentDirectory:oldRealmDB})
-            console.log("backupFile: ", backupFile)
             if(backupFile.exists){
-                console.log("File exist! ")
+                backupFile.delete();
+                console.log("Old backup deleted!")
             }
-        }catch(err){
-            console.log("Error: ", err)
-        }
-        
-        return;
-        const backupPath = realm.path.replace('default.realm', 'backup.realm');
-
-        console.log("backupPath: ", backupPath,"\n");
-        
-        try{
-            realm.writeCopyTo({path: backupPath});
-            console.log("Backup created in: ", backupPath)
-        }catch(err){
-            console.error(`Error while creating backup!`, err);
-        }
-        //const backupPath = `${}`
-        /*
-        try {
-            const docDir = FileSystem.Paths.document;
-            const docDirUri = docDir.uri;
-
-            const fileUri = docDirUri.endsWith('/')
-                ? `${docDirUri}workout_data.json`
-                : `${docDirUri}/workout_data.json`;
-
-            const jsonString = JSON.stringify(jsonData, null, 2);
-
-            const file = new FileSystem.File(fileUri);
-            await file.write(jsonString);
+            realm.writeCopyTo({path: backupUri});
+            console.log("Backup created")
 
             if (await Sharing.isAvailableAsync()) {
-                await Sharing.shareAsync(fileUri, {
+                await Sharing.shareAsync(formattedUri, {
                     mimeType: 'application/json',
                     dialogTitle: 'Backup save'
                 });
             }
-
-        } catch (err) {
-            console.error("Error: ", err);
+        }catch(err){
+            console.log("Error: ", err)
         }
-            */
+        return;
     }
 
     function getFormattedDate() {
@@ -168,8 +137,8 @@ export const DatabaseProvider = ({ children }) => {
             //console.log(`It's still early! It's only been ${diffHours.toFixed(1)} hours.`);
             return false
         }
-    }
-    
+    };
+
 
     return (
         <DatabaseContext.Provider
