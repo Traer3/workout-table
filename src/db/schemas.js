@@ -1,5 +1,7 @@
-import { createRealmContext, Realm } from '@realm/react'
+import Realm from "realm";
 
+//это для backupReader.js 
+//если эта поебота сработает , то ебани её в realm.js 
 export class Action extends Realm.Object {
     static schema = {
         name: 'Action',
@@ -48,6 +50,8 @@ export class WorkoutDay extends Realm.Object {
 };
 
 
+
+
 export class ExerciseWeightHistory extends Realm.Object {
     static schema = {
         name: 'ExerciseWeightHistory',
@@ -62,13 +66,4 @@ export class ExerciseWeightHistory extends Realm.Object {
     };
 }
 
-export const { RealmProvider, useRealm, useQuery, useObject } = createRealmContext({
-    schema: [Action, Exercise, WorkoutDay, ExerciseWeightHistory],
-    schemaVersion: 4,
-    /*
-    onMigration:(oldRealm, newRealm) => {
-        console.log("New version realm table")
-    }
-    */
-    
-})
+export const schema = [Action, Exercise, WorkoutDay, ExerciseWeightHistory];

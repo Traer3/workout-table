@@ -5,10 +5,10 @@ export default function IconButton({buttFunction, color}) {
     return (
         <Pressable
             style={{
-                marginTop: 35,
+                //marginTop: 35,
                 height: 50,
                 width: 50,
-                marginBottom: -40,
+                //marginBottom: -40,
             }}
             onPressIn={() => {buttFunction()}}
         >

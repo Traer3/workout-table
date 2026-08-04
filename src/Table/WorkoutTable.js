@@ -6,10 +6,11 @@ import IconButton from "../IconButton.js";
 import RenderItem from "./RenderItem/RenderItem.js";
 import { useRealm } from "../db/realm.js";
 
-export default function WorkoutTable() {
+export default function WorkoutTable({editDay, setEditDay}) {
   const { uploadToDrive, workoutTable, weightHistory } = useDatabase()
   const flatListRef = useRef(null);
   //console.log("WorkoutTable AWAKE!")
+
 
   const allDays = getAllDays(workoutTable);
   //console.log("workoutTable: ", workoutTable)
@@ -26,11 +27,22 @@ export default function WorkoutTable() {
     return days
   }
 
+  useEffect(() => {
+    const index = allDays.length - 1;
+    //console.log("index", index)
+    setTimeout(() => {
+      flatListRef.current.scrollToIndex({
+        index: index,
+        animated: false,
+      });
+    }, 100);
+  }, [])
+
   const uploadToCloud = async () => {
     await uploadToDrive();
   }
-  
-  
+
+
   /*
   const realm = useRealm(); 
   const deleteAllDays = (allDays) => {
@@ -55,25 +67,24 @@ export default function WorkoutTable() {
   ));
 
   return (
-    <View>
-      <IconButton buttFunction={() => uploadToCloud()} />
-      
-      <View style={{ alignItems: 'center', marginBottom: 100 }}>
+    <View style={{}}>
+      <View style={{marginTop: 35, flexDirection:'row',justifyContent:'space-between'}}>
+        <IconButton buttFunction={() => uploadToCloud()} />
+        <IconButton buttFunction={() => setEditDay(!editDay)} color={true}/>
+      </View>
+      <View style={{ alignItems: 'center',  marginTop:0 }}>
         <FlatList
+          
           ref={flatListRef}
           keyboardShouldPersistTaps="handled"
           style={styles.conteiner}
           data={allDays}
           renderItem={renderItem}
-        /*
-        initialNumToRender={data.length //меня ебет чет другое делать
-        }
-        */
-        /*
-        keyExtractor={(item) => item.day}
-        initialNumToRender={data.length //меня ебет чет другое делать
-        }
-        */
+
+          initialNumToRender={allDays.length}
+          contentContainerStyle={{
+            paddingBottom:500
+          }}
         />
       </View>
     </View>
@@ -85,39 +96,9 @@ const styles = StyleSheet.create({
     height: "100%",
     width: '100%',
     borderWidth: 0.1,
-    marginTop: 40,
+    //borderColor:'red',
+    //marginTop: 40,
+
   },
 
 });
-
-//OLD
-/*
-  useEffect(() => {
-    const index = getInitialIndex(data);
-    //console.log("index",index)
-    setTimeout(() => {
-      flatListRef.current.scrollToIndex({
-        index: index,
-        animated: false,
-      });
-    }, 100);
-  }, [])
-
-  function getInitialIndex(data) {
-    let index = 0
-    for (let i = 0; i < data.length; i++) {
-      const day = data[i];
-      const exercise = Object.keys(day).find(key => key !== 'day');
-      if (exercise) {
-        const exerciseData = day[exercise];
-        if (exerciseData.reps1.value === 0 && exerciseData.reps2.value === 0) {
-          index = i;
-          return index;
-        }
-      }
-    }
-    return index;
-  }
-  */
-
-

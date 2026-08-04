@@ -1,16 +1,17 @@
-import { Realm } from "realm";
+import Realm from "realm";
+import { schema } from "./schemas.js";
 import path  from 'path';
 
 const backupFilePath = path.resolve("./backup.realm")
 
-
+//хуйня не работает , допили потом 
 async function getJsonFromBackup(backupPath) {
     let backupRealm = null;
 
     try{
         backupRealm = await Realm.open({
             path: backupPath,
-            schema: [WorkoutDay, ExerciseWeightHistory],
+            schema: schema,
             readOnly: true,
         });
 
@@ -35,4 +36,4 @@ async function getJsonFromBackup(backupPath) {
     }
 }
 
-getJsonFromBackup(realmBackup)
+getJsonFromBackup(backupFilePath)
