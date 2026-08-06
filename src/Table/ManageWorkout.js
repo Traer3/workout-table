@@ -1,7 +1,9 @@
 
-import { Pressable, View, StyleSheet, Text,Image } from "react-native";
-import icon from "../../assets/add2.png"
+import { Pressable, View, StyleSheet} from "react-native";
 import { useState } from "react";
+import DateForm from "./ManagerFolder/DateForm";
+import PresetForm from "./ManagerFolder/PresetForm";
+import ExerciseButtons from "./ManagerFolder/ExerciseButtons";
 
 
 
@@ -15,49 +17,25 @@ export default function ManageWorkout({ editDay, setEditDay }) {
             >
                 <View style={styles.mainBody}>
                     {/*Отдельная форма даты*/}
-                    <View style={styles.dateBlock}>
-                        <Text>Date</Text>
-                    </View>
+                    <DateForm/>
 
                     {/*Отдельная форма пресетов*/}
-                    <View style={[styles.presetBlock, {justifyContent: presetState ? 'center' : 'space-between'}]}>
-                        {presetState ? 
-                        <Pressable style={styles.pressableCell}>
-                            <Image source={icon} style={{
-                                height: 50,
-                                width: 50,
-                            }}/>
-                        </Pressable>
-                        :
-                        <>
-                            <Pressable style={styles.pressableCell}>
-                                <Text>{'$value'}</Text>
-                            </Pressable>
-                            <Pressable style={styles.pressableCell}>
-                                <Text>{'$value'}</Text>
-                            </Pressable>
-                            <Pressable style={styles.pressableCell}>
-                                <Text>{'$value'}</Text>
-                            </Pressable>
-                        </>
-                        }
+                    <PresetForm presetState={presetState}/>
 
-                    </View>
                     {/*Отдельная форма кнопок треши*/}
-
+                    <ExerciseButtons/>
                 </View>
             </Pressable>
         </View>
     )
 }
 
-
 const styles = StyleSheet.create({
     main: {
         borderColor: 'red',
         borderWidth: 1,
         height: '100%',
-        
+
     },
     outward: {
         //borderColor:'yellow',
@@ -73,36 +51,4 @@ const styles = StyleSheet.create({
         height: '93%',
         width: '90%'
     },
-    dateBlock: {
-        borderColor: 'red',
-        borderWidth: 1,
-        borderRadius: 5,
-        height: '8%',
-        backgroundColor: '#3D458F',
-        margin: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        
-    },
-    presetBlock: {
-        borderWidth: 1,
-        height: "12%",
-        borderRadius: 5,
-        backgroundColor: '#3D458F',
-        margin: 5,
-        flexDirection: 'row',
-        
-        alignItems: 'center',
-        padding: 5
-    },
-    pressableCell: {
-        borderColor: '#2E346E',
-        borderWidth: 2,
-        borderRadius: 5,
-        height: '50%',
-        width: '30%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        
-    }
 });
