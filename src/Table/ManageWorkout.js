@@ -1,14 +1,29 @@
 
-import { Pressable, View, StyleSheet} from "react-native";
+import { Pressable, View, StyleSheet } from "react-native";
 import { useState } from "react";
 import DateForm from "./ManagerFolder/DateForm";
 import PresetForm from "./ManagerFolder/PresetForm";
 import ExerciseButtons from "./ManagerFolder/ExerciseButtons";
 
 
+/*
+ realm.create('WorkoutDay', {
+                day: '30.05.26',
+                PU: { fullName: 'Push Ups', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                RWC: { fullName: 'Reverse Wrist Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                WC: { fullName: 'Wrist Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                WSC: { fullName: 'Wrist Side Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                WP: { fullName: 'Wrist Pronation', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                WS: { fullName: 'Wrist Suplination', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+            });
+*/
+
 
 export default function ManageWorkout({ editDay, setEditDay }) {
     const [presetState, setPresetState] = useState(true)
+    const [newDay, setNewDay] = useState({});
+
+    console.log("newDay: ", newDay)
     return (
         <View style={styles.main}>
             <Pressable
@@ -17,13 +32,13 @@ export default function ManageWorkout({ editDay, setEditDay }) {
             >
                 <View style={styles.mainBody}>
                     {/*Отдельная форма даты*/}
-                    <DateForm/>
+                    <DateForm newDay={newDay} setNewDay={setNewDay}/>
 
                     {/*Отдельная форма пресетов*/}
-                    <PresetForm presetState={presetState}/>
+                    <PresetForm  presetState={presetState} />
 
                     {/*Отдельная форма кнопок треши*/}
-                    <ExerciseButtons/>
+                    <ExerciseButtons newDay={newDay} setNewDay={setNewDay}/>
                 </View>
             </Pressable>
         </View>

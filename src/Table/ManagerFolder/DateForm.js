@@ -1,10 +1,21 @@
 import { StyleSheet, Text, View } from "react-native"
+import { useDatabase } from "../../../DatabaseContext";
+import { useEffect, useState } from "react";
 
 
-export default function DateForm({ date }) {
+export default function DateForm({ newDay, setNewDay }) {
+    const {getFormattedDate} = useDatabase()
+    const [date, setDate] = useState(0 || getFormattedDate());
+    
+    //заменить useEffect на считывание кнопки согласия или другого определителя завершения проверки дня 
+    useEffect(()=>{
+        console.log("date", date)
+        setNewDay({'day': date})
+    },[date])
+    
     return (
         < View style={styles.dateBlock} >
-            <Text>Date</Text>
+            <Text>{date}</Text>
         </View >
     )
 };

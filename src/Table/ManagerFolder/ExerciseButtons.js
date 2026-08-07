@@ -1,37 +1,41 @@
+import { useState } from "react";
 import { Pressable, View, StyleSheet, Text } from "react-native";
 
-export default function ExerciseButtons({ }) {
+ //PU: { fullName: 'Push Ups', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+export default function ExerciseButtons({ newDay, setNewDay }) {
+    const [color, setColor] = useState(false)
+    
+    function writeUserChoice() {
+        setColor(!color);
+       
+        setNewDay(prev => ({
+            ...prev,
+            PU: { 
+                fullName: 'Push Ups', 
+                reps1: { color: '', value: 0 }, 
+                rest1: { color: '', value: 0 }, 
+                reps2: { color: '', value: 0 }, 
+                rest2: { color: '', value: 0 } 
+            },
+        }
+    ))
+    return;
+    }
+
     return (
         <View style={styles.exerciseMainBody}>
             <View style={styles.exerciseBody}>
                 {/*Ячейка которая будет удерживать кнопки для определенного типа тренировок*/}
                 <View style={styles.exerciseCell}>
-                    <Text style={styles.exerciseHeader}>LegDay</Text>
+                    <Text style={styles.exerciseHeader}>Arms</Text>
                     {/*Создать FlatList или обдумать как эта хуйня будет выглядеть нормально , если кнопок будет больше 10*/}
-                    <Pressable style={styles.exerciseHeader}>
-                        <Text>{'exercise.name'}</Text>
+                    <Pressable style={[styles.exerciseHeader, {backgroundColor: color ? 'rgba(76, 175, 80, 0.2)' : ''}]} onPressIn={()=>{writeUserChoice()}}>
+                        <Text>{'PU'}</Text>
                     </Pressable>
                 </View>
             </View>
 
-            <View style={styles.exerciseBody}>
-                <View style={styles.exerciseCell}>
-                    <Text style={styles.exerciseHeader}>LegDay</Text>
-                    
-                    <Pressable style={styles.exerciseHeader}>
-                        <Text>{'exercise.name'}</Text>
-                    </Pressable>
-                </View>
-            </View>
-
-            <View style={styles.exerciseBody}>
-                <View style={styles.exerciseCell}>
-                    <Text style={styles.exerciseHeader}>LegDay</Text>
-                    <Pressable style={styles.exerciseHeader}>
-                        <Text>{'exercise.name'}</Text>
-                    </Pressable>
-                </View>
-            </View>
+            
 
         </View>
     )
@@ -74,6 +78,7 @@ const styles = StyleSheet.create({
         width: '90%',
         textAlign: 'center',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        
     }
 });
