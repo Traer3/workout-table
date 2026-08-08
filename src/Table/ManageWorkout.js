@@ -4,6 +4,8 @@ import { useState } from "react";
 import DateForm from "./ManagerFolder/DateForm";
 import PresetForm from "./ManagerFolder/PresetForm";
 import ExerciseButtons from "./ManagerFolder/ExerciseButtons";
+import ExerciseBlock from "./ManagerFolder/ExerciseBlock";
+import ExerciseMain from "./ManagerFolder/ExerciseMain";
 
 
 /*
@@ -17,6 +19,7 @@ import ExerciseButtons from "./ManagerFolder/ExerciseButtons";
                 WS: { fullName: 'Wrist Suplination', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
             });
 */
+
 
 
 export default function ManageWorkout({ editDay, setEditDay }) {
@@ -38,7 +41,8 @@ export default function ManageWorkout({ editDay, setEditDay }) {
                     <PresetForm  presetState={presetState} />
 
                     {/*Отдельная форма кнопок треши*/}
-                    <ExerciseButtons newDay={newDay} setNewDay={setNewDay}/>
+                    <ExerciseMain newDay={newDay} setNewDay={setNewDay}/>
+                    
                 </View>
             </Pressable>
         </View>
