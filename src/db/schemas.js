@@ -1,7 +1,5 @@
 import Realm from "realm";
 
-//это для backupReader.js 
-//если эта поебота сработает , то ебани её в realm.js 
 export class Action extends Realm.Object {
     static schema = {
         name: 'Action',
@@ -16,6 +14,7 @@ export class Exercise extends Realm.Object {
     static schema = {
         name: 'Exercise',
         properties: {
+            exerciseKey: 'string',
             fullName: 'string',
             reps1: 'Action',
             rest1: 'Action',
@@ -28,27 +27,26 @@ export class Exercise extends Realm.Object {
 export class WorkoutDay extends Realm.Object { 
     static schema = {
         name: 'WorkoutDay',
-        primaryKey: 'day',
+        primaryKey: 'id',
         properties: {
-            day: 'string',
-            PU: 'Exercise?',
-            RWC: 'Exercise?',
-            WC: 'Exercise?',
-            WSC: 'Exercise?',
-            WP: 'Exercise?',
-            WS: 'Exercise?',
-            SU: 'Exercise?',
-            Sq: 'Exercise?',
-            ETK: 'Exercise?',
-            SCR: 'Exercise?',
-            BSS: 'Exercise?',
-            LR: 'Exercise?',
-            EP: 'Exercise?',
-            BR: 'Exercise?',
+            id:'int',
+            timestamp: 'int',
+            exercises: 'Exercise[]',
         },
     };
 };
 
+export class WorkoutTemplate extends Realm.Object { 
+    static schema = {
+        name: 'WorkoutTemplate',
+        primaryKey: 'id',
+        properties: {
+            id:'int',
+            timestamp: 'int',
+            exercise: 'Exercise?',
+        },
+    };
+};
 
 
 
@@ -66,4 +64,4 @@ export class ExerciseWeightHistory extends Realm.Object {
     };
 }
 
-export const schema = [Action, Exercise, WorkoutDay, ExerciseWeightHistory];
+export const schema = [Action, Exercise, WorkoutDay, ExerciseWeightHistory, WorkoutTemplate];

@@ -16,6 +16,41 @@ export const DatabaseProvider = ({ children }) => {
     const realm = useRealm();
     const saveDemoWorkout = () => {
         realm.write(() => {
+            const currentDate = Math.floor(Date.now() / 1000)
+            realm.create('WorkoutDay', {
+                id:1,
+                timestamp: currentDate,
+                exercises:[{
+                    exerciseKey: 'PU',
+                    fullName: 'Push Ups',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'RWC',
+                    fullName: 'Reverse Wrist Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'WC',
+                    fullName: 'Wrist Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'WSC',
+                    fullName: 'Wrist Side Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'WP',
+                    fullName: 'Wrist Pronation',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'WS',
+                    fullName: 'Wrist Suplination',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },]
+            }, 'modified');
+
+            /*
             realm.create('WorkoutDay', {
                 day: '30.05.26',
                 PU: { fullName: 'Push Ups', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
@@ -50,6 +85,7 @@ export const DatabaseProvider = ({ children }) => {
                 WP: { fullName: 'Wrist Pronation', reps1: { color: 'green', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
                 WS: { fullName: 'Wrist Suplination', reps1: { color: 'green', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
             }, 'modified');
+            */
             
             /*
             realm.create('ExerciseWeightHistory', {

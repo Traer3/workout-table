@@ -28,6 +28,7 @@ export default function WorkoutTable({editDay, setEditDay}) {
   }
 
   useEffect(() => {
+    if(allDays.length <= 0) return;
     const index = allDays.length - 1;
     //console.log("index", index)
     setTimeout(() => {
