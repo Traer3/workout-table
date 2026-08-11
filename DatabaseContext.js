@@ -144,12 +144,20 @@ export const DatabaseProvider = ({ children }) => {
         return;
     }
 
-    function getFormattedDate() {
-        return new Date().toLocaleDateString('ru-RU',{
-            day:'2-digit',
-            month:'2-digit',
-            year:'2-digit'
-        });
+    function getFormattedDate(ts) {
+        if (ts) {
+            return new Date(ts * 1000).toLocaleDateString('ru-RU',{
+                day:'2-digit',
+                month:'2-digit',
+                year:'2-digit'
+            })
+        }else{
+            return new Date().toLocaleDateString('ru-RU',{
+                day:'2-digit',
+                month:'2-digit',
+                year:'2-digit'
+            });
+        }   
     }
 
     function checkHours(hours, lastCheck) {

@@ -109,10 +109,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
           
         <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
           <DateBlock
-            item={item}
             currentDayData={currentDayData}
-            loading={loading}
-            setLoading={setLoading}
           />
         </View>
         <View style={[styles.table]}>

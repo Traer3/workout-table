@@ -1,89 +1,44 @@
-import { Pressable, TextInput, View, Text } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import styles from './renderItemStyles.js'
 import {useRealm } from "../../db/realm.js";
-import { useRef } from "react";
+import { useState } from "react";
+import { useDatabase } from "../../../DatabaseContext.js";
 
-export default function DateBlock({ item, currentDayData, loading, setLoading }) {
-    const currentDate = new Date(currentDayData["timestamp"] * 1000);
-    const date = currentDate ? currentDate.toLocaleDateString('ru-RU',{
-        day:'2-digit',
-        month:'2-digit',
-        year:'2-digit'
-    }) : currentDate
-    
-    const data = useRef(date ||'no data')
+export default function DateBlock({currentDayData}) {
+    const {getFormattedDate} = useDatabase()
     const realm = useRealm();
-    //console.log("DateBlock AWAKE!: ", item)
-
-    if (!currentDayData || !currentDayData.isValid()) {
-        return null;
-    }
-
+    const [date, setDate] = useState(()=> getFormattedDate(currentDayData.timestamp)) 
     
-    function changeDay(oldDayObject, newDateValue) {
-        /*
-        я получаю дату в стринговом формате 
-        мне нужно получить некий "02.06.26" и перевести его timestamp
-        
-        Убрать возможность менять дату у юзера и сделать автоматом 
-        Если даун создал трешу и решил забить хуй 
-        то когда он нажимает на кнопку , сразу включается дата в моменте 
-        */
-       console.log("Pressed!")
-       
-       /*
-        if (!oldDayObject || !oldDayObject.isValid() || oldDayObject.day === newDateValue) return;
+    if (!currentDayData || !currentDayData.isValid()) return null;
 
-        const oldDayKey = oldDayObject.day
-        const plainObj = oldDayObject.toJSON()
-
-        setLoading(true);
-
-        setTimeout(() => {
-            realm.write(() => {
-                realm.create('WorkoutDay', {
-                    ...plainObj,
-                    day: newDateValue,
-                }, 'modified');
-
-                const dayToDelete = realm.objectForPrimaryKey('WorkoutDay', oldDayKey)
-
-                if (oldDayKey && dayToDelete.isValid()) {
-                    realm.delete(dayToDelete);
-                    //console.log("Old day deleted!");
+    function changeDay() {
+       const todayString = getFormattedDate();
+       const currentTimestamp = Math.floor(Date.now() / 1000)
+       if(date !== todayString) {
+            realm.write(()=>{
+                if(currentDayData.timestamp && currentTimestamp){
+                    currentDayData.timestamp = currentTimestamp || 0;
                 }
-
-                setTimeout(() => {
-                    setLoading(false);
-                    //console.log("Table loaded with new data")
-                }, 50)
             })
-        }, 100)
-        */
+            setDate(currentTimestamp)
+       }
+       return;
     }
     return (
-        <Pressable
+        <View
             style={{
-                margin: '-10',
+                //margin: '-10',
                 justifyContent: 'center',
-                alignItems: 'center'
-            }}
-            onPress={() => {
-                setLoading(!loading)
-                //console.log("loading: ", loading)
-            }}
-        >
-            <Pressable
-                style={{
-                    width: "40%",
-                }}
+                alignItems: 'center',
+            }}>
+            <Pressable 
+                style={{ width: "40%", }}
                 onPressIn={()=> changeDay()}
                 >
-                <Text style={[styles.textStyle, {marginTop:10}]}>
-                    {data.current}
-                </Text>
+                <Text style={[styles.textStyle, //{marginTop:10}
+                ]}>{date}</Text>
             </Pressable>
-        </Pressable>
+        </View>
     )
 } 
 
