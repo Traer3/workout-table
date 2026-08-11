@@ -7,6 +7,7 @@ import { useDatabase } from "../../../DatabaseContext.js";
 
 
 export default function InfoBlock({ currentDayData, dayData, editingCell, setEditingCell, index, flatListRef, mode, maxId }) {
+    if(!dayData) return;
     const [id, setId] = useState(-1);
     const currentWeightDayData = useObject('ExerciseWeightHistory', id)
 

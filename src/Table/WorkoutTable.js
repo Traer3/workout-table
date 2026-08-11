@@ -12,24 +12,25 @@ export default function WorkoutTable({editDay, setEditDay}) {
   //console.log("WorkoutTable AWAKE!")
 
 
-  const allDays = getAllDays(workoutTable);
+  const allIds = getAllIds(workoutTable);
   //console.log("workoutTable: ", workoutTable)
 
-  function getAllDays(allData) {
-    const days = []
-    if (!allData) return days;
+  function getAllIds(allData) {
+    //console.log("all data: ", allData)
+    const ids = []
+    if (!allData) return ids;
 
     allData.forEach(obj => {
       if (obj && obj.isValid()) {
-        days.push(obj["day"])
+        ids.push(obj["id"])
       }
     });
-    return days
+    return ids
   }
 
   useEffect(() => {
-    if(allDays.length <= 0) return;
-    const index = allDays.length - 1;
+    if(allIds.length <= 0 || !allIds) return;
+    const index = allIds.length - 1;
     //console.log("index", index)
     setTimeout(() => {
       flatListRef.current.scrollToIndex({
@@ -46,15 +47,15 @@ export default function WorkoutTable({editDay, setEditDay}) {
 
   /*
   const realm = useRealm(); 
-  const deleteAllDays = (allDays) => {
-    allDays.map(day =>{
+  const deleteAllIds = (allIds) => {
+    allIds.map(day =>{
           console.log("Deleting day :" ,day)
           realm.write(() => {
             const deletee = realm.objectForPrimaryKey('WorkoutDay', day)
             realm.delete(deletee);
           })
     })
-    <IconButton buttFunction={() => deleteAllDays(allDays)} color={true}/>
+    <IconButton buttFunction={() => deleteAllIds(allIds)} color={true}/>
   }
   */
 
@@ -79,10 +80,10 @@ export default function WorkoutTable({editDay, setEditDay}) {
           ref={flatListRef}
           keyboardShouldPersistTaps="handled"
           style={styles.conteiner}
-          data={allDays}
+          data={allIds}
           renderItem={renderItem}
 
-          initialNumToRender={allDays.length}
+          initialNumToRender={allIds.length}
           contentContainerStyle={{
             paddingBottom:500
           }}

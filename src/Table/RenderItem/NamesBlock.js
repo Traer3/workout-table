@@ -4,6 +4,7 @@ import { useState } from "react";
 
 
 export default function NamesBlock({ values }) {
+    if(!values) return;
     const [showName, setShowName] = useState(false);
     const dayData = values.fullDay;
     

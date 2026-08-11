@@ -9,6 +9,7 @@ export default StyleSheet.create({
         fontWeight: 800,
         textAlign: 'center',
         textAlignVertical: 'center',
+        
     },
     conteiner: {
         height: "100%",

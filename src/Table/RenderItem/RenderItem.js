@@ -13,24 +13,51 @@ import WeightTable from "./WeightTable.js";
 const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   const [loading, setLoading] = useState(false);
 
-  const currentDayData = useObject('WorkoutDay', `${item}`);
-  
-
+  const currentDayData = useObject('WorkoutDay', item);
 
   const dayData = readData(currentDayData)
 
   const [editingCell, setEditingCell] = useState(null);
-
-  //console.log("currentDayData: ",currentDayData)
 
   if (!currentDayData || !currentDayData.isValid()) {
     return null;
   }
   if (!item) return null
 
-  //console.log("RenderItem AWAKE!: ",item)
+
+    /*
+    [
+      {
+        "exerciseKey": "PU", 
+        "fullName": "Push Ups", 
+        "reps1": [Object], 
+        "reps2": [Object], 
+        "rest1": [Object], 
+        "rest2": [Object]
+      }, 
+      {
+        "exerciseKey": "RWC", 
+        "fullName": "Reverse Wrist Curl", 
+        "reps1": [Object], 
+        "reps2": [Object], 
+        "rest1": [Object], 
+        "rest2": [Object]
+      }, 
+      */
 
   function readData(currentDay) {
+    //console.log("currentDay: ", currentDay["exercises"])
+    const keys = [];
+    const data = [];
+    const fullDay = [];
+    const exerciseKeys = new Set();
+    currentDay["exercises"].map(exercise => {
+      keys.push(exercise["exerciseKey"])
+      data.push(exercise)
+      fullDay.push()
+    })
+    return null;
+    /*
     const keys = [];
     const data = [];
     const fullDay = [];
@@ -53,6 +80,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
         })
       }
     });
+    */
 
     const dayData = {
       keys: keys,
@@ -67,7 +95,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
     <>{loading ? (//loading
       //<Loading dayData={dayData} index={index}/>
       <WeightTable 
-            exerciseDayData={dayData} 
+            exerciseDayData={dayData} //эту хуйню убрать 
             item={item} 
             loading={loading} 
             setLoading={setLoading}
@@ -91,7 +119,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
           <NamesBlock values={dayData} />
           <InfoBlock
             currentDayData={currentDayData}
-            dayData={dayData}
+            dayData={dayData}//эту хуйню убрать 
             editingCell={editingCell}
             setEditingCell={setEditingCell}
             index={index}
