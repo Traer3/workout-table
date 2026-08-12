@@ -24,8 +24,14 @@ export default function ColorPanel({ currentDayData, name, field, mode }) {
           return;
         }
 
-        if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
-          currentDayData[exKey][fieldKey].color = String(text) || "";
+        /*
+        [{"exerciseKey": "PU", "fullName": "Push Ups", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]}, 
+        нужно найти индекс 
+        */
+        console.log("currentDayData.exercises[exKey]: ",currentDayData.exercises["exerciseKey"])
+        if (currentDayData.exercises[exKey] && currentDayData.exercises[fieldKey]) {
+          currentDayData.exercises[fieldKey].color = String(text) || "";
+          console.log("wo")
         }
         return;
       })

@@ -2,24 +2,21 @@ import { View, Pressable, Text } from "react-native";
 import styles from './renderItemStyles.js'
 import { useState } from "react";
 
-
-export default function NamesBlock({ values }) {
-    if(!values) return;
+export default function NamesBlock({ currentDayData }) {
+    if(!currentDayData.isValid()) return;
     const [showName, setShowName] = useState(false);
-    const dayData = values.fullDay;
+    const dayData = currentDayData.exercises;
     
     return (
         <View style={[styles.rowName, {}]}>
             {dayData.map((element) => {
-                const name = Object.keys(element);
-                const fullName = element[name]["fullName"]
                 return (
                     <Pressable
                         key={Math.random()}
                         style={[styles.pressableCell, { overflow: 'visible' }]}
                         onPressIn={() => { setShowName(!showName) }}
                     >
-                        <Text key={element} style={[styles.cell, styles.textStyle, {}]}>{showName ? fullName : name}</Text>
+                        <Text key={element} style={[styles.cell, styles.textStyle, {}]}>{showName ? element.fullName : element.exerciseKey}</Text>
                     </Pressable>
                 )
             })}

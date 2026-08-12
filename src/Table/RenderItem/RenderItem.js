@@ -10,7 +10,8 @@ import IconButton from "../../IconButton.js";
 import Loading from "./Loading.js";
 import WeightTable from "./WeightTable.js";
 
-const RenderItem = ({ item, index, data, setData, flatListRef }) => {
+const RenderItem = ({ item, index, data, setData, flatListRef, elementIndex , setElementIndex }) => {
+  
   const [loading, setLoading] = useState(false);
 
   const currentDayData = useObject('WorkoutDay', item);
@@ -18,12 +19,14 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
   const dayData = readData(currentDayData)
 
   const [editingCell, setEditingCell] = useState(null);
+  
 
   if (!currentDayData || !currentDayData.isValid()) {
     return null;
   }
   if (!item) return null
 
+  setElementIndex(prev => prev + 1)
 
     /*
     [
@@ -113,7 +116,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
           />
         </View>
         <View style={[styles.table]}>
-          <NamesBlock values={dayData} />
+          <NamesBlock currentDayData={currentDayData} />
           <InfoBlock
             currentDayData={currentDayData}
             dayData={dayData}//эту хуйню убрать 
@@ -121,6 +124,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef }) => {
             setEditingCell={setEditingCell}
             index={index}
             flatListRef={flatListRef}
+            elementIndex={elementIndex}
           />
           
         </View>

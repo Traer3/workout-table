@@ -9,6 +9,7 @@ import { useRealm } from "../db/realm.js";
 export default function WorkoutTable({editDay, setEditDay}) {
   const { uploadToDrive, workoutTable, weightHistory } = useDatabase()
   const flatListRef = useRef(null);
+  const [elementIndex , setElementIndex] = useState(0);
   //console.log("WorkoutTable AWAKE!")
 
 
@@ -65,6 +66,8 @@ export default function WorkoutTable({editDay, setEditDay}) {
       item={item} // это уже сам день "09.07.26"
       index={index}
       flatListRef={flatListRef}
+      elementIndex={elementIndex}
+      setElementIndex={setElementIndex}
     />
   ));
 
