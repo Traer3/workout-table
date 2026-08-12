@@ -50,6 +50,39 @@ export const DatabaseProvider = ({ children }) => {
                 },]
             }, 'modified');
 
+            realm.create('WorkoutDay', {
+                id:2,
+                timestamp: currentDate,
+                exercises:[{
+                    exerciseKey: 'SU',
+                    fullName: 'Sit-Ups',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'Sq',
+                    fullName: 'Reverse Wrist Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'ETK',
+                    fullName: 'Elbow To Knee',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'BSS',
+                    fullName: 'Bulgarian Slit Squats',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'LR',
+                    fullName: 'Leg Raises',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'EP',
+                    fullName: 'Elbow Plank',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },]
+            }, 'modified');
+
             /*
             realm.create('WorkoutDay', {
                 day: '30.05.26',
@@ -106,7 +139,6 @@ export const DatabaseProvider = ({ children }) => {
         });
         console.log("Data successfully saved! ");
     };
-
 
     const [loading, setLoading] = useState(true);
     

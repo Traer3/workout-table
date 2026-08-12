@@ -2,49 +2,48 @@ import { Pressable, View, } from "react-native";
 import styles, { TextColor } from './renderItemStyles.js'
 import { useRealm } from "../../db/realm.js";
 
-export default function ColorPanel({ currentDayData, name, field, mode }) {
-    //console.log("mode: ", mode)
-    //console.log("currentDayData: ", currentDayData)
-    const realm = useRealm();
-    const updateColor = (exKey, fieldKey, text) => {
-      console.log("exKey: ", exKey)
-      console.log("fieldKey: ", fieldKey)
-      console.log("text: ", text)
-    
-      if(!currentDayData || !currentDayData.isValid()){
-        return null;
-      }
-      
-      realm.write(() => {
-        if (mode === "weight") {
-          if( currentDayData[fieldKey]){
-            currentDayData[fieldKey].color = String(text) || "";
-            console.log("Data updated! ")
-          }
-          return;
-        }
+export default function ColorPanel({ currentDayData, name, field, mode, index }) {
+  //console.log("mode: ", mode)
+  //console.log("currentDayData: ", currentDayData)
+  const realm = useRealm();
+  const updateColor = (exKey, fieldKey, text) => {
+    //console.log("exKey: ", exKey)
+    //console.log("fieldKey: ", fieldKey)
+    //console.log("text: ", text)
+    //console.log("index: ", index)
+    //console.log("currentDayData.exercises[exKey]: ",currentDayData.exercises[index-1][fieldKey].color)
 
-        /*
-        [{"exerciseKey": "PU", "fullName": "Push Ups", "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]}, 
-        нужно найти индекс 
-        */
-        console.log("currentDayData.exercises[exKey]: ",currentDayData.exercises["exerciseKey"])
-        if (currentDayData.exercises[exKey] && currentDayData.exercises[fieldKey]) {
-          currentDayData.exercises[fieldKey].color = String(text) || "";
-          console.log("wo")
+    if (!currentDayData || !currentDayData.isValid()) {
+      return null;
+    }
+
+
+
+    realm.write(() => {
+      if (mode === "weight") {
+        //Tyt тоже нужно определится с индексом или нет )
+        if (currentDayData[fieldKey]) {
+          currentDayData[fieldKey].color = String(text) || "";
+          console.log("Data updated! ")
         }
         return;
-      })
+      }
 
-    }
-    return (
-      <View style={[{ position: 'absolute', bottom: -63, left: -70, flexDirection: 'row', zIndex: 999, elevation: 5 }]}>
-        <Pressable style={[styles.coloredBox, { backgroundColor: 'red', }]} onPressIn={() => updateColor(name, field, "red")} />
+      if (currentDayData.exercises[index - 1] && currentDayData.exercises[index - 1][fieldKey]) {
+        currentDayData.exercises[index - 1][fieldKey].color = String(text) || "";
+      }
+      return;
+    })
 
-        <Pressable style={[styles.coloredBox, { backgroundColor: 'green', }]} onPressIn={() => updateColor(name, field, "green")} />
+  }
+  return (
+    <View style={[{ position: 'absolute', bottom: -63, left: -70, flexDirection: 'row', zIndex: 999, elevation: 5 }]}>
+      <Pressable style={[styles.coloredBox, { backgroundColor: 'red', }]} onPressIn={() => updateColor(name, field, "red")} />
 
-        <Pressable style={[styles.coloredBox, { backgroundColor: TextColor, }]} onPressIn={() => updateColor(name, field, TextColor)} />
+      <Pressable style={[styles.coloredBox, { backgroundColor: 'green', }]} onPressIn={() => updateColor(name, field, "green")} />
 
-      </View>
-    )
+      <Pressable style={[styles.coloredBox, { backgroundColor: TextColor, }]} onPressIn={() => updateColor(name, field, TextColor)} />
+
+    </View>
+  )
 }

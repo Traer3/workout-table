@@ -9,12 +9,11 @@ import { useRealm } from "../db/realm.js";
 export default function WorkoutTable({editDay, setEditDay}) {
   const { uploadToDrive, workoutTable, weightHistory } = useDatabase()
   const flatListRef = useRef(null);
-  const [elementIndex , setElementIndex] = useState(0);
   //console.log("WorkoutTable AWAKE!")
 
 
   const allIds = getAllIds(workoutTable);
-  //console.log("workoutTable: ", workoutTable)
+  console.log("allIds: ", allIds)
 
   function getAllIds(allData) {
     //console.log("all data: ", allData)
@@ -28,6 +27,7 @@ export default function WorkoutTable({editDay, setEditDay}) {
     });
     return ids
   }
+
 
   useEffect(() => {
     if(allIds.length <= 0 || !allIds) return;
@@ -63,11 +63,9 @@ export default function WorkoutTable({editDay, setEditDay}) {
 
   const renderItem = useCallback(({ item, index }) => (
     <RenderItem
-      item={item} // это уже сам день "09.07.26"
+      item={item} 
       index={index}
       flatListRef={flatListRef}
-      elementIndex={elementIndex}
-      setElementIndex={setElementIndex}
     />
   ));
 

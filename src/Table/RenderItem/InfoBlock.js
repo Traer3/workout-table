@@ -6,22 +6,14 @@ import { useObject, useRealm } from "../../db/realm.js";
 import { useDatabase } from "../../../DatabaseContext.js";
 
 
-export default function InfoBlock({ currentDayData, dayData, editingCell, setEditingCell, index, flatListRef, mode, maxId, elementIndex }) {
-    
-    
+export default function InfoBlock({ currentDayData, editingCell, setEditingCell, index, flatListRef, mode, maxId }) {
+    let i = 0;
     const [id, setId] = useState(-1);
     const currentWeightDayData = useObject('ExerciseWeightHistory', id)
 
     const { getFormattedDate, checkHours } = useDatabase();
     const realm = useRealm();
     const [textData, setTextData] = useState("");
-    //const fullDay = dayData.fullDay
-    //const exerciseData = currentDayData.exercises
-    //const exerciseKeys = exerciseData.map(element => Object.keys(element))
-    //console.log("exerciseKeys: ", exerciseKeys) ;
-
-
-    //console.log("currentDayData: ", currentDayData)    
 
     if (!currentDayData || !currentDayData.isValid()) {
         return null;
@@ -37,12 +29,11 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
         })
     }
 
-    const updateValue = (exKey, fieldKey, text, element) => {
+    const updateValue = (exKey, fieldKey, text, element, i) => {
         if (!currentDayData) return;
-        
         if (mode === "weight") {
             const currentDate = getFormattedDate();
-            if(currentWeightDayData !== null){
+            if (currentWeightDayData !== null) {
                 const timestamp = element[exKey]["timestamp"]
                 const checkTime = checkHours(24, timestamp);
                 const value = Number(text)
@@ -50,12 +41,12 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
                 const nextId = maxId ? maxId + 1 : 1;
 
                 realm.write(() => {
-                    if(!checkTime){
-                        if(currentWeightDayData["fullName"] === fullName &&  currentWeightDayData[fieldKey]){
+                    if (!checkTime) {
+                        if (currentWeightDayData["fullName"] === fullName && currentWeightDayData[fieldKey]) {
                             currentWeightDayData[fieldKey].value = value || 0;
                             console.log("Data updated! ")
                         }
-                    }else{
+                    } else {
                         realm.create('ExerciseWeightHistory', {
                             id: nextId,
                             day: currentDate,
@@ -65,61 +56,47 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
                         })
                     }
                 })
-                
+
             }
             setEditingCell(null);
             return;
         }
 
         realm.write(() => {
-            if (currentDayData[exKey] && currentDayData[exKey][fieldKey]) {
-                currentDayData[exKey][fieldKey].value = Number(text) || 0;
+            if (currentDayData.exercises[i - 1] && currentDayData.exercises[i - 1][fieldKey]) {
+                currentDayData.exercises[i - 1][fieldKey].value = Number(text) || 0;
             }
         })
         setEditingCell(null);
         return;
     }
 
-    /*
-    {
-        "exerciseKey": "RWC", 
-        "fullName": "Reverse Wrist Curl", 
-        "reps1": [Object], 
-        "reps2": [Object], 
-        "rest1": [Object], 
-        "rest2": [Object]
-      }, 
-    */
     return (
         <View style={{ flex: 3, flexDirection: 'column', zIndex: 1 }}>
-            {currentDayData.exercises.map((element) => { 
-                
-                console.log("elementIndex: ", elementIndex)
+            {currentDayData.exercises.map((element) => {
+                    if (typeof element === 'object') { i++ }
                 const name = element.exerciseKey
                 const uselessKeys = ["exerciseKey", "fullName"]
                 const exerciseKeys = Object.keys(element).filter(key => !uselessKeys.includes(key))
-                if (!name) return null;
-
+                    if (!name) return null;
                 const isRowEditing = editingCell && editingCell.startsWith(name);
-                const type = mode ?  'weight' : 'exec' 
+                const type = mode ? 'weight' : 'exec'
                 const rowKey = `row-${index}-${name}-${type}`
-                //console.log("mode: ",mode)
                 return (
                     <View key={rowKey} style={[styles.row, { zIndex: isRowEditing ? 100 : 1 }]}>
                         {exerciseKeys.map((field) => {
-                            console.log("element[name][field]: ", element[field])
                             const cellId = `${name}-${field}`;
-                            
+                            const cellIndex = i
                             const isThisCellEditing = editingCell === cellId;
                             const cellKey = `cell-${index}-${type}-${name}-${field}`
                             const currentValue = typeof element[field] === 'object'
                                 ? element[field]?.value
                                 : element[field];
-                            
+
                             return (
                                 <Pressable
                                     key={cellKey}
-                                    style={[styles.pressableCell, { overflow: 'visible'}]}
+                                    style={[styles.pressableCell, { overflow: 'visible' }]}
                                     onPress={() => {
                                         /*
                                         if(element[name]["id"]){
@@ -127,7 +104,7 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
                                         }
                                         */
                                         toogleEditingCell(cellId, currentValue)
-                                        }}>
+                                    }}>
                                     {
                                         isThisCellEditing ? (
                                             <View style={{ flex: 1, overflow: 'visible', zIndex: 120 }}>
@@ -138,12 +115,12 @@ export default function InfoBlock({ currentDayData, dayData, editingCell, setEdi
                                                     value={textData}
                                                     onChangeText={(text) => { setTextData(text) }}
                                                     onBlur={() => setEditingCell(null)}
-                                                    onSubmitEditing={() => updateValue(name, field, textData, element)}
+                                                    onSubmitEditing={() => updateValue(name, field, textData, element, cellIndex)}
                                                 />
                                                 {mode ?
                                                     <ColorPanel currentDayData={currentWeightDayData} name={name} field={field} mode={mode} />
                                                     :
-                                                    <ColorPanel currentDayData={currentDayData} name={name} field={field} />
+                                                    <ColorPanel currentDayData={currentDayData} name={name} field={field} index={cellIndex} />
                                                 }
                                             </View>
                                         ) : (
