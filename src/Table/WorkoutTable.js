@@ -13,7 +13,6 @@ export default function WorkoutTable({editDay, setEditDay}) {
 
 
   const allIds = getAllIds(workoutTable);
-  console.log("allIds: ", allIds)
 
   function getAllIds(allData) {
     //console.log("all data: ", allData)

@@ -7,11 +7,24 @@ import { useState } from "react";
 import NamesBlock from "./NamesBlock";
 import DateBlock from "./DateBlock.js";
 
-export default function WeightTable({ exerciseDayData, item, loading, setLoading,  editingCell, setEditingCell, flatListRef, index, }) {
+export default function WeightTable({ currentDayData, item, loading, setLoading,  editingCell, setEditingCell, flatListRef, index, }) {
     const { weightHistory } = useDatabase();
+    /*
+        {
+            "day": "-1", 
+            "fullName": "Push Ups", 
+            "id": 1, 
+            "timestamp": 1786545550, 
+            "weightData": {
+                            "color": "", 
+                            "value": 0
+                        }
+        },
+    */
     const realm = useRealm()
    
-    const weightDayData = createDayData(exerciseDayData);
+    const weightDayData = createDayData(currentDayData);
+    //console.log("weightDayData: ", weightDayData)
 
     const maxId = weightHistory.max('id')
 
@@ -43,14 +56,43 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
         })
     }
     
-    function createDayData(exerciseDayData) {
+
+    /*
+    [
+      {
+        "exerciseKey": "PU", 
+        "fullName": "Push Ups", 
+        "reps1": [Object], 
+        "reps2": [Object], 
+        "rest1": [Object], 
+        "rest2": [Object]
+      }, 
+      {
+        "exerciseKey": "RWC", 
+        "fullName": "Reverse Wrist Curl", 
+        "reps1": [Object], 
+        "reps2": [Object], 
+        "rest1": [Object], 
+        "rest2": [Object]
+      }, 
+      */
+
+
+    function createDayData(currentDayData) {
         const keys = [];
         const data = [];
         const fullDay = [];
-        exerciseDayData.fullDay.map((exercise)=>{
-            const key = Object.keys(exercise)[0];
-            const fullName = exercise[key]?.["fullName"]
+        currentDayData.exercises.map((exercise)=>{
+            const key = exercise.exerciseKey
+            const fullName = exercise.fullName
             const exerciseHistory = getExerciseData(fullName)
+
+
+            //console.log("key: ", key)
+            //console.log("fullName: ", fullName)
+            //console.log("exerciseHistory: ", exerciseHistory)
+
+
             if(exerciseHistory.length > 0){
                 const freshExerciseData = exerciseHistory[exerciseHistory.length-1]
                 keys.push(key)
@@ -81,24 +123,34 @@ export default function WeightTable({ exerciseDayData, item, loading, setLoading
             >
             <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
                       <DateBlock
-                        item={item}
                         currentDayData={weightHistory}
                         loading={loading}
                         setLoading={setLoading}
                       />
             </View>
             <View style={[styles.table]}>
-                    <NamesBlock values={weightDayData} />
-                    <InfoBlock 
-                        currentDayData={weightHistory} 
-                        dayData={weightDayData} 
-                        mode={"weight"}
-                        editingCell={editingCell}
-                        setEditingCell={setEditingCell}
-                        flatListRef={flatListRef}
-                        index={index}
-                        maxId={maxId}
+
+                    {
+                        /*
+                        <NamesBlock values={weightDayData} //передавать сюда активный объект от realm , значит нужно передавать id
+                        />
+                        */
+                    }
+                    {
+                        /*
+                        <InfoBlock 
+                            currentDayData={weightHistory} //нужно currentDayData.exercises. значит мне нужно создать объект который он будет читать или 
+                            //разбить InfoBlock на  InfoBlock и на InfoForm
+                            dayData={weightDayData} 
+                            mode={"weight"}
+                            editingCell={editingCell}
+                            setEditingCell={setEditingCell}
+                            flatListRef={flatListRef}
+                            index={index}
+                            maxId={maxId}
                         /> 
+                        */
+                    }
             </View>
         </View>
     )

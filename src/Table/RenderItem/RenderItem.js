@@ -27,7 +27,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef,}) => {
     <>{loading ? (//loading
       //<Loading dayData={dayData} index={index}/>
       <WeightTable 
-            exerciseDayData={dayData} //эту хуйню убрать 
+            currentDayData={currentDayData}
             item={item} 
             loading={loading} 
             setLoading={setLoading}
@@ -42,6 +42,8 @@ const RenderItem = ({ item, index, data, setData, flatListRef,}) => {
         <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
           <DateBlock
             currentDayData={currentDayData}
+            loading={loading}
+            setLoading={setLoading}
           />
         </View>
         <View style={[styles.table]}>

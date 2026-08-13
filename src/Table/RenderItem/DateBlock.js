@@ -4,7 +4,7 @@ import {useRealm } from "../../db/realm.js";
 import { useState } from "react";
 import { useDatabase } from "../../../DatabaseContext.js";
 
-export default function DateBlock({currentDayData}) {
+export default function DateBlock({currentDayData, setLoading, loading}) {
     const {getFormattedDate} = useDatabase()
     const realm = useRealm();
     const [date, setDate] = useState(()=> getFormattedDate(currentDayData.timestamp)) 
@@ -25,12 +25,14 @@ export default function DateBlock({currentDayData}) {
        return;
     }
     return (
-        <View
+        <Pressable
             style={{
                 //margin: '-10',
                 justifyContent: 'center',
                 alignItems: 'center',
-            }}>
+            }}
+            onPressIn={()=>{setLoading(!loading)}}
+            >
             <Pressable 
                 style={{ width: "40%", }}
                 onPressIn={()=> changeDay()}
@@ -38,7 +40,7 @@ export default function DateBlock({currentDayData}) {
                 <Text style={[styles.textStyle, //{marginTop:10}
                 ]}>{date}</Text>
             </Pressable>
-        </View>
+        </Pressable>
     )
 } 
 

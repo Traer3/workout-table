@@ -4,6 +4,8 @@ import { useState } from "react";
 
 export default function NamesBlock({ currentDayData }) {
     if(!currentDayData.isValid()) return;
+
+    //const currentWeightDayData = useObject('ExerciseWeightHistory', id)
     const [showName, setShowName] = useState(false);
     const dayData = currentDayData.exercises;
     
