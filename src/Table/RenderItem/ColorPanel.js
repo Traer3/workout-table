@@ -3,25 +3,16 @@ import styles, { TextColor } from './renderItemStyles.js'
 import { useRealm } from "../../db/realm.js";
 
 export default function ColorPanel({ currentDayData, name, field, mode, index }) {
-  //console.log("mode: ", mode)
-  //console.log("currentDayData: ", currentDayData)
+
   const realm = useRealm();
   const updateColor = (exKey, fieldKey, text) => {
-    //console.log("exKey: ", exKey)
-    //console.log("fieldKey: ", fieldKey)
-    //console.log("text: ", text)
-    //console.log("index: ", index)
-    //console.log("currentDayData.exercises[exKey]: ",currentDayData.exercises[index-1][fieldKey].color)
 
     if (!currentDayData || !currentDayData.isValid()) {
       return null;
     }
 
-
-
     realm.write(() => {
       if (mode === "weight") {
-        //Tyt тоже нужно определится с индексом или нет )
         if (currentDayData[fieldKey]) {
           currentDayData[fieldKey].color = String(text) || "";
           console.log("Data updated! ")
