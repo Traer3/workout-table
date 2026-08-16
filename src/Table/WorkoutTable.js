@@ -4,14 +4,10 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { useDatabase } from "../../DatabaseContext";
 import IconButton from "../IconButton.js";
 import RenderItem from "./RenderItem/RenderItem.js";
-import { useRealm } from "../db/realm.js";
 
-export default function WorkoutTable({editDay, setEditDay}) {
-  const { uploadToDrive, workoutTable, weightHistory } = useDatabase()
+export default function WorkoutTable({ editDay, setEditDay }) {
+  const { uploadToDrive, workoutTable } = useDatabase()
   const flatListRef = useRef(null);
-  //console.log("WorkoutTable AWAKE!")
-
-
   const allIds = getAllIds(workoutTable);
 
   function getAllIds(allData) {
@@ -29,9 +25,9 @@ export default function WorkoutTable({editDay, setEditDay}) {
 
 
   useEffect(() => {
-    if(allIds.length <= 0 || !allIds) return;
+    if (allIds.length <= 0 || !allIds) return;
     const index = allIds.length - 1;
-    //console.log("index", index)
+    
     setTimeout(() => {
       flatListRef.current.scrollToIndex({
         index: index,
@@ -44,6 +40,49 @@ export default function WorkoutTable({editDay, setEditDay}) {
     await uploadToDrive();
   }
 
+  const renderItem = useCallback(({ item, index }) => (
+    <RenderItem
+      item={item}
+      index={index}
+      flatListRef={flatListRef}
+    />
+  ));
+
+  return (
+    <>
+      <View style={styles.mainBody}>
+        <IconButton iconName={"share"} buttFunction={() => uploadToCloud()} />
+        <IconButton iconName={"createDay"} buttFunction={() => setEditDay(!editDay)} />
+      </View>
+
+      <FlatList
+        ref={flatListRef}
+        keyboardShouldPersistTaps="handled"
+        style={styles.conteiner}
+        data={allIds}
+        renderItem={renderItem}
+        initialNumToRender={allIds.length}
+        contentContainerStyle={{
+          paddingBottom: 500
+        }}
+      />
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  mainBody: {
+    marginTop: 35,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  conteiner: {
+    height: "100%",
+    width: '100%',
+    borderWidth: 0.1,
+  },
+
+});
 
   /*
   const realm = useRealm(); 
@@ -58,49 +97,3 @@ export default function WorkoutTable({editDay, setEditDay}) {
     <IconButton buttFunction={() => deleteAllIds(allIds)} color={true}/>
   }
   */
-
-
-  const renderItem = useCallback(({ item, index }) => (
-    <RenderItem
-      item={item} 
-      index={index}
-      flatListRef={flatListRef}
-    />
-  ));
-
-  return (
-    <View style={{}}>
-      <View style={{marginTop: 35, flexDirection:'row',justifyContent:'space-between'}}>
-        <IconButton buttFunction={() => uploadToCloud()} />
-        <IconButton buttFunction={() => setEditDay(!editDay)} color={true}/>
-      </View>
-      <View style={{ alignItems: 'center',  marginTop:0 }}>
-        <FlatList
-          
-          ref={flatListRef}
-          keyboardShouldPersistTaps="handled"
-          style={styles.conteiner}
-          data={allIds}
-          renderItem={renderItem}
-
-          initialNumToRender={allIds.length}
-          contentContainerStyle={{
-            paddingBottom:500
-          }}
-        />
-      </View>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  conteiner: {
-    height: "100%",
-    width: '100%',
-    borderWidth: 0.1,
-    //borderColor:'red',
-    //marginTop: 40,
-
-  },
-
-});

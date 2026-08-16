@@ -5,7 +5,7 @@ import { useRealm } from "../../db/realm.js";
 export default function ColorPanel({ currentDayData, name, field, mode, index }) {
 
   const realm = useRealm();
-  const updateColor = (exKey, fieldKey, text) => {
+  const updateColor = (fieldKey, text) => {
 
     if (!currentDayData || !currentDayData.isValid()) {
       return null;
@@ -30,11 +30,8 @@ export default function ColorPanel({ currentDayData, name, field, mode, index })
   return (
     <View style={[{ position: 'absolute', bottom: -63, left: -70, flexDirection: 'row', zIndex: 999, elevation: 5 }]}>
       <Pressable style={[styles.coloredBox, { backgroundColor: 'red', }]} onPressIn={() => updateColor(name, field, "red")} />
-
       <Pressable style={[styles.coloredBox, { backgroundColor: 'green', }]} onPressIn={() => updateColor(name, field, "green")} />
-
       <Pressable style={[styles.coloredBox, { backgroundColor: TextColor, }]} onPressIn={() => updateColor(name, field, TextColor)} />
-
     </View>
   )
 }

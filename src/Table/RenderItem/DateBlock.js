@@ -1,48 +1,53 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, } from "react-native";
 import styles from './renderItemStyles.js'
-import {useRealm } from "../../db/realm.js";
+import { useRealm } from "../../db/realm.js";
 import { useState } from "react";
 import { useDatabase } from "../../../DatabaseContext.js";
+import DateBlockQuestion from "./DateBlockQuestion.js";
 
-export default function DateBlock({currentDayData, setLoading, loading}) {
-    const {getFormattedDate} = useDatabase()
+export default function DateBlock({ currentDayData, setLoading, loading }) {
+    const { getFormattedDate } = useDatabase()
     const realm = useRealm();
-    const [date, setDate] = useState(()=> getFormattedDate(currentDayData.timestamp)) 
-    
+    const [date, setDate] = useState(() => getFormattedDate(currentDayData.timestamp))
+    const [question, setQuestion] = useState(false);
+
     if (!currentDayData || !currentDayData.isValid()) return null;
 
     function changeDay() {
-       const todayString = getFormattedDate();
-       const currentTimestamp = Math.floor(Date.now() / 1000)
-       if(date !== todayString) {
-            realm.write(()=>{
-                if(currentDayData.timestamp && currentTimestamp){
+        const todayString = getFormattedDate();
+        const currentTimestamp = Math.floor(Date.now() / 1000)
+        if (date !== todayString) {
+            realm.write(() => {
+                if (currentDayData.timestamp && currentTimestamp) {
                     currentDayData.timestamp = currentTimestamp || 0;
                 }
             })
-            setDate(currentTimestamp)
-       }
-       return;
+            setDate(getFormattedDate(currentTimestamp))
+        }
+        setQuestion(!question)
+        return;
     }
     return (
-        <Pressable
-            style={{
-                //margin: '-10',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-            onPressIn={()=>{setLoading(!loading)}}
-            >
-            <Pressable 
-                style={{ width: "40%", }}
-                onPressIn={()=> changeDay()}
+        <>
+            {question ?
+                <DateBlockQuestion specialFunction={changeDay} setQuestion={setQuestion} question={question} /> :
+                <Pressable
+                    style={{ justifyContent: 'center', alignItems: 'center', }}
+                    onPressIn={() => { setLoading(!loading) }}
                 >
-                <Text style={[styles.textStyle, //{marginTop:10}
-                ]}>{date}</Text>
-            </Pressable>
-        </Pressable>
+                    <Pressable
+                        style={{ width: "40%", }}
+                        onPressIn={() => setQuestion(!question)}
+                    >
+                        <Text style={[styles.textStyle,]}
+                        >{date}
+                        </Text>
+                    </Pressable>
+                </Pressable>
+            }
+        </>
     )
-} 
+}
 
 //Записать эту дрочь , как я менял primaryKey
 /*

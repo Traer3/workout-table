@@ -23,7 +23,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef, }) => {
   return (
     <View style={{ marginBottom: 64, }}>
 
-      <View style={{ borderColor: BorderColor, borderWidth: 1.2, height: 20 }}>
+      <View style={{ borderColor: BorderColor, borderWidth: 1.2, minHeight: 20 }}>
         <DateBlock
           currentDayData={currentDayData}
           loading={loading}

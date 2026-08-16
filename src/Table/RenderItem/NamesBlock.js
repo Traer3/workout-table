@@ -3,12 +3,11 @@ import styles from './renderItemStyles.js'
 import { useState } from "react";
 
 export default function NamesBlock({ currentDayData }) {
-    if(!currentDayData.isValid()) return;
+    if (!currentDayData.isValid()) return;
 
-    //const currentWeightDayData = useObject('ExerciseWeightHistory', id)
     const [showName, setShowName] = useState(false);
     const dayData = currentDayData.exercises;
-    
+
     return (
         <View style={[styles.rowName, {}]}>
             {dayData.map((element) => {
@@ -18,11 +17,16 @@ export default function NamesBlock({ currentDayData }) {
                         style={[styles.pressableCell, { overflow: 'visible' }]}
                         onPressIn={() => { setShowName(!showName) }}
                     >
-                        <Text key={element} style={[styles.cell, styles.textStyle, {}]}>{showName ? element.fullName : element.exerciseKey}</Text>
+                        <Text
+                            key={element}
+                            style={[styles.cell, styles.textStyle, {}]}
+                        >
+                            {showName ? element.fullName : element.exerciseKey}
+                        </Text>
                     </Pressable>
                 )
             })}
         </View>
     )
-    
+
 }
