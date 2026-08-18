@@ -48,36 +48,3 @@ export default function DateBlock({ currentDayData, setLoading, loading }) {
         </>
     )
 }
-
-//Записать эту дрочь , как я менял primaryKey
-/*
- function changeDay(oldDayObject, newDateValue) {
-        if (!oldDayObject || !oldDayObject.isValid() || oldDayObject.day === newDateValue) return;
-
-        const oldDayKey = oldDayObject.day
-        const plainObj = oldDayObject.toJSON()
-
-        setLoading(true);
-
-        setTimeout(() => {
-            realm.write(() => {
-                realm.create('WorkoutDay', {
-                    ...plainObj,
-                    day: newDateValue,
-                }, 'modified');
-
-                const dayToDelete = realm.objectForPrimaryKey('WorkoutDay', oldDayKey)
-
-                if (oldDayKey && dayToDelete.isValid()) {
-                    realm.delete(dayToDelete);
-                    //console.log("Old day deleted!");
-                }
-
-                setTimeout(() => {
-                    setLoading(false);
-                    //console.log("Table loaded with new data")
-                }, 50)
-            })
-        }, 100)
-    }
-*/

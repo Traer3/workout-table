@@ -10,5 +10,5 @@ export const { RealmProvider, useRealm, useQuery, useObject } = createRealmConte
         console.log("New version realm table")
     }
     */
-    
 })
+
