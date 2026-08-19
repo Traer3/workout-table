@@ -97,8 +97,6 @@ export const DatabaseProvider = ({ children }) => {
                 }
             }, 'modified');
 
-                //const deletee = realm.objectForPrimaryKey('ExerciseWeightHistory', 0)
-                //realm.delete(deletee);
             
         });
         console.log("Data successfully saved! ");
