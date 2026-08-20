@@ -42,6 +42,7 @@ export class WorkoutTemplate extends Realm.Object {
         primaryKey: 'id',
         properties: {
             id:'int',
+            category:'string?',
             timestamp: 'int',
             exercise: 'Exercise?',
         },
