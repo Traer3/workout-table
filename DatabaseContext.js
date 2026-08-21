@@ -85,8 +85,7 @@ export const DatabaseProvider = ({ children }) => {
             }, 'modified');
             */
             
-            
-            
+            /*
             realm.create('ExerciseWeightHistory', {
                 id: 12 ,
                 timestamp: Math.floor(Date.now() / 1000),
@@ -96,9 +95,67 @@ export const DatabaseProvider = ({ children }) => {
                     value: 7.5 
                 }
             }, 'modified');
+            */
 
+            /*
+            realm.create('WorkoutTemplate', {
+                id: 0,
+                category:'Forearms',
+                timestamp: currentDate,
+                exercise: {
+                    exerciseKey: 'RWC',
+                    fullName: 'Reverse Wrist Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 1,
+                category:'Arms',
+                timestamp: currentDate,
+                exercise: {
+                    exerciseKey: 'BC',
+                    fullName: 'Barbell Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 2,
+                category:'Core',
+                timestamp: currentDate,
+                exercise: {
+                    exerciseKey: 'SU',
+                    fullName: 'Sit Ups',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 3,
+                category:'Back',
+                timestamp: currentDate,
+                exercise: {
+                    exerciseKey: 'BR',
+                    fullName: 'Barbell Row',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 4,
+                category:'Legs',
+                timestamp: currentDate,
+                exercise: {
+                    exerciseKey: 'Sq',
+                    fullName: 'Squats',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+            */
             
         });
+        
         console.log("Data successfully saved! ");
     };
 

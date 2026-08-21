@@ -2,15 +2,23 @@ import { useState } from "react";
 import { Pressable, View, StyleSheet, Text } from "react-native";
 import ExerciseBlock from "./ExerciseBlock";
 import { WorkoutDay } from "../../db/schemas";
+import { useQuery } from "../../db/realm";
 
 
- //PU: { fullName: 'Push Ups', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+
 export default function ExerciseMain({ newDay, setNewDay }) {
 
-    console.log("schema: ", WorkoutDay.schema)
+    const allTemplate = useQuery('WorkoutTemplate');
+    //console.log("allTemplate: ", allTemplate)
+    const allCategories= [...new Set(allTemplate.map(template => template.category))]
+    console.log("allCategories: ", allCategories);
+
     return (
         <View style={styles.exerciseMainBody}>
-            <ExerciseBlock newDay={newDay} setNewDay={setNewDay} columeName={'Arms'}/>
+            <ExerciseBlock categories={allCategories}/>
+            {/*
+            тут будет еще один блок с категориями, ток с иконками
+            */}
         </View>
     )
 };
@@ -21,9 +29,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         height:"80%",
+        
         margin: 5,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     },
     exerciseBody: {
         borderColor: 'yellow',
