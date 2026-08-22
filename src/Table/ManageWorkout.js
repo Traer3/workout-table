@@ -19,7 +19,8 @@ export default function ManageWorkout({ editDay, setEditDay }) {
                 style={styles.outward}
                 onPressIn={() => setEditDay(!editDay)}
             >
-                <View style={styles.mainBody}>
+            </Pressable>
+            <View style={styles.mainBody}>
                     {/*Отдельная форма даты*/}
                     <DateForm newDay={newDay} setNewDay={setNewDay}/>
 
@@ -30,7 +31,6 @@ export default function ManageWorkout({ editDay, setEditDay }) {
                     <ExerciseMain newDay={newDay} setNewDay={setNewDay}/>
                     
                 </View>
-            </Pressable>
         </View>
     )
 }
@@ -40,20 +40,23 @@ const styles = StyleSheet.create({
         borderColor: 'red',
         borderWidth: 1,
         height: '100%',
-
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     outward: {
         //borderColor:'yellow',
         //borderWidth:1,
+        //backgroundColor:'yellow',
         height: '100%',
         width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center'
+        
     },
     mainBody: {
+        position:'absolute',
         borderColor: 'green',
         borderWidth: 1,
         height: '93%',
-        width: '90%'
+        width: '90%',
+        
     },
 });

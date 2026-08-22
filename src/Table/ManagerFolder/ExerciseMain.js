@@ -12,13 +12,14 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     const allTemplate = useQuery('WorkoutTemplate');
     //console.log("allTemplate: ", allTemplate)
     const allCategories= [...new Set(allTemplate.map(template => template.category))]
-    console.log("allCategories: ", allCategories);
+    //console.log("allCategories: ", allCategories);
 
     return (
         <View style={styles.exerciseMainBody}>
             {false ? <ExerciseBlock categories={allCategories}/>
             :
-            <ExerciseBlockIcons categories={allCategories}/>    
+            <ExerciseBlockIcons categories={allCategories}/>
+                
             }
         </View>
     )
@@ -26,8 +27,8 @@ export default function ExerciseMain({ newDay, setNewDay }) {
 
 const styles = StyleSheet.create({
     exerciseMainBody:{
-        borderColor: 'red',
-        borderWidth: 1,
+        //borderColor: 'red',
+        borderWidth: 0.1,
         borderRadius: 5,
         height:"80%",
         

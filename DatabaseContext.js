@@ -152,8 +152,52 @@ export const DatabaseProvider = ({ children }) => {
                     reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
                 },
             }, 'modified');
-            */
             
+
+            realm.create('WorkoutTemplate', {
+                id: 5,
+                category:'Deltoids',
+                timestamp: currentDate,
+                exercise: {
+                    exerciseKey: 'LR',
+                    fullName: 'Lateral Raise',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 6,
+                category:'Glutes',
+                timestamp: currentDate,
+                exercise: {
+                    exerciseKey: 'LP',
+                    fullName: 'Sled 45° Leg Press',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 7,
+                category:'Chest',
+                timestamp: currentDate,
+                exercise: {
+                    exerciseKey: 'BP',
+                    fullName: 'Bench Press',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 8,
+                category:'Unique',
+                timestamp: currentDate,
+                exercise: {
+                    exerciseKey: 'RB',
+                    fullName: 'Rice Bucket',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+            */    
         });
         
         console.log("Data successfully saved! ");

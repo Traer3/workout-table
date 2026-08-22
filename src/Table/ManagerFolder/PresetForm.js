@@ -32,7 +32,7 @@ export default function PresetForm({ presetState }) {
 
 const styles = StyleSheet.create({
     presetBlock: {
-        borderWidth: 1,
+        borderWidth: 0.1,
         height: "8%",
         borderRadius: 5,
         backgroundColor: '#3D458F',

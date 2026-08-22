@@ -9,7 +9,7 @@ export default function DateForm({ newDay, setNewDay }) {
     
     //заменить useEffect на считывание кнопки согласия или другого определителя завершения проверки дня 
     useEffect(()=>{
-        console.log("date", date)
+        //console.log("date", date)
         setNewDay({'day': date})
     },[date])
     

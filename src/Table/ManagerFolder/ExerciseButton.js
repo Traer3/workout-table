@@ -39,7 +39,8 @@ export default function ExerciseButton({specialFunction, specialName, iconName})
     return (
         <View style={[styles.exerciseCell, {
             height: iconName ? "60%" : "50" , 
-            minWidth: iconName ? "60": 0,
+            minWidth: iconName ? "60": 0, 
+            
             }] }>
             <Pressable style={[styles.exerciseHeader, { backgroundColor: color ? 'rgba(76, 175, 80, 0.2)' : 'transparent' }]} onPressIn={() => onPress()}>
                 {iconName ? <Image source={icons[iconName]} style={{ width: 30, height: 30 , }} resizeMode="contain"/>   
@@ -54,12 +55,10 @@ export default function ExerciseButton({specialFunction, specialName, iconName})
 
 const styles = StyleSheet.create({
     exerciseCell: {
-        borderColor: 'red', //#2E346E
+        borderColor: '#2E346E', //#2E346E
         borderWidth: 1,
         borderRadius: 5,
-        margin: 5,
-      
-
+        margin:5
     },
     exerciseHeader: {
         borderRadius: 5,
