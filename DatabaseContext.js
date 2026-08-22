@@ -144,7 +144,7 @@ export const DatabaseProvider = ({ children }) => {
 
             realm.create('WorkoutTemplate', {
                 id: 4,
-                category:'Legs',
+                category:'Thighs',
                 timestamp: currentDate,
                 exercise: {
                     exerciseKey: 'Sq',

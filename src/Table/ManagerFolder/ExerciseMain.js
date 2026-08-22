@@ -3,6 +3,7 @@ import { Pressable, View, StyleSheet, Text } from "react-native";
 import ExerciseBlock from "./ExerciseBlock";
 import { WorkoutDay } from "../../db/schemas";
 import { useQuery } from "../../db/realm";
+import ExerciseBlockIcons from "./ExerciseBlockIcons";
 
 
 
@@ -15,10 +16,10 @@ export default function ExerciseMain({ newDay, setNewDay }) {
 
     return (
         <View style={styles.exerciseMainBody}>
-            <ExerciseBlock categories={allCategories}/>
-            {/*
-            тут будет еще один блок с категориями, ток с иконками
-            */}
+            {false ? <ExerciseBlock categories={allCategories}/>
+            :
+            <ExerciseBlockIcons categories={allCategories}/>    
+            }
         </View>
     )
 };

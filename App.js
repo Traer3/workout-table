@@ -15,7 +15,7 @@ export default function App() {
   return (
     <View style={{ height: '100%', width: '100%', backgroundColor: backgroundColor }}> 
 
-        {editDay ? //Нужно сделать loading для загрузки WorkoutTable
+        {true ? //Нужно сделать loading для загрузки WorkoutTable //editDay
           <ManageWorkout editDay={editDay} setEditDay={setEditDay}/> : 
           <WorkoutTable editDay={editDay} setEditDay={setEditDay}/> 
         }
