@@ -22,8 +22,8 @@ export default function DateForm({ newDay, setNewDay }) {
 
 const styles = StyleSheet.create({
     dateBlock: {
-        borderColor: 'red',
-        borderWidth: 1,
+        //borderColor: 'red',
+        borderWidth: 0.1,
         borderRadius: 5,
         height: '8%',
         backgroundColor: '#3D458F',

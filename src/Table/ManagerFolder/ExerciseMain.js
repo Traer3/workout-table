@@ -4,6 +4,7 @@ import ExerciseBlock from "./ExerciseBlock";
 import { WorkoutDay } from "../../db/schemas";
 import { useQuery } from "../../db/realm";
 import ExerciseBlockIcons from "./ExerciseBlockIcons";
+import ExerciseColumnHolder from "./ExerciseColumnHolder";
 
 
 
@@ -19,8 +20,9 @@ export default function ExerciseMain({ newDay, setNewDay }) {
             {false ? <ExerciseBlock categories={allCategories}/>
             :
             <ExerciseBlockIcons categories={allCategories}/>
-                
             }
+            
+            <ExerciseColumnHolder/>
         </View>
     )
 };
@@ -33,8 +35,8 @@ const styles = StyleSheet.create({
         height:"80%",
         
         margin: 5,
-        flexDirection: 'row',
-        justifyContent: 'center'
+        //flexDirection: 'row',
+        //justifyContent: 'center'
     },
     exerciseBody: {
         borderColor: 'yellow',

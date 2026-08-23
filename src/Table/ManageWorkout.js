@@ -12,7 +12,7 @@ export default function ManageWorkout({ editDay, setEditDay }) {
     const [presetState, setPresetState] = useState(true)
     const [newDay, setNewDay] = useState({});
 
-    console.log("newDay: ", newDay)
+    //console.log("newDay: ", newDay)
     return (
         <View style={styles.main}>
             <Pressable
@@ -37,8 +37,8 @@ export default function ManageWorkout({ editDay, setEditDay }) {
 
 const styles = StyleSheet.create({
     main: {
-        borderColor: 'red',
-        borderWidth: 1,
+        //borderColor: 'red',
+        //borderWidth: 1,
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center'
