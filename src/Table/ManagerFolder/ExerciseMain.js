@@ -5,45 +5,63 @@ import { WorkoutDay } from "../../db/schemas";
 import { useQuery } from "../../db/realm";
 import ExerciseBlockIcons from "./ExerciseBlockIcons";
 import ExerciseColumnHolder from "./ExerciseColumnHolder";
+import { useDatabase } from "../../../DatabaseContext";
 
 
 
 export default function ExerciseMain({ newDay, setNewDay }) {
+    const { categories } = useDatabase();
+    const allTemplates = useQuery('WorkoutTemplate');
+    
+    const initialGrouped = categories.reduce((accumulator, category)=>{
+        accumulator[category] = [];
+        return accumulator;
+    },{});
 
-    const allTemplate = useQuery('WorkoutTemplate');
-    //console.log("allTemplate: ", allTemplate)
-    const allCategories= [...new Set(allTemplate.map(template => template.category))]
-    //console.log("allCategories: ", allCategories);
+    const groupedTemplates = allTemplates.reduce((accumulator, template) => {
+        const cat = template.category;
+        if(cat && accumulator[cat]){
+            accumulator[cat].push(template);
+        }else{
+            accumulator["Unique"].push(template);
+        }
+
+        return accumulator;
+    },initialGrouped);
+
 
     return (
         <View style={styles.exerciseMainBody}>
-            {false ? <ExerciseBlock categories={allCategories}/>
-            :
-            <ExerciseBlockIcons categories={allCategories}/>
+            {false ? 
+                <View style={{alignItems:'center'}}>
+                    <ExerciseBlock categories={categories} />
+                </View>
+                :
+                <>
+                    <ExerciseBlockIcons categories={categories} />
+                    <ExerciseColumnHolder groupedTemplates={groupedTemplates} categories={categories}/>
+                </>
             }
-            
-            <ExerciseColumnHolder/>
+
+
         </View>
     )
 };
 
 const styles = StyleSheet.create({
-    exerciseMainBody:{
+    exerciseMainBody: {
         //borderColor: 'red',
         borderWidth: 0.1,
         borderRadius: 5,
-        height:"80%",
-        
+        height: "80%",
         margin: 5,
-        //flexDirection: 'row',
-        //justifyContent: 'center'
     },
     exerciseBody: {
         borderColor: 'yellow',
         borderWidth: 1,
         borderRadius: 5,
-        height:"98%",
-        width:"30%",
+        height: "98%",
+        width: "30%",
         margin: 5,
         backgroundColor: '#3D458F',
     },

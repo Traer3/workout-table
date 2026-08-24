@@ -1,14 +1,33 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import ExerciseColumn from "./ExerciseColumn";
+import { useCallback } from "react";
 
 
+//Мне нужно создать ExerciseColumn и ExerciseColumFrom 
+
+export default function ExerciseColumnHolder ({groupedTemplates, categories}) {
 
 
-export default function ExerciseColumnHolder ({}) {
+    const renderItem = useCallback(({ item, index }) => (
+            
+            <ExerciseColumn
+                //specialName={item}
+            />
+        ));
+
     return(
         <View style={styles.exerciseMainBody}>
-            {/*Надо будет ебануть FlatList который будет горизонтально держать эти колонки */}
-            <ExerciseColumn/>
+            {/*Этот FlatList будет деражать ВСЕ колонки с категориями*/}
+            <FlatList 
+                style={styles.flatListConteiner}
+                contentContainerStyle={styles.flatListContet}
+                data={categories}
+                renderItem={renderItem}
+                horizontal={true}
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={false}
+            />
+            
         </View>
     )
 };
@@ -21,8 +40,8 @@ const styles = StyleSheet.create({
         height:'90%',
         
         margin: 5,
-        justifyContent:'center',
-        alignItems:'center'
+        //justifyContent:'center',
+        //alignItems:'center'
     },
     exerciseBody: {
         borderColor: 'yellow',
@@ -32,5 +51,17 @@ const styles = StyleSheet.create({
         width:"30%",
         margin: 5,
         backgroundColor: '#3D458F',
+    },
+    flatListConteiner: {
+        height: "100%",
+        width: '100%',
+        borderWidth: 1,
+        borderColor:'yellow',
+        
+      },
+      flatListContet: {
+        justifyContent:'center',
+        //alignItems:'center',
+               
     },
 });

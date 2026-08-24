@@ -1,51 +1,56 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import ExerciseButton from "./ExerciseButton";
+import { useCallback } from "react";
+import ExerciseColumnForm from "./ExerciseColumnFrom";
 
 
 
-export default function ExerciseColumn({}) {
-    return(
-        
-            <View style={[styles.exerciseMainBody ]}>
-                {true && <View style={[styles.glassOverlay]}/>}
-                {/*Эта хуйня будет ВСЕГДА в блюре, только по указу можно убрать блюр*/}
-                <View style={{
-                    alignItems:'center'
-                }}>
-                    <ExerciseButton specialName={'kys'}/>
-                </View>
+export default function ExerciseColumn({category, templates}) {
+    const renderItem = useCallback(({ item, index }) => (
             
+        <ExerciseColumnForm
+            specialName={item}
+        />
+    ));
+    
+    return(
+            <View style={[styles.exerciseMainBody ]}>
+                 {/*Эта хуйня будет создавать FlatList и используя форму отображать формы ExerciseColumnForm */}
+                <FlatList 
+                    style={styles.flatListConteiner}
+                    contentContainerStyle={styles.flatListContet}
+                    data={["template","kys","mega kys","kysiti","template1","kys1","mega kys1","kysiti1",]}
+                    renderItem={renderItem}
+                    
+                    scrollEnabled={true}
+                    //showsVerticalScrollIndicator={false}
+                />
         </View>
     )
 };
 
 const styles = StyleSheet.create({
     exerciseMainBody:{
-        borderColor: 'white',
-        borderWidth: 1,
+        borderColor: 'red',
+        borderWidth: 2,
         borderRadius: 5,
         height:"95%",
-        width:"37%",
+        width:"137",//37%
         margin: 5,
-        alignItems:'center',
+        //alignItems:'center',
         backgroundColor: '#3D458F',
     },
-    glassOverlay:{
-        position:'absolute',
-        borderRadius: 5,
-        backgroundColor:'rgba(61, 69, 143, 0.9)',
-        backfaceVisibility:'visible',
-        height:"100%",
-        width:'100%',
-        zIndex:999
-    },
-    exerciseBody: {
-        borderColor: 'yellow',
+
+    flatListConteiner: {
+        //height: "100%",
+        //width: '100%',
         borderWidth: 1,
-        borderRadius: 5,
-        height:"98%",
-        width:"30%",
-        margin: 5,
-        backgroundColor: '#3D458F',
+        borderColor:'green',
+
+      },
+      flatListContet: {
+        //justifyContent:'center',
+        //alignItems:'center',
+        //flexDirection:'column'
     },
 });

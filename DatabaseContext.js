@@ -14,6 +14,7 @@ const STORAGE_NAME = '@workout_dataTEST';
 
 export const DatabaseProvider = ({ children }) => {
     const realm = useRealm();
+    const categories = ["Neck", "Deltoids", "Chest", "Back", "Arms" , "Forearms", "Core", "Glutes", "Thighs", "Calves", "Unique"];
     const saveDemoWorkout = () => {
         realm.write(() => {
             const currentDate = Math.floor(Date.now() / 1000)
@@ -288,7 +289,8 @@ export const DatabaseProvider = ({ children }) => {
                 loading,
                 setLoading,
                 getFormattedDate,
-                checkHours
+                checkHours,
+                categories
             }}
         >
             {children}
