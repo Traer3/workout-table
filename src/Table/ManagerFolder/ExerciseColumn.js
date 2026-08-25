@@ -1,29 +1,34 @@
 import { View, StyleSheet, FlatList } from "react-native";
 import ExerciseButton from "./ExerciseButton";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import ExerciseColumnForm from "./ExerciseColumnFrom";
 
 
 
 export default function ExerciseColumn({category, templates}) {
-    const renderItem = useCallback(({ item, index }) => (
-            
+   //console.log("category", category)
+   
+
+    const renderItem = useCallback(({ item, }) => {
+        const name = item.exercise.fullName
+        
+        return(
         <ExerciseColumnForm
-            specialName={item}
+            specialName={name}
         />
-    ));
-    
+    )});
     return(
             <View style={[styles.exerciseMainBody ]}>
-                 {/*Эта хуйня будет создавать FlatList и используя форму отображать формы ExerciseColumnForm */}
+                {/*нужно передать ему указания что бы был в блюре */}
+                {false && <View style={[styles.glassOverlay]}/>}
                 <FlatList 
+                    
                     style={styles.flatListConteiner}
                     contentContainerStyle={styles.flatListContet}
-                    data={["template","kys","mega kys","kysiti","template1","kys1","mega kys1","kysiti1",]}
-                    renderItem={renderItem}
+                    data={templates[category]}
+                    renderItem={renderItem}                    
+                    showsVerticalScrollIndicator={false}
                     
-                    scrollEnabled={true}
-                    //showsVerticalScrollIndicator={false}
                 />
         </View>
     )
@@ -31,10 +36,10 @@ export default function ExerciseColumn({category, templates}) {
 
 const styles = StyleSheet.create({
     exerciseMainBody:{
-        borderColor: 'red',
-        borderWidth: 2,
+        //borderColor: 'red',
+        borderWidth: 0.1,
         borderRadius: 5,
-        height:"95%",
+        height:"98%",
         width:"137",//37%
         margin: 5,
         //alignItems:'center',
@@ -44,13 +49,23 @@ const styles = StyleSheet.create({
     flatListConteiner: {
         //height: "100%",
         //width: '100%',
-        borderWidth: 1,
-        borderColor:'green',
+        borderWidth: 0.1,
+        //borderColor:'green',
 
       },
       flatListContet: {
         //justifyContent:'center',
         //alignItems:'center',
-        //flexDirection:'column'
+        //flexDirection:'row',
+        
+    },
+    glassOverlay:{
+        position:'absolute',
+        //borderRadius: 5,
+        backgroundColor:'rgba(61, 69, 143, 0.9)',
+        backfaceVisibility:'visible',
+        height:"100%",
+        width:'100%',
+        zIndex:999
     },
 });

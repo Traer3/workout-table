@@ -27,15 +27,15 @@ const icons = {
 
 }
 
-export default function ExerciseButton({specialFunction, specialName, iconName}) {
+export default function ExerciseButton({specialFunction, specialName, iconName,}) {
     const [color, setColor] = useState(false)
     function onPress() {
         setColor(prev => !prev)
         if(!specialFunction) return
-        console.log("yes")
-        specialFunction()
+        console.log(specialName)
+        specialFunction(specialName)
     }
-
+    
     return (
         <View style={[styles.exerciseCell, {
             height: iconName ? "60%" : "50" , 
@@ -55,8 +55,8 @@ export default function ExerciseButton({specialFunction, specialName, iconName})
 
 const styles = StyleSheet.create({
     exerciseCell: {
-        borderColor: '#2E346E', //#2E346E
-        borderWidth: 1,
+        borderColor: '#2E346E', 
+        borderWidth: 0.2,
         borderRadius: 5,
         margin:5
     },

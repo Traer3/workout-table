@@ -3,13 +3,14 @@ import { Pressable, View, StyleSheet, Text, FlatList } from "react-native";
 import ExerciseButton from "./ExerciseButton";
 import { useCallback } from "react";
 
-export default function ExerciseBlockIcons({ categories }) {
+export default function ExerciseBlockIcons({ categories, specialFunction }) {
     //console.log("categories: ", categories)
     //const test = ["Forearms", "Arms", "Core", "Back", "Legs", "Forearms2", "Arms2", "Core2", "Back2", "Legs2", "Forearms3", "Arms4", "Core5", "Back6", "Legs7"]
     const renderItem = useCallback(({ item, index }) => (
         <ExerciseButton
             specialName={item}
             iconName={item}
+            specialFunction={specialFunction}
         />
     ));
 

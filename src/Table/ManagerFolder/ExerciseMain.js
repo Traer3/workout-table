@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Pressable, View, StyleSheet, Text } from "react-native";
 import ExerciseBlock from "./ExerciseBlock";
 import { WorkoutDay } from "../../db/schemas";
@@ -12,6 +12,8 @@ import { useDatabase } from "../../../DatabaseContext";
 export default function ExerciseMain({ newDay, setNewDay }) {
     const { categories } = useDatabase();
     const allTemplates = useQuery('WorkoutTemplate');
+    const [index , setIndex] = useState(0);
+
     
     const initialGrouped = categories.reduce((accumulator, category)=>{
         accumulator[category] = [];
@@ -29,6 +31,12 @@ export default function ExerciseMain({ newDay, setNewDay }) {
         return accumulator;
     },initialGrouped);
 
+    function changeIndex(newName) {
+        console.log("new Name: ", newName)
+        setIndex(categories.indexOf(newName));
+        console.log("c: ", categories.indexOf(newName))
+    }
+
 
     return (
         <View style={styles.exerciseMainBody}>
@@ -38,8 +46,8 @@ export default function ExerciseMain({ newDay, setNewDay }) {
                 </View>
                 :
                 <>
-                    <ExerciseBlockIcons categories={categories} />
-                    <ExerciseColumnHolder groupedTemplates={groupedTemplates} categories={categories}/>
+                    <ExerciseBlockIcons categories={categories} specialFunction={changeIndex}/>
+                    <ExerciseColumnHolder groupedTemplates={groupedTemplates} categories={categories} index={index}/>
                 </>
             }
 
