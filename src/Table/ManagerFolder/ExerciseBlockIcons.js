@@ -12,7 +12,7 @@ export default function ExerciseBlockIcons({ categories, specialFunction }) {
             iconName={item}
             specialFunction={specialFunction}
         />
-    ));
+    ),[]);
 
     return (
         <View style={styles.exerciseBody}>

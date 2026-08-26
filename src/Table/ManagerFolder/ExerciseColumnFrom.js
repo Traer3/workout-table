@@ -1,19 +1,19 @@
 import { View, StyleSheet } from "react-native";
 import ExerciseButton from "./ExerciseButton";
+import { memo } from "react";
 
-
-
-export default function ExerciseColumnForm({specialName}) {
+const ExerciseColumnForm = memo(({specialName})=>{
     return(
+        <View style={[styles.exerciseMainBody ]}>
+            <View style={{ alignItems:'center'}}>
+                <ExerciseButton specialName={specialName} />
+            </View>
         
-            <View style={[styles.exerciseMainBody ]}>
-                <View style={{ alignItems:'center'}}>
-                    <ExerciseButton specialName={specialName}/>
-                </View>
-            
-        </View>
-    )
-};
+    </View>
+)
+})
+
+export default ExerciseColumnForm;
 
 const styles = StyleSheet.create({
     exerciseMainBody:{

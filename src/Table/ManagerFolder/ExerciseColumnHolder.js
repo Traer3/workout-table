@@ -17,13 +17,12 @@ export default function ExerciseColumnHolder({ groupedTemplates, categories, ind
         }, 100)
     }, [index])
 
-    const renderItem = useCallback(({ item, index }) => (
-
+    const renderItem = useCallback(({ item }) => (
         <ExerciseColumn
             templates={groupedTemplates}
             category={item}
         />
-    ));
+    ),[]); 
 
     return (
         <View style={styles.exerciseMainBody}>

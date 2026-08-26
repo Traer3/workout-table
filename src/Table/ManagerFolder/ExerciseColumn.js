@@ -1,22 +1,17 @@
 import { View, StyleSheet, FlatList } from "react-native";
 import ExerciseButton from "./ExerciseButton";
-import { useCallback, useRef } from "react";
+import { memo, useCallback, useRef } from "react";
 import ExerciseColumnForm from "./ExerciseColumnFrom";
 
 
-
-export default function ExerciseColumn({category, templates}) {
-   //console.log("category", category)
-   
-
+const ExerciseColumn = memo(({category, templates,})=>{
     const renderItem = useCallback(({ item, }) => {
         const name = item.exercise.fullName
-        
         return(
         <ExerciseColumnForm
             specialName={name}
         />
-    )});
+    )},[]);
     return(
             <View style={[styles.exerciseMainBody ]}>
                 {/*нужно передать ему указания что бы был в блюре */}
@@ -32,7 +27,8 @@ export default function ExerciseColumn({category, templates}) {
                 />
         </View>
     )
-};
+})
+export default ExerciseColumn;
 
 const styles = StyleSheet.create({
     exerciseMainBody:{
