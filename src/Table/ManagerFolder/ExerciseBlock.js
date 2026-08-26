@@ -1,16 +1,16 @@
-import { useState } from "react";
-import { Pressable, View, StyleSheet, Text, FlatList } from "react-native";
+import { memo } from "react";
+import { View, StyleSheet, FlatList } from "react-native";
 import ExerciseButton from "./ExerciseButton";
 import { useCallback } from "react";
 
-export default function ExerciseBlock({ categories }) {
-    console.log("categories: ", categories)
-    //const test = ["Forearms", "Arms", "Core", "Back", "Legs", "Forearms2", "Arms2", "Core2", "Back2", "Legs2", "Forearms3", "Arms4", "Core5", "Back6", "Legs7"]
+const ExerciseBlock = memo(({ categories , colorFunction, activeCategory}) => {
     const renderItem = useCallback(({ item, index }) => (
         <ExerciseButton
             specialName={item}
+            colorFunction={colorFunction}
+            activeCategory={activeCategory}
         />
-    ));
+    ),[activeCategory, colorFunction]);
 
     return (
         <View style={styles.exerciseBody}>
@@ -23,7 +23,8 @@ export default function ExerciseBlock({ categories }) {
         </View>
 
     )
-};
+});
+export default ExerciseBlock;
 
 const styles = StyleSheet.create({
 

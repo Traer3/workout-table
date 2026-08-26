@@ -24,18 +24,15 @@ const icons = {
     Thighs: thighs,
     Calves: calves,
     Unique: unique,
-
 }
 
-const ExerciseButton = memo(({ specialFunction, specialName, iconName }) => {
-    const [color, setColor] = useState(false)
+const ExerciseButton = memo(({ specialFunction, specialName, iconName, colorFunction, activeCategory }) => {
+    const isActive = activeCategory === specialName;
     function onPress() {
-        setColor(prev => prev = true)
+        colorFunction(specialName)
         if (!specialFunction) return
-            //console.log(specialName)
         specialFunction(specialName)
     };
-
 
     return (
         <View style={[styles.exerciseCell, {
@@ -44,9 +41,8 @@ const ExerciseButton = memo(({ specialFunction, specialName, iconName }) => {
 
         }]}>
             <Pressable
-                style={[styles.exerciseHeader, { backgroundColor: color ? 'rgba(76, 175, 80, 0.2)' : 'transparent' }]}
+                style={[styles.exerciseHeader, { backgroundColor: isActive ? 'rgba(76, 175, 80, 0.2)' : 'transparent' }]}
                 onPress={() => onPress()}
-            //onPressOut={()=>reversColor()}
             >
                 {iconName ? <Image source={icons[iconName]} style={{ width: 30, height: 30, }} resizeMode="contain" />
                     :

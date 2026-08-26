@@ -1,18 +1,17 @@
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import { Pressable, View, StyleSheet, Text, FlatList } from "react-native";
 import ExerciseButton from "./ExerciseButton";
-import { useCallback } from "react";
 
-export default function ExerciseBlockIcons({ categories, specialFunction }) {
-    //console.log("categories: ", categories)
-    //const test = ["Forearms", "Arms", "Core", "Back", "Legs", "Forearms2", "Arms2", "Core2", "Back2", "Legs2", "Forearms3", "Arms4", "Core5", "Back6", "Legs7"]
+const ExerciseBlockIcons = memo(({ categories, specialFunction, colorFunction, activeCategory }) => {
     const renderItem = useCallback(({ item, index }) => (
         <ExerciseButton
             specialName={item}
             iconName={item}
             specialFunction={specialFunction}
+            colorFunction={colorFunction}
+            activeCategory={activeCategory}
         />
-    ),[]);
+    ), [specialFunction, activeCategory, colorFunction]);
 
     return (
         <View style={styles.exerciseBody}>
@@ -24,15 +23,15 @@ export default function ExerciseBlockIcons({ categories, specialFunction }) {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}
-                
+
             />
         </View>
 
     )
-};
+});
+export default ExerciseBlockIcons;
 
 const styles = StyleSheet.create({
-
     exerciseBody: {
         borderColor: '#2E346E', //#2E346E
         borderWidth: 0.1,
@@ -41,8 +40,8 @@ const styles = StyleSheet.create({
         width: "100%",
         //margin: 5,
         backgroundColor: '#3D458F',
-        justifyContent:'center',
-        alignItems:'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     flatListConteiner: {
         height: "100%",
@@ -51,8 +50,8 @@ const styles = StyleSheet.create({
         //borderColor:'green',       
     },
     flatListContet: {
-        justifyContent:'center',
-        alignItems:'center',
-               
+        justifyContent: 'center',
+        alignItems: 'center',
+
     },
 });

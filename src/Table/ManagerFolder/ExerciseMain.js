@@ -1,57 +1,53 @@
-import { useRef, useState } from "react";
-import { Pressable, View, StyleSheet, Text } from "react-native";
+import { useCallback, useState } from "react";
+import { View, StyleSheet, Text } from "react-native";
 import ExerciseBlock from "./ExerciseBlock";
-import { WorkoutDay } from "../../db/schemas";
 import { useQuery } from "../../db/realm";
 import ExerciseBlockIcons from "./ExerciseBlockIcons";
 import ExerciseColumnHolder from "./ExerciseColumnHolder";
 import { useDatabase } from "../../../DatabaseContext";
 
-
-
 export default function ExerciseMain({ newDay, setNewDay }) {
     const { categories } = useDatabase();
     const allTemplates = useQuery('WorkoutTemplate');
-    const [index , setIndex] = useState(0);
+    const [index, setIndex] = useState(0);
+    const [activeCategory, setActiveCategory] = useState(null);
 
-    
-    const initialGrouped = categories.reduce((accumulator, category)=>{
+    const initialGrouped = categories.reduce((accumulator, category) => {
         accumulator[category] = [];
         return accumulator;
-    },{});
+    }, {});
 
     const groupedTemplates = allTemplates.reduce((accumulator, template) => {
         const cat = template.category;
-        if(cat && accumulator[cat]){
+        if (cat && accumulator[cat]) {
             accumulator[cat].push(template);
-        }else{
+        } else {
             accumulator["Unique"].push(template);
         }
 
         return accumulator;
-    },initialGrouped);
+    }, initialGrouped);
 
-    function changeIndex(newName) {
-        console.log("new Name: ", newName)
+    const changeIndex = useCallback((newName) => {
         setIndex(categories.indexOf(newName));
-        console.log("c: ", categories.indexOf(newName))
-    }
+    }, [])
 
+    const handelActiveButtons = useCallback((categoryName) => {
+        setActiveCategory(categoryName);
+    }, [])
 
     return (
         <View style={styles.exerciseMainBody}>
-            {false ? 
-                <View style={{alignItems:'center'}}>
-                    <ExerciseBlock categories={categories} />
-                </View>
-                :
+            {activeCategory ? //можно чет лучше придумать с возможностью возвращатся , тип нажал на присет и вернулся или случайно вышел , а оно сохранило
                 <>
-                    <ExerciseBlockIcons categories={categories} specialFunction={changeIndex}/>
-                    <ExerciseColumnHolder groupedTemplates={groupedTemplates} categories={categories} index={index}/>
+                    <ExerciseBlockIcons categories={categories} specialFunction={changeIndex} colorFunction={handelActiveButtons} activeCategory={activeCategory} />
+                    <ExerciseColumnHolder groupedTemplates={groupedTemplates} categories={categories} index={index} />
                 </>
+                :
+                <View style={{ alignItems: 'center' }}>
+                    <ExerciseBlock categories={categories} colorFunction={handelActiveButtons} activeCategory={activeCategory} />
+                </View>
             }
-
-
         </View>
     )
 };

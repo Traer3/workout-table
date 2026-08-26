@@ -2,12 +2,9 @@ import { View, StyleSheet, FlatList } from "react-native";
 import ExerciseColumn from "./ExerciseColumn";
 import { useCallback, useEffect, useRef } from "react";
 
-
-//Мне нужно создать ExerciseColumn и ExerciseColumFrom 
-
 export default function ExerciseColumnHolder({ groupedTemplates, categories, index }) {
-
     const flatListRef = useRef(null);
+
     useEffect(() => {
         setTimeout(() => {
             flatListRef.current.scrollToIndex({
@@ -22,7 +19,7 @@ export default function ExerciseColumnHolder({ groupedTemplates, categories, ind
             templates={groupedTemplates}
             category={item}
         />
-    ),[]); 
+    ), []);
 
     return (
         <View style={styles.exerciseMainBody}>
