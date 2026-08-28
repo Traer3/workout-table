@@ -11,6 +11,8 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     const allTemplates = useQuery('WorkoutTemplate');
     const [index, setIndex] = useState(0);
     const [activeCategory, setActiveCategory] = useState(null);
+    const selectedExercises = new Set()
+    
 
     const initialGrouped = categories.reduce((accumulator, category) => {
         accumulator[category] = [];
@@ -34,14 +36,22 @@ export default function ExerciseMain({ newDay, setNewDay }) {
 
     const handelActiveButtons = useCallback((categoryName) => {
         setActiveCategory(categoryName);
-    }, [])
+    }, []);
+
+    const colectAllExercises = useCallback((exerciseName)=>{
+        selectedExercises.add(exerciseName);
+            //console.log("colectAllExercises: ", selectedExercises)
+        
+        return selectedExercises;
+    },[]);
+
 
     return (
         <View style={styles.exerciseMainBody}>
             {activeCategory ? //можно чет лучше придумать с возможностью возвращатся , тип нажал на присет и вернулся или случайно вышел , а оно сохранило
                 <>
                     <ExerciseBlockIcons categories={categories} specialFunction={changeIndex} colorFunction={handelActiveButtons} activeCategory={activeCategory} />
-                    <ExerciseColumnHolder groupedTemplates={groupedTemplates} categories={categories} index={index} />
+                    <ExerciseColumnHolder groupedTemplates={groupedTemplates} categories={categories} index={index} colectAllExercises={colectAllExercises}/>
                 </>
                 :
                 <View style={{ alignItems: 'center' }}>

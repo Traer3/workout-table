@@ -1,12 +1,25 @@
 import { View, StyleSheet } from "react-native";
 import ExerciseButton from "./ExerciseButton";
-import { memo, } from "react";
+import { memo, useCallback, } from "react";
 
-const ExerciseColumnForm = memo(({ specialName }) => {
+const ExerciseColumnForm = memo(({ specialName, specialFunction, selected }) => {
+
+    const FormButton = useCallback(({selected}) => {
+        const getAnser = specialFunction();
+        console.log("getAnser: ", getAnser)
+        return(
+        <ExerciseButton
+            specialName={specialName}
+            specialFunction={specialFunction}
+            activeCategory={selected}
+        //selected={selected}
+        />
+    )}, [selected])
+
     return (
         <View style={[styles.exerciseMainBody]}>
             <View style={{ alignItems: 'center' }}>
-                <ExerciseButton specialName={specialName} />
+                <FormButton selected={selected}/>
             </View>
         </View>
     )

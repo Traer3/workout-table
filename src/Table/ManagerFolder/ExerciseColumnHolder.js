@@ -2,7 +2,7 @@ import { View, StyleSheet, FlatList } from "react-native";
 import ExerciseColumn from "./ExerciseColumn";
 import { useCallback, useEffect, useRef } from "react";
 
-export default function ExerciseColumnHolder({ groupedTemplates, categories, index }) {
+export default function ExerciseColumnHolder({ groupedTemplates, categories, index, colectAllExercises }) {
     const flatListRef = useRef(null);
 
     useEffect(() => {
@@ -18,6 +18,7 @@ export default function ExerciseColumnHolder({ groupedTemplates, categories, ind
         <ExerciseColumn
             templates={groupedTemplates}
             category={item}
+            colectAllExercises={colectAllExercises}
         />
     ), []);
 

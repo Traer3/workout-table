@@ -26,19 +26,29 @@ const icons = {
     Unique: unique,
 }
 
-const ExerciseButton = memo(({ specialFunction, specialName, iconName, colorFunction, activeCategory }) => {
-    const isActive = activeCategory === specialName;
+const ExerciseButton = memo(({ specialFunction, specialName, iconName, colorFunction, activeCategory, selected }) => {
+        //console.log("activeCategory: " ,activeCategory, "   ", specialName)
+    //let isActive = activeCategory === specialName
+    let isActive = [activeCategory].includes(specialName); 
+
+    /*
+    //|| selected.includes(specialName);
+    console.log("selected: ", selected)
+    if(selected && selected.length > 0){
+        console.log("working ",)
+        isActive = selected.includes(specialName)
+        console.log("isActive: ", isActive)
+    }
+    */
     function onPress() {
-        colorFunction(specialName)
-        if (!specialFunction) return
-        specialFunction(specialName)
+        if(colorFunction) colorFunction(specialName)
+        if (specialFunction) specialFunction(specialName)
     };
 
     return (
         <View style={[styles.exerciseCell, {
             height: iconName ? "60%" : "50",
             minWidth: iconName ? "60" : 0,
-
         }]}>
             <Pressable
                 style={[styles.exerciseHeader, { backgroundColor: isActive ? 'rgba(76, 175, 80, 0.2)' : 'transparent' }]}
@@ -47,7 +57,6 @@ const ExerciseButton = memo(({ specialFunction, specialName, iconName, colorFunc
                 {iconName ? <Image source={icons[iconName]} style={{ width: 30, height: 30, }} resizeMode="contain" />
                     :
                     <Text style={{ color: 'white', fontWeight: '600' }}>{specialName}</Text>
-
                 }
             </Pressable>
         </View>
