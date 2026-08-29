@@ -3,37 +3,18 @@ import { memo, useCallback, useRef } from "react";
 import ExerciseColumnForm from "./ExerciseColumnFrom";
 
 
-const ExerciseColumn = memo(({ category, templates, colectAllExercises}) => {
-    /*
-        1. По нажатию я должен видеть что было выбрано и находится внутри colected
-        - Нужно видеть сразу группу и тренировки 
-        2. По повтороному нажатию я удаляю из colected 
-        - colected.delete(exerciseName) Работает , это удяляет сразу внутри основного selectedExercises
-        
-        Пройтись по colected и узнать что уже нужно подсветить из нажатого 
-
-    */
-    
-    let selected;
-
-    const selectExercise = useCallback((exerciseName)=>{
-        const colected = colectAllExercises(exerciseName);
-        return [...colected];
-        //console.log("colected: ", colected)
-        //console.log("selected: ", selected)
-    },[selected])
+const ExerciseColumn = memo(({ category, templates, colectAllExercises, selectedExercises }) => {
 
     const renderItem = useCallback(({ item }) => {
         const name = item.exercise.fullName
         return (
             <ExerciseColumnForm
                 specialName={name}
-                colectAllExercises={colectAllExercises}
-                specialFunction={selectExercise}
-                selected={selected}
+                specialFunction={colectAllExercises}
+                selectedExercises={selectedExercises}
             />
         )
-    }, [colectAllExercises]);
+    }, [selectedExercises]);
     return (
         <View style={[styles.exerciseMainBody]}>
             {/*нужно передать ему указания что бы был в блюре */}

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import ExerciseBlock from "./ExerciseBlock";
 import { useQuery } from "../../db/realm";
@@ -11,8 +11,8 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     const allTemplates = useQuery('WorkoutTemplate');
     const [index, setIndex] = useState(0);
     const [activeCategory, setActiveCategory] = useState(null);
-    const selectedExercises = new Set()
-    
+    const [selectedExercises, setSelectedExercises] = useState(new Set());
+
 
     const initialGrouped = categories.reduce((accumulator, category) => {
         accumulator[category] = [];
@@ -38,12 +38,17 @@ export default function ExerciseMain({ newDay, setNewDay }) {
         setActiveCategory(categoryName);
     }, []);
 
-    const colectAllExercises = useCallback((exerciseName)=>{
-        selectedExercises.add(exerciseName);
-            //console.log("colectAllExercises: ", selectedExercises)
-        
-        return selectedExercises;
-    },[]);
+    const colectAllExercises = useCallback((exerciseName) => {
+        setSelectedExercises((prev) => {
+            const nextSet = new Set(prev);
+            if (nextSet.has(exerciseName)) {
+                nextSet.delete(exerciseName);
+            } else {
+                nextSet.add(exerciseName);
+            }
+            return nextSet;
+        })
+    }, []);
 
 
     return (
@@ -51,7 +56,13 @@ export default function ExerciseMain({ newDay, setNewDay }) {
             {activeCategory ? //можно чет лучше придумать с возможностью возвращатся , тип нажал на присет и вернулся или случайно вышел , а оно сохранило
                 <>
                     <ExerciseBlockIcons categories={categories} specialFunction={changeIndex} colorFunction={handelActiveButtons} activeCategory={activeCategory} />
-                    <ExerciseColumnHolder groupedTemplates={groupedTemplates} categories={categories} index={index} colectAllExercises={colectAllExercises}/>
+                    <ExerciseColumnHolder
+                        groupedTemplates={groupedTemplates}
+                        categories={categories}
+                        index={index}
+                        colectAllExercises={colectAllExercises}
+                        selectedExercises={selectedExercises}
+                    />
                 </>
                 :
                 <View style={{ alignItems: 'center' }}>

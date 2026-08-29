@@ -26,22 +26,18 @@ const icons = {
     Unique: unique,
 }
 
-const ExerciseButton = memo(({ specialFunction, specialName, iconName, colorFunction, activeCategory, selected }) => {
-        //console.log("activeCategory: " ,activeCategory, "   ", specialName)
-    //let isActive = activeCategory === specialName
-    let isActive = [activeCategory].includes(specialName); 
-
-    /*
-    //|| selected.includes(specialName);
-    console.log("selected: ", selected)
-    if(selected && selected.length > 0){
-        console.log("working ",)
-        isActive = selected.includes(specialName)
-        console.log("isActive: ", isActive)
+const ExerciseButton = memo(({ specialFunction, specialName, iconName, colorFunction, activeCategory, }) => {
+    //console.log("activeCategory: ", activeCategory)
+    let isActive
+    if (activeCategory === specialName) {
+        isActive = true
     }
-    */
+    if (activeCategory instanceof Set) {
+        isActive = [...activeCategory].includes(specialName);
+    }
+
     function onPress() {
-        if(colorFunction) colorFunction(specialName)
+        if (colorFunction) colorFunction(specialName)
         if (specialFunction) specialFunction(specialName)
     };
 
@@ -51,7 +47,7 @@ const ExerciseButton = memo(({ specialFunction, specialName, iconName, colorFunc
             minWidth: iconName ? "60" : 0,
         }]}>
             <Pressable
-                style={[styles.exerciseHeader, { backgroundColor: isActive ? 'rgba(76, 175, 80, 0.2)' : 'transparent' }]}
+                style={[styles.exerciseHeader, { backgroundColor: isActive ? 'rgba(76, 175, 80, 0.2)' : 'transparent', }]}
                 onPress={() => onPress()}
             >
                 {iconName ? <Image source={icons[iconName]} style={{ width: 30, height: 30, }} resizeMode="contain" />

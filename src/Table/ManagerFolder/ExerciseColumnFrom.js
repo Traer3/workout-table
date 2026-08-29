@@ -2,24 +2,22 @@ import { View, StyleSheet } from "react-native";
 import ExerciseButton from "./ExerciseButton";
 import { memo, useCallback, } from "react";
 
-const ExerciseColumnForm = memo(({ specialName, specialFunction, selected }) => {
+const ExerciseColumnForm = memo(({ specialName, specialFunction, selectedExercises }) => {
 
-    const FormButton = useCallback(({selected}) => {
-        const getAnser = specialFunction();
-        console.log("getAnser: ", getAnser)
-        return(
-        <ExerciseButton
-            specialName={specialName}
-            specialFunction={specialFunction}
-            activeCategory={selected}
-        //selected={selected}
-        />
-    )}, [selected])
+    const ColumnButton = useCallback(() => {
+        return (
+            <ExerciseButton
+                specialName={specialName}
+                specialFunction={specialFunction}
+                activeCategory={selectedExercises}
+            />
+        )
+    }, [selectedExercises])
 
     return (
         <View style={[styles.exerciseMainBody]}>
             <View style={{ alignItems: 'center' }}>
-                <FormButton selected={selected}/>
+                <ColumnButton />
             </View>
         </View>
     )
