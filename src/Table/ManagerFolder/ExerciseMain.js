@@ -11,8 +11,8 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     const allTemplates = useQuery('WorkoutTemplate');
     const [index, setIndex] = useState(0);
     const [activeCategory, setActiveCategory] = useState(null);
-    const [selectedExercises, setSelectedExercises] = useState(new Set());
-
+    const selectedExercises = new Set()
+    
 
     const initialGrouped = categories.reduce((accumulator, category) => {
         accumulator[category] = [];
