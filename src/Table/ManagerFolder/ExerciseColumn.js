@@ -3,8 +3,9 @@ import { memo, useCallback, useRef } from "react";
 import ExerciseColumnForm from "./ExerciseColumnFrom";
 
 
-const ExerciseColumn = memo(({ category, templates, colectAllExercises, selectedExercises }) => {
-
+const ExerciseColumn = memo(({ category, templates, colectAllExercises, selectedExercises, activeCategory }) => {
+    const isActive = category === activeCategory;
+    //console.log("isActive: ", isActive, " ", "category : ", category, " ", "activeCategory : ", activeCategory)
     const renderItem = useCallback(({ item }) => {
         const name = item.exercise.fullName
         return (
@@ -14,11 +15,11 @@ const ExerciseColumn = memo(({ category, templates, colectAllExercises, selected
                 selectedExercises={selectedExercises}
             />
         )
-    }, [selectedExercises]);
+    }, [selectedExercises, isActive]);
     return (
         <View style={[styles.exerciseMainBody]}>
-            {/*нужно передать ему указания что бы был в блюре */}
-            {false && <View style={[styles.glassOverlay]} />}
+
+            {!isActive && <View style={[styles.glassOverlay]} />}
             <FlatList
                 style={styles.flatListConteiner}
                 contentContainerStyle={styles.flatListContet}

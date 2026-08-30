@@ -1,12 +1,13 @@
 import { View, StyleSheet, FlatList } from "react-native";
 import ExerciseColumn from "./ExerciseColumn";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-export default function ExerciseColumnHolder({ groupedTemplates, categories, index, colectAllExercises, selectedExercises }) {
+export default function ExerciseColumnHolder({ groupedTemplates, categories, index, colectAllExercises, selectedExercises, activeCategory}) {
     const flatListRef = useRef(null);
 
     useEffect(() => {
         setTimeout(() => {
+            
             flatListRef.current.scrollToIndex({
                 index: index,
                 animated: false
@@ -21,13 +22,13 @@ export default function ExerciseColumnHolder({ groupedTemplates, categories, ind
                 category={item}
                 colectAllExercises={colectAllExercises}
                 selectedExercises={selectedExercises}
+                activeCategory={activeCategory}
             />
         )
-    }, [selectedExercises]);
+    }, [selectedExercises, activeCategory]);
 
     return (
         <View style={styles.exerciseMainBody}>
-            {/*Этот FlatList будет деражать ВСЕ колонки с категориями*/}
             <FlatList
                 ref={flatListRef}
                 style={styles.flatListConteiner}
@@ -38,6 +39,7 @@ export default function ExerciseColumnHolder({ groupedTemplates, categories, ind
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 initialNumToRender={11}
+                
             //scrollEnabled={false}
             />
 
@@ -75,9 +77,11 @@ const styles = StyleSheet.create({
 
     },
     flatListContet: {
-        justifyContent: 'center',
+        //justifyContent: 'center',
         alignItems: 'center',
         //justifyContent:'center',
+        marginLeft: 100,
+        marginLeft:100
     },
 
 });
