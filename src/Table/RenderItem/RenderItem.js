@@ -11,6 +11,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef, }) => {
   const [loading, setLoading] = useState(false);
 
   const currentDayData = useObject('WorkoutDay', item);
+  //console.log("currentDayData: ", currentDayData)
 
   const [editingCell, setEditingCell] = useState(null);
 

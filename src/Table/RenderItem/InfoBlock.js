@@ -23,11 +23,11 @@ export default function InfoBlock({ currentDayData, editingCell, setEditingCell,
         })
     }
 
-    const updateValue = (fieldKey, text, i) => {
+    const updateValue = (fieldKey, subKey, i, userData) => {
         if (!currentDayData) return;
         realm.write(() => {
-            if (currentDayData.exercises[i - 1] && currentDayData.exercises[i - 1][fieldKey]) {
-                currentDayData.exercises[i - 1][fieldKey].value = Number(text) || 0;
+            if (currentDayData.exercises[i - 1] && currentDayData.exercises[i - 1].exerciseKey === fieldKey) {
+                currentDayData.exercises[i - 1][subKey].value = Number(userData) || 0;
             }
         })
         setEditingCell(null);
@@ -73,7 +73,7 @@ export default function InfoBlock({ currentDayData, editingCell, setEditingCell,
                                                     value={textData}
                                                     onChangeText={(text) => { setTextData(text) }}
                                                     onBlur={() => setEditingCell(null)}
-                                                    onSubmitEditing={() => updateValue(name, field, textData, element, cellIndex)}
+                                                    onSubmitEditing={() => updateValue(name, field,  cellIndex, textData)}
                                                 />
                                                 <ColorPanel currentDayData={currentDayData} name={name} field={field} index={cellIndex} />
                                             </View>

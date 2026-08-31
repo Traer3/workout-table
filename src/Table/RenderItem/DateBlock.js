@@ -6,9 +6,10 @@ import { useDatabase } from "../../../DatabaseContext.js";
 import DateBlockQuestion from "./DateBlockQuestion.js";
 
 export default function DateBlock({ currentDayData, setLoading, loading }) {
+    //console.log("currentDayData?.timestamp: ", currentDayData?.timestamp)
     const { getFormattedDate } = useDatabase()
     const realm = useRealm();
-    const [date, setDate] = useState(() => getFormattedDate(currentDayData.timestamp))
+    const [date, setDate] = useState(() => getFormattedDate(currentDayData?.timestamp))
     const [question, setQuestion] = useState(false);
 
     if (!currentDayData || !currentDayData.isValid()) return null;
@@ -33,7 +34,9 @@ export default function DateBlock({ currentDayData, setLoading, loading }) {
                 <DateBlockQuestion specialFunction={changeDay} setQuestion={setQuestion} question={question} /> :
                 <Pressable
                     style={{ justifyContent: 'center', alignItems: 'center', }}
-                    onPressIn={() => { setLoading(!loading) }}
+                    onPressIn={() => { 
+                        //setLoading(!loading) 
+                    }}
                 >
                     <Pressable
                         style={{ width: "40%", }}

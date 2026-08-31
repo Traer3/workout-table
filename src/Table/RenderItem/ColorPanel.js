@@ -5,7 +5,7 @@ import { useRealm } from "../../db/realm.js";
 export default function ColorPanel({ currentDayData, name, field, mode, index }) {
 
   const realm = useRealm();
-  const updateColor = (fieldKey, text) => {
+  const updateColor = (fieldKey, subKey, color) => {
 
     if (!currentDayData || !currentDayData.isValid()) {
       return null;
@@ -20,8 +20,8 @@ export default function ColorPanel({ currentDayData, name, field, mode, index })
         return;
       }
 
-      if (currentDayData.exercises[index - 1] && currentDayData.exercises[index - 1][fieldKey]) {
-        currentDayData.exercises[index - 1][fieldKey].color = String(text) || "";
+      if (currentDayData.exercises[index - 1] && currentDayData.exercises[index - 1].exerciseKey === fieldKey) {
+        currentDayData.exercises[index - 1][subKey].color = String(color) || "";
       }
       return;
     })

@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "Workout Table(Dev)",
-    "slug": "workout-table-dev",
-    "version": "1.0.1",
+    "name": "Workout Table",
+    "slug": "workout-table",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.jpg",
     "scheme": "workouttable",
     "userInterfaceStyle": "dark",
     "android": {
-      "package": "com.myworkout.table.dev",
+      "package": "com.myworkout.table",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.jpg",
         "backgroundColor": "#2E346E"
