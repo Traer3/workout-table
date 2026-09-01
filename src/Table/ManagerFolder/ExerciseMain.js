@@ -63,6 +63,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
                         colectAllExercises={colectAllExercises}
                         selectedExercises={selectedExercises}
                         activeCategory={activeCategory}
+                        setActiveCategory={setActiveCategory}
                     />
                 </>
                 :

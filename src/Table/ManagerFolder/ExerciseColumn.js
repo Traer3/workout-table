@@ -4,7 +4,11 @@ import ExerciseColumnForm from "./ExerciseColumnFrom";
 
 
 const ExerciseColumn = memo(({ category, templates, colectAllExercises, selectedExercises, activeCategory }) => {
+    
     const isActive = category === activeCategory;
+    //console.log("isActive: ", isActive)
+    //
+
     //console.log("isActive: ", isActive, " ", "category : ", category, " ", "activeCategory : ", activeCategory)
     const renderItem = useCallback(({ item }) => {
         const name = item.exercise.fullName

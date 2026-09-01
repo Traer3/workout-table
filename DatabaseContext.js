@@ -20,7 +20,7 @@ export const DatabaseProvider = ({ children }) => {
     
     useEffect(()=>{
         if(!workoutTable || workoutTable.length === 0){
-            saveDemoWorkout()
+            //saveDemoWorkout()
         }
         
     },[])
@@ -106,202 +106,7 @@ export const DatabaseProvider = ({ children }) => {
         console.log("\n","MY BODY IS A MACHINE","\n","FOR NOW")
     }
 
-    /*
-    хуйня имеет странные проблемы с тем что бы создавать дни в цикле и записывать их 
-    Он создает через день , пропуская 0 id , 
-    создает хуй пойми как , но с патерном 
-    const saveDemoWorkout = () => {
-        let currentTimestamp = Math.floor(new Date('2026-09-01T00:00:00Z').getTime()/ 1000);
-        const ONE_DAY = 86400;
-
-        const templates = {
-            arms:[
-                { exerciseKey: 'LBTE', fullName: 'Lying Barbell Triceps Extension', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'RWC', fullName: 'Reverse Wrist Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'WC', fullName: 'Wrist Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'WSC', fullName: 'Wrist Side Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'WP', fullName: 'Wrist Pronation', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'WS', fullName: 'Wrist Suplination', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-            ],
-            legsAndAbs:[
-                { exerciseKey: 'RD', fullName: 'Romanian Deadlift', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'SU', fullName: 'Sit-Ups', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'Sq', fullName: 'Squats', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'ETK', fullName: 'Elbow To Knee', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'BSS', fullName: 'Bulgarian Split Squats', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'LR', fullName: 'Leg Raises', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'SCR', fullName: 'Standing Calf Raise', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'RT', fullName: 'Russian Twist', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-            ],
-            upperBody:[
-                { exerciseKey: 'BOR', fullName: 'Bent Over Row', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'BP', fullName: 'Bench Press', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-            ],
-        };
-
-        const schedulePattern = [
-            {template: templates.arms, restDaysAfter: 3},
-            {template: templates.legsAndAbs, restDaysAfter: 1},
-            {template: templates.upperBody, restDaysAfter: 2},
-            {template: templates.arms, restDaysAfter: 3},
-        ];
-
-        realm.write(()=>{
-            for (let i = 0; i < 30; i++) {
-                const step = schedulePattern[i % schedulePattern.length];
-
-                const clonedExercises = step.template.map(ex => ({
-                    exerciseKey: ex.exerciseKey,
-                    fullName: ex.fullName,
-                    reps1: {...ex.reps1},
-                    rest1: {...ex.rest1},
-                    reps2: {...ex.reps2},
-                    rest2: {...ex.rest2},
-                }));
-
-                realm.create('WorkoutDay',{
-                    id:i,
-                    timestamp: currentTimestamp,
-                    exercises: clonedExercises,
-                },'modified');
-
-                currentTimestamp += step.restDaysAfter * ONE_DAY;
-            }
-        });
-        console.log("\n","MY BODY IS A MACHINE","\n","FOR NOW")
-    } 
-    */
-    //old NEW
-    /*
-    const saveDemoWorkout = () => {
-        realm.write(() => {
-            const currentDate = Math.floor(Date.now() / 1000) 
-            realm.create('WorkoutDay', {
-                id:0,
-                timestamp: currentDate,
-                exercises:[{
-                    exerciseKey: 'LBTE',
-                    fullName: 'Lying Barbell Triceps Extension',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'RWC',
-                    fullName: 'Reverse Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'WC',
-                    fullName: 'Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WSC',
-                    fullName: 'Wrist Side Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WP',
-                    fullName: 'Wrist Pronation',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WS',
-                    fullName: 'Wrist Suplination',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },]
-            }, 'modified');
-
-            realm.create('WorkoutDay', {
-                id:1,
-                timestamp: currentDate,
-                exercises:[{
-                    exerciseKey: 'RD',
-                    fullName: 'Romanian Deadlift',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'SU',
-                    fullName: 'Sit-Ups',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'Sq',
-                    fullName: 'Reverse Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'ETK',
-                    fullName: 'Elbow To Knee',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'BSS',
-                    fullName: 'Bulgarian Slit Squats',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'LR',
-                    fullName: 'Leg Raises',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'SCR',
-                    fullName: 'Standing Calf Raise',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'RT',
-                    fullName: 'Russian Twist',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },]
-            }, 'modified');
-
-            realm.create('WorkoutDay', {
-                id:2,
-                timestamp: currentDate,
-                exercises:[{
-                    exerciseKey: 'BOR',
-                    fullName: 'Bent Over Row',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'BP',
-                    fullName: 'Bench Press',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                }]
-            }, 'modified');
-
-            realm.create('WorkoutDay', {
-                id:3,
-                timestamp: currentDate,
-                exercises:[{
-                    exerciseKey: 'LBTE',
-                    fullName: 'Lying Barbell Triceps Extension',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'RWC',
-                    fullName: 'Reverse Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'WC',
-                    fullName: 'Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WSC',
-                    fullName: 'Wrist Side Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WP',
-                    fullName: 'Wrist Pronation',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WS',
-                    fullName: 'Wrist Suplination',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },]
-            }, 'modified');
-          
-        });
-        
-        console.log("Data successfully saved! ");
-    };
-    */
+    
 
 
     const uploadToDrive = async () => {
@@ -510,3 +315,199 @@ export const useDatabase = () => {
                 },
             }, 'modified');
             */    
+/*
+    хуйня имеет странные проблемы с тем что бы создавать дни в цикле и записывать их 
+    Он создает через день , пропуская 0 id , 
+    создает хуй пойми как , но с патерном 
+    const saveDemoWorkout = () => {
+        let currentTimestamp = Math.floor(new Date('2026-09-01T00:00:00Z').getTime()/ 1000);
+        const ONE_DAY = 86400;
+
+        const templates = {
+            arms:[
+                { exerciseKey: 'LBTE', fullName: 'Lying Barbell Triceps Extension', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'RWC', fullName: 'Reverse Wrist Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'WC', fullName: 'Wrist Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'WSC', fullName: 'Wrist Side Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'WP', fullName: 'Wrist Pronation', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'WS', fullName: 'Wrist Suplination', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+            ],
+            legsAndAbs:[
+                { exerciseKey: 'RD', fullName: 'Romanian Deadlift', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'SU', fullName: 'Sit-Ups', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'Sq', fullName: 'Squats', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'ETK', fullName: 'Elbow To Knee', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'BSS', fullName: 'Bulgarian Split Squats', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'LR', fullName: 'Leg Raises', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'SCR', fullName: 'Standing Calf Raise', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'RT', fullName: 'Russian Twist', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+            ],
+            upperBody:[
+                { exerciseKey: 'BOR', fullName: 'Bent Over Row', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+                { exerciseKey: 'BP', fullName: 'Bench Press', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
+            ],
+        };
+
+        const schedulePattern = [
+            {template: templates.arms, restDaysAfter: 3},
+            {template: templates.legsAndAbs, restDaysAfter: 1},
+            {template: templates.upperBody, restDaysAfter: 2},
+            {template: templates.arms, restDaysAfter: 3},
+        ];
+
+        realm.write(()=>{
+            for (let i = 0; i < 30; i++) {
+                const step = schedulePattern[i % schedulePattern.length];
+
+                const clonedExercises = step.template.map(ex => ({
+                    exerciseKey: ex.exerciseKey,
+                    fullName: ex.fullName,
+                    reps1: {...ex.reps1},
+                    rest1: {...ex.rest1},
+                    reps2: {...ex.reps2},
+                    rest2: {...ex.rest2},
+                }));
+
+                realm.create('WorkoutDay',{
+                    id:i,
+                    timestamp: currentTimestamp,
+                    exercises: clonedExercises,
+                },'modified');
+
+                currentTimestamp += step.restDaysAfter * ONE_DAY;
+            }
+        });
+        console.log("\n","MY BODY IS A MACHINE","\n","FOR NOW")
+    } 
+    */
+    //old NEW
+    /*
+    const saveDemoWorkout = () => {
+        realm.write(() => {
+            const currentDate = Math.floor(Date.now() / 1000) 
+            realm.create('WorkoutDay', {
+                id:0,
+                timestamp: currentDate,
+                exercises:[{
+                    exerciseKey: 'LBTE',
+                    fullName: 'Lying Barbell Triceps Extension',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'RWC',
+                    fullName: 'Reverse Wrist Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'WC',
+                    fullName: 'Wrist Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'WSC',
+                    fullName: 'Wrist Side Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'WP',
+                    fullName: 'Wrist Pronation',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'WS',
+                    fullName: 'Wrist Suplination',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },]
+            }, 'modified');
+
+            realm.create('WorkoutDay', {
+                id:1,
+                timestamp: currentDate,
+                exercises:[{
+                    exerciseKey: 'RD',
+                    fullName: 'Romanian Deadlift',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'SU',
+                    fullName: 'Sit-Ups',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'Sq',
+                    fullName: 'Reverse Wrist Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'ETK',
+                    fullName: 'Elbow To Knee',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'BSS',
+                    fullName: 'Bulgarian Slit Squats',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'LR',
+                    fullName: 'Leg Raises',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'SCR',
+                    fullName: 'Standing Calf Raise',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'RT',
+                    fullName: 'Russian Twist',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },]
+            }, 'modified');
+
+            realm.create('WorkoutDay', {
+                id:2,
+                timestamp: currentDate,
+                exercises:[{
+                    exerciseKey: 'BOR',
+                    fullName: 'Bent Over Row',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'BP',
+                    fullName: 'Bench Press',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                }]
+            }, 'modified');
+
+            realm.create('WorkoutDay', {
+                id:3,
+                timestamp: currentDate,
+                exercises:[{
+                    exerciseKey: 'LBTE',
+                    fullName: 'Lying Barbell Triceps Extension',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'RWC',
+                    fullName: 'Reverse Wrist Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },{
+                    exerciseKey: 'WC',
+                    fullName: 'Wrist Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'WSC',
+                    fullName: 'Wrist Side Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'WP',
+                    fullName: 'Wrist Pronation',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+                {
+                    exerciseKey: 'WS',
+                    fullName: 'Wrist Suplination',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },]
+            }, 'modified');
+          
+        });
+        
+        console.log("Data successfully saved! ");
+    };
+    */
