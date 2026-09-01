@@ -19,7 +19,6 @@ export const DatabaseProvider = ({ children }) => {
     const weightHistory = useQuery('ExerciseWeightHistory')
     
     useEffect(()=>{
-        //deleteAllIds()
         if(!workoutTable || workoutTable.length === 0){
             saveDemoWorkout()
         }
@@ -39,6 +38,78 @@ export const DatabaseProvider = ({ children }) => {
         })
     }
 
+    const saveDemoWorkout = () => {
+        const createEx = (key, name) => ({
+            exerciseKey: key,
+            fullName: name,
+            reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, 
+            reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+        });
+
+        const arms = () => [
+            createEx('LBTE', 'Lying Barbell Triceps Extension'),
+            createEx('RWC', 'Reverse Wrist Curl'),
+            createEx('WC', 'Wrist Curl'),
+            createEx('WSC', 'Wrist Side Curl'),
+            createEx('WP', 'Wrist Pronation'),
+            createEx('WS', 'Wrist Suplination')
+        ];
+
+        const legsAndAbs = () => [
+            createEx('RD', 'Romanian Deadlift'),
+            createEx('SU', 'Sit-Ups'),
+            createEx('Sq', 'Squats'),
+            createEx('ETK', 'Elbow To Knee'),
+            createEx('BSS', 'Bulgarian Split Squats'),
+            createEx('LR', 'Leg Raises'),
+            createEx('SCR', 'Standing Calf Raise'),
+            createEx('RT', 'Russian Twist')
+        ];
+
+        const upperBody = () => [
+            createEx('BOR', 'Bent Over Row'),
+            createEx('BP', 'Bench Press')
+        ];
+
+        realm.write(()=>{
+            realm.create('WorkoutDay', { id: 1, timestamp: 1788220800, exercises: arms() }, 'modified');
+            realm.create('WorkoutDay', { id: 2, timestamp: 1788480000, exercises: legsAndAbs() }, 'modified');
+            realm.create('WorkoutDay', { id: 3, timestamp: 1788566400, exercises: upperBody() }, 'modified');
+            realm.create('WorkoutDay', { id: 4, timestamp: 1788739200, exercises: arms() }, 'modified');
+            realm.create('WorkoutDay', { id: 5, timestamp: 1788998400, exercises: legsAndAbs() }, 'modified');
+            realm.create('WorkoutDay', { id: 6, timestamp: 1789084800, exercises: upperBody() }, 'modified');
+            realm.create('WorkoutDay', { id: 7, timestamp: 1789257600, exercises: arms() }, 'modified');
+            realm.create('WorkoutDay', { id: 8, timestamp: 1789516800, exercises: legsAndAbs() }, 'modified');
+            realm.create('WorkoutDay', { id: 9, timestamp: 1789603200, exercises: upperBody() }, 'modified');
+            realm.create('WorkoutDay', { id: 10, timestamp: 1789776000, exercises: arms() }, 'modified');
+            realm.create('WorkoutDay', { id: 11, timestamp: 1790035200, exercises: legsAndAbs() }, 'modified');
+            realm.create('WorkoutDay', { id: 12, timestamp: 1790121600, exercises: upperBody() }, 'modified');
+            realm.create('WorkoutDay', { id: 13, timestamp: 1790294400, exercises: arms() }, 'modified');
+            realm.create('WorkoutDay', { id: 14, timestamp: 1790553600, exercises: legsAndAbs() }, 'modified');
+            realm.create('WorkoutDay', { id: 15, timestamp: 1790640000, exercises: upperBody() }, 'modified');
+            realm.create('WorkoutDay', { id: 16, timestamp: 1790812800, exercises: arms() }, 'modified');
+            realm.create('WorkoutDay', { id: 17, timestamp: 1791072000, exercises: legsAndAbs() }, 'modified');
+            realm.create('WorkoutDay', { id: 18, timestamp: 1791158400, exercises: upperBody() }, 'modified');
+            realm.create('WorkoutDay', { id: 19, timestamp: 1791331200, exercises: arms() }, 'modified');
+            realm.create('WorkoutDay', { id: 20, timestamp: 1791590400, exercises: legsAndAbs() }, 'modified');
+            realm.create('WorkoutDay', { id: 21, timestamp: 1791676800, exercises: upperBody() }, 'modified');
+            realm.create('WorkoutDay', { id: 22, timestamp: 1791849600, exercises: arms() }, 'modified');
+            realm.create('WorkoutDay', { id: 23, timestamp: 1792108800, exercises: legsAndAbs() }, 'modified');
+            realm.create('WorkoutDay', { id: 24, timestamp: 1792195200, exercises: upperBody() }, 'modified');
+            realm.create('WorkoutDay', { id: 25, timestamp: 1792368000, exercises: arms() }, 'modified');
+            realm.create('WorkoutDay', { id: 26, timestamp: 1792627200, exercises: legsAndAbs() }, 'modified');
+            realm.create('WorkoutDay', { id: 27, timestamp: 1792713600, exercises: upperBody() }, 'modified');
+            realm.create('WorkoutDay', { id: 28, timestamp: 1792886400, exercises: arms() }, 'modified');
+            realm.create('WorkoutDay', { id: 29, timestamp: 1793145600, exercises: legsAndAbs() }, 'modified');
+            realm.create('WorkoutDay', { id: 30, timestamp: 1793232000, exercises: upperBody() }, 'modified');
+        });
+        console.log("\n","MY BODY IS A MACHINE","\n","FOR NOW")
+    }
+
+    /*
+    хуйня имеет странные проблемы с тем что бы создавать дни в цикле и записывать их 
+    Он создает через день , пропуская 0 id , 
+    создает хуй пойми как , но с патерном 
     const saveDemoWorkout = () => {
         let currentTimestamp = Math.floor(new Date('2026-09-01T00:00:00Z').getTime()/ 1000);
         const ONE_DAY = 86400;
@@ -79,10 +150,19 @@ export const DatabaseProvider = ({ children }) => {
             for (let i = 0; i < 30; i++) {
                 const step = schedulePattern[i % schedulePattern.length];
 
+                const clonedExercises = step.template.map(ex => ({
+                    exerciseKey: ex.exerciseKey,
+                    fullName: ex.fullName,
+                    reps1: {...ex.reps1},
+                    rest1: {...ex.rest1},
+                    reps2: {...ex.reps2},
+                    rest2: {...ex.rest2},
+                }));
+
                 realm.create('WorkoutDay',{
                     id:i,
                     timestamp: currentTimestamp,
-                    exercises: step.template,
+                    exercises: clonedExercises,
                 },'modified');
 
                 currentTimestamp += step.restDaysAfter * ONE_DAY;
@@ -90,7 +170,7 @@ export const DatabaseProvider = ({ children }) => {
         });
         console.log("\n","MY BODY IS A MACHINE","\n","FOR NOW")
     } 
-
+    */
     //old NEW
     /*
     const saveDemoWorkout = () => {
