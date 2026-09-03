@@ -4,20 +4,14 @@ import { memo, useCallback, } from "react";
 
 const ExerciseColumnForm = memo(({ specialName, specialFunction, selectedExercises }) => {
 
-    const ColumnButton = useCallback(() => {
-        return (
-            <ExerciseButton
-                specialName={specialName}
-                specialFunction={specialFunction}
-                activeCategory={selectedExercises}
-            />
-        )
-    }, [selectedExercises])
-
     return (
         <View style={[styles.exerciseMainBody]}>
             <View style={{ alignItems: 'center' }}>
-                <ColumnButton />
+                <ExerciseButton
+                    specialName={specialName}
+                    specialFunction={specialFunction}
+                    activeCategory={selectedExercises}
+                />
             </View>
         </View>
     )

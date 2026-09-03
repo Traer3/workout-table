@@ -32,7 +32,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
 
     const changeIndex = useCallback((newName) => {
         setIndex(categories.indexOf(newName));
-    }, [])
+    }, [categories])
 
     const handelActiveButtons = useCallback((categoryName) => {
         setActiveCategory(categoryName);
@@ -48,8 +48,10 @@ export default function ExerciseMain({ newDay, setNewDay }) {
             }
             return nextSet;
         })
+        
     }, []);
 
+  
 
     return (
         <View style={styles.exerciseMainBody}>
@@ -68,7 +70,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
                 </>
                 :
                 <View style={{ alignItems: 'center' }}>
-                    <ExerciseBlock categories={categories} colorFunction={handelActiveButtons} activeCategory={activeCategory} />
+                    <ExerciseBlock categories={categories} colorFunction={handelActiveButtons} activeCategory={activeCategory} specialFunction={changeIndex}/>
                 </View>
             }
         </View>

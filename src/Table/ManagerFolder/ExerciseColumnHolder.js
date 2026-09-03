@@ -18,6 +18,7 @@ export default function ExerciseColumnHolder({ groupedTemplates, categories, ind
     const renderItem = useCallback(({ item }) => {
         return (
             <ExerciseColumn
+                
                 templates={groupedTemplates}
                 category={item}
                 colectAllExercises={colectAllExercises}
@@ -25,15 +26,13 @@ export default function ExerciseColumnHolder({ groupedTemplates, categories, ind
                 activeCategory={activeCategory}
             />
         )
-    }, [selectedExercises, activeCategory,]);
+    }, [selectedExercises, activeCategory,colectAllExercises]);
 
 
     const onViewableItemsChanged = useRef(({ viewableItems }) => {
         if (viewableItems.length > 0) {
             const currentVisibleItem = viewableItems[0].item
-            //setActiveItem(currentVisibleItem);
             setActiveCategory(currentVisibleItem)
-            //console.log("Current item: ", currentVisibleItem);
         }
     })
 
@@ -56,6 +55,8 @@ export default function ExerciseColumnHolder({ groupedTemplates, categories, ind
 
                 onViewableItemsChanged={onViewableItemsChanged.current}
                 viewabilityConfig={viewabilityConfig.current}
+
+                keyExtractor={(item)=> item}
             />
 
         </View>
@@ -87,8 +88,8 @@ const styles = StyleSheet.create({
     flatListConteiner: {
         height: "100%",
         width: '100%',
-        borderWidth: 1,
-        borderColor: 'yellow',
+        //borderWidth: 1,
+        //borderColor: 'yellow',
 
     },
     flatListContet: {

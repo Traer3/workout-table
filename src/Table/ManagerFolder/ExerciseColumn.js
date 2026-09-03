@@ -6,10 +6,7 @@ import ExerciseColumnForm from "./ExerciseColumnFrom";
 const ExerciseColumn = memo(({ category, templates, colectAllExercises, selectedExercises, activeCategory }) => {
     
     const isActive = category === activeCategory;
-    //console.log("isActive: ", isActive)
-    //
 
-    //console.log("isActive: ", isActive, " ", "category : ", category, " ", "activeCategory : ", activeCategory)
     const renderItem = useCallback(({ item }) => {
         const name = item.exercise.fullName
         return (
@@ -19,7 +16,7 @@ const ExerciseColumn = memo(({ category, templates, colectAllExercises, selected
                 selectedExercises={selectedExercises}
             />
         )
-    }, [selectedExercises, isActive]);
+    }, [selectedExercises, isActive, colectAllExercises]);
     return (
         <View style={[styles.exerciseMainBody]}>
 
@@ -31,6 +28,7 @@ const ExerciseColumn = memo(({ category, templates, colectAllExercises, selected
                 renderItem={renderItem}
                 showsVerticalScrollIndicator={false}
 
+                keyExtractor={(item) => item.exercise.fullName}
             />
         </View>
     )
