@@ -19,6 +19,7 @@ export const DatabaseProvider = ({ children }) => {
     const weightHistory = useQuery('ExerciseWeightHistory')
     
     useEffect(()=>{
+        saveDemoWorkout()
         if(!workoutTable || workoutTable.length === 0){
             //saveDemoWorkout()
         }
@@ -39,6 +40,7 @@ export const DatabaseProvider = ({ children }) => {
     }
 
     const saveDemoWorkout = () => {
+        /*
         const createEx = (key, name) => ({
             exerciseKey: key,
             fullName: name,
@@ -104,6 +106,21 @@ export const DatabaseProvider = ({ children }) => {
             realm.create('WorkoutDay', { id: 30, timestamp: 1793232000, exercises: upperBody() }, 'modified');
         });
         console.log("\n","MY BODY IS A MACHINE","\n","FOR NOW")
+        */
+        const currentDate = Math.floor(Date.now() / 1000) 
+        realm.write(()=>{
+            
+            realm.create('WorkoutDay', {
+                id: 1,
+                timestamp: currentDate,
+                exercises:[{
+                    exerciseKey: 'LBTE',
+                    fullName: 'Lying Barbell Triceps Extension',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },]
+            }, 'modified');
+        })
+        //console.log("Data created!")
     }
 
     
