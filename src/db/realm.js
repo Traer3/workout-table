@@ -6,6 +6,7 @@ export const { RealmProvider, useRealm, useQuery, useObject } = createRealmConte
     schemaVersion: 9,
     
     //deleteRealmIfMigrationNeeded:true,
+    
     /*
     onMigration:(oldRealm, newRealm) => {
         console.log("New version realm table")
