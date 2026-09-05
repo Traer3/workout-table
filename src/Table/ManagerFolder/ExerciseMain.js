@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import ExerciseBlock from "./ExerciseBlock";
 import { useQuery } from "../../db/realm";
 import ExerciseBlockIcons from "./ExerciseBlockIcons";
 import ExerciseColumnHolder from "./ExerciseColumnHolder";
 import { useDatabase } from "../../../DatabaseContext";
+import ExerciseButton from "./ExerciseButton";
+import ChoiceAnswer from "./ChoiceAnswer";
 
 export default function ExerciseMain({ newDay, setNewDay }) {
     const { categories } = useDatabase();
@@ -56,7 +58,12 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     return (
         <View style={styles.exerciseMainBody}>
             {activeCategory ? //можно чет лучше придумать с возможностью возвращатся , тип нажал на присет и вернулся или случайно вышел , а оно сохранило
-                <>
+                <View style={{
+                    borderColor:'red',
+                    borderWidth:1,
+                    overflow:'hidden',
+                    height:'100%'
+                }}>
                     <ExerciseBlockIcons categories={categories} specialFunction={changeIndex} colorFunction={handelActiveButtons} activeCategory={activeCategory} />
                     <ExerciseColumnHolder
                         groupedTemplates={groupedTemplates}
@@ -67,7 +74,14 @@ export default function ExerciseMain({ newDay, setNewDay }) {
                         activeCategory={activeCategory}
                         setActiveCategory={setActiveCategory}
                     />
-                </>
+                <View style={{
+                    //borderColor:'yellow',
+                    //borderWidth:1,
+                    height:'7%'
+                }}> 
+                    <ChoiceAnswer setActiveCategory={setActiveCategory}/>
+                </View>
+                </View>
                 :
                 <View style={{ alignItems: 'center' }}>
                     <ExerciseBlock categories={categories} colorFunction={handelActiveButtons} activeCategory={activeCategory} specialFunction={changeIndex}/>

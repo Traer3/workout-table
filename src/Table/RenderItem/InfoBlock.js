@@ -39,7 +39,7 @@ export default function InfoBlock({ currentDayData, editingCell, setEditingCell,
             {currentDayData.exercises.map((element) => {
                     if (typeof element === 'object') { i++ }
                 const name = element.exerciseKey
-                const uselessKeys = ["exerciseKey", "fullName"]
+                const uselessKeys = ["exerciseKey", "fullName","category"]
                 const exerciseKeys = Object.keys(element).filter(key => !uselessKeys.includes(key))
                     if (!name) return null;
                 const isRowEditing = editingCell && editingCell.startsWith(name);

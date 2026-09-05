@@ -15,6 +15,7 @@ export class Exercise extends Realm.Object {
         name: 'Exercise',
         properties: {
             exerciseKey: 'string',
+            category:'string?',
             fullName: 'string',
             reps1: 'Action',
             rest1: 'Action',
@@ -63,6 +64,18 @@ export class ExerciseWeightHistory extends Realm.Object {
             weightData: 'Action'
         },
     };
+};
+
+export class PresetsHistory extends Realm.Object {
+    static schema = {
+        name: 'PresetsHistory',
+        primaryKey: 'id',
+        properties: {
+            id:'int',
+            timestamp: 'int',
+            exercise: 'Exercise[]',
+        }
+    }
 }
 
 export const schema = [Action, Exercise, WorkoutDay, ExerciseWeightHistory, WorkoutTemplate];
