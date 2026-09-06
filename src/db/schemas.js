@@ -14,9 +14,9 @@ export class Exercise extends Realm.Object {
     static schema = {
         name: 'Exercise',
         properties: {
-            exerciseKey: 'string',
+            exerciseKey: 'string?',
             category:'string?',
-            fullName: 'string',
+            fullName: {type: 'string', indexed: true},
             reps1: 'Action',
             rest1: 'Action',
             reps2: 'Action',
@@ -43,9 +43,9 @@ export class WorkoutTemplate extends Realm.Object {
         primaryKey: 'id',
         properties: {
             id:'int',
-            category:'string?',
+            category:'string?', // можно убрать , внутри Exercise есть свой category
             timestamp: 'int',
-            exercise: 'Exercise?',
+            exercise: 'Exercise?', //Можно создать свой Exercise где fullName будет primaryKey для быстрого поиска 
         },
     };
 };
@@ -78,4 +78,4 @@ export class PresetsHistory extends Realm.Object {
     }
 }
 
-export const schema = [Action, Exercise, WorkoutDay, ExerciseWeightHistory, WorkoutTemplate];
+export const schema = [Action, Exercise, WorkoutDay, ExerciseWeightHistory, WorkoutTemplate, PresetsHistory];

@@ -79,7 +79,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
                     //borderWidth:1,
                     height:'7%'
                 }}> 
-                    <ChoiceAnswer setActiveCategory={setActiveCategory}/>
+                    <ChoiceAnswer setActiveCategory={setActiveCategory} selectedExercises={selectedExercises}/>
                 </View>
                 </View>
                 :

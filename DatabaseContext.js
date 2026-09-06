@@ -17,6 +17,7 @@ export const DatabaseProvider = ({ children }) => {
     
     const workoutTable = useQuery('WorkoutDay')
     const weightHistory = useQuery('ExerciseWeightHistory')
+    const presetsHistory = useQuery('PresetsHistory')
     
     useEffect(()=>{
         //saveDemoWorkout()
@@ -197,6 +198,7 @@ export const DatabaseProvider = ({ children }) => {
                 uploadToDrive,
                 workoutTable,
                 weightHistory,
+                presetsHistory,
                 loading,
                 setLoading,
                 getFormattedDate,

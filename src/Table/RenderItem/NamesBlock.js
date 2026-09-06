@@ -21,7 +21,8 @@ export default function NamesBlock({ currentDayData }) {
                             key={element}
                             style={[styles.cell, styles.textStyle, {}]}
                         >
-                            {showName ? element.fullName : element.exerciseKey}
+                            { showName ? element.fullName : element.fullName // заменяем exerciseKey на fullName , меня заебали эти ключи
+                            }
                         </Text>
                     </Pressable>
                 )

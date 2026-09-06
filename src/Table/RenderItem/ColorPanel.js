@@ -20,7 +20,7 @@ export default function ColorPanel({ currentDayData, name, field, mode, index })
         return;
       }
 
-      if (currentDayData.exercises[index - 1] && currentDayData.exercises[index - 1].exerciseKey === fieldKey) {
+      if (currentDayData.exercises[index - 1] && currentDayData.exercises[index - 1].exerciseKey === fieldKey) { // убрать exerciseKey и заменить на fullName, я уже передаю fullName как ключ
         currentDayData.exercises[index - 1][subKey].color = String(color) || "";
       }
       return;
