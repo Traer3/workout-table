@@ -19,6 +19,8 @@ export const DatabaseProvider = ({ children }) => {
     const weightHistory = useQuery('ExerciseWeightHistory')
     const presetsHistory = useQuery('PresetsHistory')
     
+    //console.log("presetsHistory: ", presetsHistory)
+
     useEffect(()=>{
         //saveDemoWorkout()
         if(!workoutTable || workoutTable.length === 0){

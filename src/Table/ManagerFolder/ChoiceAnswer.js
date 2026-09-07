@@ -3,11 +3,12 @@ import { useState } from "react";
 import { useDatabase } from "../../../DatabaseContext";
 import { useQuery, useRealm } from "../../db/realm";
 
-export default function ChoiceAnswer({ setActiveCategory, selectedExercises }) {
+export default function ChoiceAnswer({ setActiveCategory, selectedExercises, assembleExercises }) {
     const [active, setActive] = useState(false)
 
     const presetsHistory = useQuery('PresetsHistory')
     const workoutTemplate = useQuery('WorkoutTemplate')
+    //console.log("workoutTemplate: ", workoutTemplate)
     const realm = useRealm();
 
     /*
@@ -53,25 +54,16 @@ export default function ChoiceAnswer({ setActiveCategory, selectedExercises }) {
             }, 'modified');
     */
 
-    function assembleData(selectedExercises) {
-        const fullName = 'Squats'
-        const exercise = realm.objects('WorkoutTemplate')
-                              .filtered('exercise.fullName == $0', fullName)[0]
-        /*
-            {
-                "exercise": {
-                    "category": null, // будем использовать этот category
-                    "fullName": "Squats", 
-                    "reps1": [Object], "reps2": [Object], "rest1": [Object], "rest2": [Object]
-                }, 
-            }
-        */
-        //console.log("exercise: ", exercise)
-    }
-
+    
     const onPressIn = () => {
+        /*
+        const element = realm.objectForPrimaryKey("PresetsHistory",1)
+        realm.write(()=>{
+            realm.delete(element);
+        })
+        */
         setActive(true)
-        assembleData();
+        //assembleExercises(selectedExercises);
         return
     
     }
