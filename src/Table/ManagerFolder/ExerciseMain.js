@@ -53,7 +53,9 @@ export default function ExerciseMain({ newDay, setNewDay }) {
             //каждое действие юзера 
             const exercises = assembleExercises(nextSet)
             saveUserInput(exercises);
+            
 //console.log("nextSet: ", nextSet)
+
             return nextSet;
         })
     }, []);
