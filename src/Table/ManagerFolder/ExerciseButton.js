@@ -27,7 +27,7 @@ const icons = {
 }
 
 const ExerciseButton = memo(({ specialFunction, specialName, iconName, colorFunction, activeCategory, }) => {
-    //console.log("specialName: ", specialName)
+//console.log("specialName: ", specialName)
     let isActive
     if (activeCategory === specialName) {
         isActive = true
