@@ -58,7 +58,7 @@ export class ExerciseWeightHistory extends Realm.Object {
         primaryKey: 'id',
         properties: {
             id: 'int',
-            //day: 'string',
+               //day: 'string',
             timestamp: 'int',
             fullName:"string",
             weightData: 'Action'
