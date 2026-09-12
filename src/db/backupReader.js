@@ -4,7 +4,7 @@ import path  from 'path';
 
 const backupFilePath = path.resolve("./backup.realm")
 
-//хуйня не работает , допили потом 
+   //хуйня не работает , допили потом 
 async function getJsonFromBackup(backupPath) {
     let backupRealm = null;
 
