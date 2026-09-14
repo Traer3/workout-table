@@ -9,9 +9,11 @@ export const { RealmProvider, useRealm, useQuery, useObject } = createRealmConte
     //deleteRealmIfMigrationNeeded:true,
     
     /*
+
     onMigration:(oldRealm, newRealm) => {
         console.log("New version realm table")
     }
+
     */
     
 
