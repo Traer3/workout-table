@@ -7,6 +7,8 @@ export const { RealmProvider, useRealm, useQuery, useObject } = createRealmConte
     schemaVersion: 13,
     
     //deleteRealmIfMigrationNeeded:true,
+
+
     
     /*
 
