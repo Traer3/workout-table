@@ -43,9 +43,10 @@ export class WorkoutTemplate extends Realm.Object {
         primaryKey: 'id',
         properties: {
             id:'int',
-            category:'string?', // можно убрать , внутри Exercise есть свой category
+            category:'string?',    // можно убрать , внутри Exercise есть свой category
             timestamp: 'int',
-            exercise: 'Exercise?', //Можно создать свой Exercise где fullName будет primaryKey для быстрого поиска 
+            exercise: 'Exercise?',   //Можно создать свой Exercise где fullName будет primaryKey для быстрого поиска
+
         },
     };
 };
@@ -58,7 +59,7 @@ export class ExerciseWeightHistory extends Realm.Object {
         primaryKey: 'id',
         properties: {
             id: 'int',
-            //day: 'string',
+               //day: 'string',
             timestamp: 'int',
             fullName:"string",
             weightData: 'Action'
