@@ -46,7 +46,7 @@ export default function WorkoutTable({ editDay, setEditDay }) {
       index={index}
       flatListRef={flatListRef}
     />
-  ));
+  ),[]);
 
   return (
     <>
