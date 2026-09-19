@@ -9,19 +9,21 @@ import ExerciseButton from "./ExerciseButton";
 import ChoiceAnswer from "./ChoiceAnswer";
 
 export default function ExerciseMain({ newDay, setNewDay }) {
-    const { categories, presetsHistory } = useDatabase();
+    const { categories, presetsHistory, getFormattedDate } = useDatabase();
     const allTemplates = useQuery('WorkoutTemplate');
     const realm = useRealm()
     const [index, setIndex] = useState(0);
     const [activeCategory, setActiveCategory] = useState(null);
-    const [selectedExercises, setSelectedExercises] = useState(new Set())
+    const [selectedExercises, setSelectedExercises] = useState(new Set(presetsHistory[0].exercise.map(exercis => exercis.fullName)))
 
-    console.log("presetsHistory",presetsHistory[0].exercise)
+
+    console.log("presetsHistory", presetsHistory[0].exercise)
 
     const initialGrouped = categories.reduce((accumulator, category) => {
         accumulator[category] = [];
         return accumulator;
     }, {});
+
 
     const groupedTemplates = allTemplates.reduce((accumulator, template) => {
         const cat = template.category;
@@ -84,26 +86,54 @@ export default function ExerciseMain({ newDay, setNewDay }) {
 
     const saveUserInput = (exercises, id) => {
         const currentDate = Math.floor(Date.now() / 1000)
+        console.log("exercises: ", exercises)
         console.log("id: ", id)
+
         if (exercises && exercises.length > 0) {
             if (id > 0) {
                 realm.write(() => {
                     realm.create('PresetsHistory', {
                         id: id,
                         timestamp: currentDate,
-                        exercises: exercises
+                        exercise: exercises
                     }, 'modified')
                 });
                 return;
             }
-            realm.write(() => {
-                realm.create('PresetsHistory', {
-                    id: 0,
-                    timestamp: currentDate,
-                    exercises: exercises
-                }, 'modified')
-            });
+            zeroIdSave(currentDate, exercises)
+            return
+            // realm.write(() => {
+            //     realm.create('PresetsHistory', {
+            //         id: 0,
+            //         timestamp: currentDate,
+            //         exercise: exercises
+            //     }, 'modified')
+            // });
         }
+        if (exercises.length <= 0) {
+            zeroIdSave(currentDate, exercises)
+        }
+
+    };
+
+    const zeroIdSave = (currentDate, userData) => {
+        console.log("userData: ", userData)
+        let exercises = userData;
+        if (!userData || userData.length < 0) {
+            exercises = [{
+                "category": null,
+                "fullName": "",
+                "reps1": { color: '', value: 0 }, "reps2": { color: '', value: 0 }, "rest1": { color: '', value: 0 }, "rest2": { color: '', value: 0 }
+            }]
+        }
+        console.log("saved Data: ", exercises)
+        realm.write(() => {
+            realm.create('PresetsHistory', {
+                id: 0,
+                timestamp: currentDate,
+                exercise: exercises
+            }, 'modified')
+        });
     }
 
 
