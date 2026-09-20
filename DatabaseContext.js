@@ -18,10 +18,12 @@ export const DatabaseProvider = ({ children }) => {
     const workoutTable = useQuery('WorkoutDay')
     const weightHistory = useQuery('ExerciseWeightHistory')
     const presetsHistory = useQuery('PresetsHistory')
+    const workoutTemplate = useQuery('WorkoutTemplate')
     
     //console.log("presetsHistory: ", presetsHistory)
 
     useEffect(()=>{
+        //changeTemplate()
         //saveDemoWorkout()
         if(!workoutTable || workoutTable.length === 0){
             //saveDemoWorkout()
@@ -126,6 +128,119 @@ export const DatabaseProvider = ({ children }) => {
         //console.log("Data created!")
     }
 
+    const changeTemplate = () => {
+        realm.write(()=>{
+            const currentDate = Math.floor(Date.now() / 1000) 
+       realm.create('WorkoutTemplate', {
+                id: 0,
+                
+                timestamp: currentDate,
+                exercise: {
+                    category:'Forearms',
+                    exerciseKey: 'RWC',
+                    fullName: 'Reverse Wrist Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 1,
+                
+                timestamp: currentDate,
+                exercise: {
+                    category:'Arms',
+                    exerciseKey: 'BC',
+                    fullName: 'Barbell Curl',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 2,
+                
+                timestamp: currentDate,
+                exercise: {
+                    category:'Core',
+                    exerciseKey: 'SU',
+                    fullName: 'Sit Ups',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 3,
+                
+                timestamp: currentDate,
+                exercise: {
+                    category:'Back',
+                    exerciseKey: 'BR',
+                    fullName: 'Barbell Row',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 4,
+                
+                timestamp: currentDate,
+                exercise: {
+                    category:'Thighs',
+                    exerciseKey: 'Sq',
+                    fullName: 'Squats',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+            
+
+            realm.create('WorkoutTemplate', {
+                id: 5,
+                
+                timestamp: currentDate,
+                exercise: {
+                    category:'Deltoids',
+                    exerciseKey: 'LR',
+                    fullName: 'Lateral Raise',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 6,
+                
+                timestamp: currentDate,
+                exercise: {
+                    category:'Glutes',
+                    exerciseKey: 'LP',
+                    fullName: 'Sled 45° Leg Press',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 7,
+                
+                timestamp: currentDate,
+                exercise: {
+                    category:'Chest',
+                    exerciseKey: 'BP',
+                    fullName: 'Bench Press',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+
+            realm.create('WorkoutTemplate', {
+                id: 8,
+                
+                timestamp: currentDate,
+                exercise: {
+                    category:'Unique',
+                    exerciseKey: 'RB',
+                    fullName: 'Rice Bucket',
+                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
+                },
+            }, 'modified');
+        })
+    }
     
 
 
@@ -205,7 +320,8 @@ export const DatabaseProvider = ({ children }) => {
                 setLoading,
                 getFormattedDate,
                 checkHours,
-                categories
+                categories,
+                workoutTemplate
             }}
         >
             {children}

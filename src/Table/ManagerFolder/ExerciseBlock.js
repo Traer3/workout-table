@@ -4,6 +4,7 @@ import ExerciseButton from "./ExerciseButton";
 import { useCallback } from "react";
 
 const ExerciseBlock = memo(({ categories , colorFunction, activeCategory, specialFunction}) => {
+    
     const renderItem = useCallback(({ item, index }) => (
         <ExerciseButton
             specialName={item}

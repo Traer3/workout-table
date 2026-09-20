@@ -2,16 +2,18 @@ import { useState, useCallback, memo } from "react";
 import { Pressable, View, StyleSheet, Text, FlatList } from "react-native";
 import ExerciseButton from "./ExerciseButton";
 
-const ExerciseBlockIcons = memo(({ categories, specialFunction, colorFunction, activeCategory }) => {
-    const renderItem = useCallback(({ item, index }) => (
+const ExerciseBlockIcons = memo(({ categories, specialFunction, colorFunction, activeCategory, selectedCategory }) => {
+    const renderItem = useCallback(({ item, index }) => {
+        console.log("selectedCategory", selectedCategory)
+        return(
         <ExerciseButton
             specialName={item}
             iconName={item}
             specialFunction={specialFunction}
             colorFunction={colorFunction}
-            activeCategory={activeCategory}
+            activeCategory={selectedCategory} //activeCategory
         />
-    ), [specialFunction, activeCategory, colorFunction]);
+    )}, [specialFunction, activeCategory, colorFunction, selectedCategory]);
 
     return (
         <View style={styles.exerciseBody}>

@@ -9,15 +9,19 @@ import ExerciseButton from "./ExerciseButton";
 import ChoiceAnswer from "./ChoiceAnswer";
 
 export default function ExerciseMain({ newDay, setNewDay }) {
-    const { categories, presetsHistory, getFormattedDate } = useDatabase();
-    const allTemplates = useQuery('WorkoutTemplate');
+    const { categories, presetsHistory, getFormattedDate, workoutTemplate } = useDatabase();
     const realm = useRealm()
     const [index, setIndex] = useState(0);
     const [activeCategory, setActiveCategory] = useState(null);
     const [selectedExercises, setSelectedExercises] = useState(new Set(presetsHistory[0].exercise.map(exercis => exercis.fullName)))
+    const [selectedCategory, setSelectedCategory] = useState(null)
 
 
-    console.log("presetsHistory", presetsHistory[0].exercise)
+   useEffect(()=>{
+    //console.log("category", presetsHistory[0].exercise[0].category)
+      //console.log("presetsHistory", presetsHistory[0].exercise)
+     console.log("selectedExercises: ", selectedExercises.size)
+   },[presetsHistory, workoutTemplate])
 
     const initialGrouped = categories.reduce((accumulator, category) => {
         accumulator[category] = [];
@@ -25,7 +29,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     }, {});
 
 
-    const groupedTemplates = allTemplates.reduce((accumulator, template) => {
+    const groupedTemplates = workoutTemplate.reduce((accumulator, template) => {
         const cat = template.category;
         if (cat && accumulator[cat]) {
             accumulator[cat].push(template);
@@ -74,20 +78,23 @@ export default function ExerciseMain({ newDay, setNewDay }) {
             if (foundExercise) {
                 //console.log("exercise: ", foundExercise.exercise)
                 exercises.push(foundExercise.exercise)
+                
             }
         });
 
         //console.log("exercises: ", exercises)
         //saveUserInput(exercises, maxId)
-        console.log("PRESET SAVED!")
+        //console.log("PRESET SAVED!")
+        console.log(exercises.map(exercise => exercise.category))
+        setSelectedCategory()
         return exercises;
     }
 
 
     const saveUserInput = (exercises, id) => {
         const currentDate = Math.floor(Date.now() / 1000)
-        console.log("exercises: ", exercises)
-        console.log("id: ", id)
+        //console.log("exercises: ", exercises)
+        //console.log("id: ", id)
 
         if (exercises && exercises.length > 0) {
             if (id > 0) {
@@ -117,7 +124,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     };
 
     const zeroIdSave = (currentDate, userData) => {
-        console.log("userData: ", userData)
+        //console.log("userData: ", userData)
         let exercises = userData;
         if (!userData || userData.length < 0) {
             exercises = [{
@@ -126,7 +133,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
                 "reps1": { color: '', value: 0 }, "reps2": { color: '', value: 0 }, "rest1": { color: '', value: 0 }, "rest2": { color: '', value: 0 }
             }]
         }
-        console.log("saved Data: ", exercises)
+        //console.log("saved Data: ", exercises)
         realm.write(() => {
             realm.create('PresetsHistory', {
                 id: 0,
@@ -139,14 +146,21 @@ export default function ExerciseMain({ newDay, setNewDay }) {
 
     return (
         <View style={styles.exerciseMainBody}>
-            {activeCategory ? //можно чет лучше придумать с возможностью возвращатся , тип нажал на присет и вернулся или случайно вышел , а оно сохранило
+            {activeCategory //|| selectedExercises.size > 0 
+            ? 
                 <View style={{
                     borderColor: 'red',
                     borderWidth: 1,
                     overflow: 'hidden',
                     height: '100%'
                 }}>
-                    <ExerciseBlockIcons categories={categories} specialFunction={changeIndex} colorFunction={handelActiveButtons} activeCategory={activeCategory} />
+                    <ExerciseBlockIcons 
+                        categories={categories} 
+                        specialFunction={changeIndex} 
+                        colorFunction={handelActiveButtons} 
+                        activeCategory={activeCategory}
+                        selectedCategory={selectedCategory}
+                        />
                     <ExerciseColumnHolder
                         groupedTemplates={groupedTemplates}
                         categories={categories}
