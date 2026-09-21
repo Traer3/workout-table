@@ -13,15 +13,17 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     const realm = useRealm()
     const [index, setIndex] = useState(0);
     const [activeCategory, setActiveCategory] = useState(null);
-    const [selectedExercises, setSelectedExercises] = useState(new Set(presetsHistory[0].exercise.map(exercis => exercis.fullName)))
+    const [selectedExercises, setSelectedExercises] = useState(new Set())
     const [selectedCategory, setSelectedCategory] = useState(null)
 
 
-   useEffect(()=>{
-    //console.log("category", presetsHistory[0].exercise[0].category)
-      //console.log("presetsHistory", presetsHistory[0].exercise)
-     console.log("selectedExercises: ", selectedExercises.size)
-   },[presetsHistory, workoutTemplate])
+    useEffect(() => {
+        if (presetsHistory && presetsHistory.length > 0 && presetsHistory[0]?.exercise) {
+            setSelectedExercises(presetsHistory[0].exercise.map(exercis => exercis.fullName))
+            setSelectedCategory(presetsHistory[0].exercise.map(element => element.category))
+        }
+    }, [presetsHistory, activeCategory])
+
 
     const initialGrouped = categories.reduce((accumulator, category) => {
         accumulator[category] = [];
@@ -78,14 +80,15 @@ export default function ExerciseMain({ newDay, setNewDay }) {
             if (foundExercise) {
                 //console.log("exercise: ", foundExercise.exercise)
                 exercises.push(foundExercise.exercise)
-                
+
+                //console.log(foundExercise.category)
             }
         });
 
         //console.log("exercises: ", exercises)
         //saveUserInput(exercises, maxId)
         //console.log("PRESET SAVED!")
-        console.log(exercises.map(exercise => exercise.category))
+
         setSelectedCategory()
         return exercises;
     }
@@ -146,21 +149,19 @@ export default function ExerciseMain({ newDay, setNewDay }) {
 
     return (
         <View style={styles.exerciseMainBody}>
-            {activeCategory //|| selectedExercises.size > 0 
-            ? 
+            {activeCategory ?
                 <View style={{
                     borderColor: 'red',
                     borderWidth: 1,
                     overflow: 'hidden',
                     height: '100%'
                 }}>
-                    <ExerciseBlockIcons 
-                        categories={categories} 
-                        specialFunction={changeIndex} 
-                        colorFunction={handelActiveButtons} 
-                        activeCategory={activeCategory}
+                    <ExerciseBlockIcons
+                        categories={categories}
+                        specialFunction={changeIndex}
+                        colorFunction={handelActiveButtons}
                         selectedCategory={selectedCategory}
-                        />
+                    />
                     <ExerciseColumnHolder
                         groupedTemplates={groupedTemplates}
                         categories={categories}
@@ -180,7 +181,12 @@ export default function ExerciseMain({ newDay, setNewDay }) {
                 </View>
                 :
                 <View style={{ alignItems: 'center' }}>
-                    <ExerciseBlock categories={categories} colorFunction={handelActiveButtons} activeCategory={activeCategory} specialFunction={changeIndex} />
+                    <ExerciseBlock
+                        categories={categories}
+                        colorFunction={handelActiveButtons}
+                        specialFunction={changeIndex}
+                        selectedCategory={selectedCategory}
+                    />
                 </View>
             }
         </View>

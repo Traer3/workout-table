@@ -4,7 +4,7 @@ import ExerciseButton from "./ExerciseButton";
 
 const ExerciseBlockIcons = memo(({ categories, specialFunction, colorFunction, activeCategory, selectedCategory }) => {
     const renderItem = useCallback(({ item, index }) => {
-        console.log("selectedCategory", selectedCategory)
+        //console.log("selectedCategory", selectedCategory)
         return(
         <ExerciseButton
             specialName={item}

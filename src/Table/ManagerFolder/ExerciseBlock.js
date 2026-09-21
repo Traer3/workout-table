@@ -3,16 +3,16 @@ import { View, StyleSheet, FlatList } from "react-native";
 import ExerciseButton from "./ExerciseButton";
 import { useCallback } from "react";
 
-const ExerciseBlock = memo(({ categories , colorFunction, activeCategory, specialFunction}) => {
+const ExerciseBlock = memo(({ categories , colorFunction, activeCategory, specialFunction, selectedCategory}) => {
     
     const renderItem = useCallback(({ item, index }) => (
         <ExerciseButton
             specialName={item}
             colorFunction={colorFunction}
-            activeCategory={activeCategory}
+            activeCategory={selectedCategory} //activeCategory
             specialFunction={specialFunction}
         />
-    ),[activeCategory, colorFunction, specialFunction]);
+    ),[activeCategory, colorFunction, specialFunction, selectedCategory]);
 
     return (
         <View style={styles.exerciseBody}>

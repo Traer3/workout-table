@@ -36,6 +36,9 @@ const ExerciseButton = memo(({ specialFunction, specialName, iconName, colorFunc
     if (activeCategory instanceof Set) {
         isActive = activeCategory.has(specialName)
     }
+    if(activeCategory instanceof Array){
+        isActive = activeCategory.includes(specialName)
+    }
 
     function onPress() {
         if (colorFunction) colorFunction(specialName)
