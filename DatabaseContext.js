@@ -26,6 +26,7 @@ export const DatabaseProvider = ({ children }) => {
         //changeTemplate()
         //saveDemoWorkout()
         if(!workoutTable || workoutTable.length === 0){
+            
             //saveDemoWorkout()
             
         }
