@@ -6,11 +6,12 @@ import DateBlock from "./DateBlock.js";
 import InfoBlock from "./InfoBlock.js";
 import NamesBlock from "./NamesBlock.js";
 import styles, { BorderColor } from './renderItemStyles.js';
+import { useDatabase } from "../../../DatabaseContext.js";
 
 const RenderItem = ({ item, index, data, setData, flatListRef, }) => {
   const [loading, setLoading] = useState(false);
-
-  const currentDayData = useObject('WorkoutDay', item);
+  const {workoutTable} = useDatabase();
+  const currentDayData = useObject(workoutTable, item);
   //console.log("currentDayData: ", currentDayData)
 
   const [editingCell, setEditingCell] = useState(null);

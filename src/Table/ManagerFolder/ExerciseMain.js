@@ -10,6 +10,8 @@ import ChoiceAnswer from "./ChoiceAnswer";
 
 export default function ExerciseMain({ newDay, setNewDay }) {
     const { categories, presetsHistory, getFormattedDate, workoutTemplate } = useDatabase();
+    const presetsHistoryData = useQuery(presetsHistory)
+    const workoutTemplateData = useQuery(workoutTemplate);
     const realm = useRealm()
     const [index, setIndex] = useState(0);
     const [activeCategory, setActiveCategory] = useState(null);
@@ -18,11 +20,11 @@ export default function ExerciseMain({ newDay, setNewDay }) {
 
 
     useEffect(() => {
-        if (presetsHistory && presetsHistory.length > 0 && presetsHistory[0]?.exercise) {
-            setSelectedExercises(presetsHistory[0].exercise.map(exercis => exercis.fullName))
-            setSelectedCategory(presetsHistory[0].exercise.map(element => element.category))
+        if (presetsHistoryData && presetsHistoryData.length > 0 && presetsHistoryData[0]?.exercise) {
+            setSelectedExercises(presetsHistoryData[0].exercise.map(exercis => exercis.fullName))
+            setSelectedCategory(presetsHistoryData[0].exercise.map(element => element.category))
         }
-    }, [presetsHistory, activeCategory])
+    }, [presetsHistoryData, activeCategory])
 
 
     const initialGrouped = categories.reduce((accumulator, category) => {
@@ -31,7 +33,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     }, {});
 
 
-    const groupedTemplates = workoutTemplate.reduce((accumulator, template) => {
+    const groupedTemplates = workoutTemplateData.reduce((accumulator, template) => {
         const cat = template.category;
         if (cat && accumulator[cat]) {
             accumulator[cat].push(template);
@@ -71,11 +73,11 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     function assembleExercises(selectedExercises) {
         //console.log("selectedExercises: ", selectedExercises)
         const exercises = []
-        const lastIndex = presetsHistory.length - 1
-        const maxId = presetsHistory[lastIndex].id + 1
+        const lastIndex = presetsHistoryData.length - 1
+        const maxId = presetsHistoryData[lastIndex].id + 1
         selectedExercises.forEach(elementName => {
             //console.log("name: ", element)
-            const foundExercise = realm.objects('WorkoutTemplate')
+            const foundExercise = realm.objects(workoutTemplate)
                 .filtered('exercise.fullName == $0', elementName)[0];
             if (foundExercise) {
                 //console.log("exercise: ", foundExercise.exercise)
@@ -102,7 +104,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
         if (exercises && exercises.length > 0) {
             if (id > 0) {
                 realm.write(() => {
-                    realm.create('PresetsHistory', {
+                    realm.create(presetsHistory, {
                         id: id,
                         timestamp: currentDate,
                         exercise: exercises
@@ -113,7 +115,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
             zeroIdSave(currentDate, exercises)
             return
             // realm.write(() => {
-            //     realm.create('PresetsHistory', {
+            //     realm.create(presetsHistory, {
             //         id: 0,
             //         timestamp: currentDate,
             //         exercise: exercises
@@ -138,7 +140,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
         }
         //console.log("saved Data: ", exercises)
         realm.write(() => {
-            realm.create('PresetsHistory', {
+            realm.create(presetsHistory, {
                 id: 0,
                 timestamp: currentDate,
                 exercise: exercises

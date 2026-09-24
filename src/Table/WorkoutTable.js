@@ -4,11 +4,15 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { useDatabase } from "../../DatabaseContext";
 import IconButton from "../IconButton.js";
 import RenderItem from "./RenderItem/RenderItem.js";
+import { useQuery } from "../db/realm.js";
+
+
 
 export default function WorkoutTable({ editDay, setEditDay }) {
   const { uploadToDrive, workoutTable } = useDatabase()
   const flatListRef = useRef(null);
-  const allIds = getAllIds(workoutTable);
+  const workoutTableData = useQuery(workoutTable)
+  const allIds = getAllIds(workoutTableData);
 
   function getAllIds(allData) {
     //console.log("all data: ", allData)

@@ -1,14 +1,15 @@
 import { View } from "react-native";
 import { useDatabase } from "../../../DatabaseContext.js";
-import { useRealm } from "../../db/realm.js";
+import { useQuery, useRealm } from "../../db/realm.js";
 import styles from '../RenderItem/renderItemStyles.js';
 import WeightNamesBlock from "./WeightNamesBlock.js";
 import WeightInfoBlock from "./WeightInfoBlock.js";
 
 export default function WeightTable({ currentDayData, item, loading, setLoading, editingCell, setEditingCell, flatListRef, index, }) {
     const { weightHistory } = useDatabase();
+    const weightHistoryData = useQuery(weightHistory);
     const realm = useRealm()
-    const maxId = weightHistory.max('id')
+    const maxId = weightHistoryData.max('id')
     const currentWeightDayData = createDayData(currentDayData)
 
     function getExerciseData(exerciseName) {

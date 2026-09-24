@@ -5,9 +5,9 @@ import { useQuery, useRealm } from "../../db/realm";
 
 export default function ChoiceAnswer({ setActiveCategory, selectedExercises, assembleExercises }) {
     const [active, setActive] = useState(false)
-
-    const presetsHistory = useQuery('PresetsHistory')
-    const workoutTemplate = useQuery('WorkoutTemplate')
+    const {presetsHistory, workoutTemplate} = useDatabase();
+    const presetsHistoryData = useQuery(presetsHistory)
+    const workoutTemplateData = useQuery(workoutTemplate)
     //console.log("workoutTemplate: ", workoutTemplate)
     const realm = useRealm();
 

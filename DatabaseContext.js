@@ -11,25 +11,21 @@ export const DatabaseContext = createContext()
 
 export const DatabaseProvider = ({ children }) => {
     const realm = useRealm();
-    const categories = ["Neck", "Deltoids", "Chest", "Back", "Arms" , "Forearms", "Core", "Glutes", "Thighs", "Calves", "Unique"];
-
     const [loading, setLoading] = useState(true);
     
-    const workoutTable = useQuery('WorkoutDay')
-    const weightHistory = useQuery('ExerciseWeightHistory')
-    const presetsHistory = useQuery('PresetsHistory')
-    const workoutTemplate = useQuery('WorkoutTemplate')
-    
-    //console.log("presetsHistory: ", presetsHistory)
+    const categories = ["Neck", "Deltoids", "Chest", "Back", "Arms" , "Forearms", "Core", "Glutes", "Thighs", "Calves", "Unique"];
+
+    const workoutTable =  'WorkoutDay'//useQuery('WorkoutDay')
+    const weightHistory = 'ExerciseWeightHistory'// useQuery('ExerciseWeightHistory')
+    const presetsHistory =  'PresetsHistory'//useQuery('PresetsHistory')
+    const workoutTemplate =  'WorkoutTemplate'//useQuery('WorkoutTemplate')
 
     useEffect(()=>{
         //changeTemplate()
         //saveDemoWorkout()
-        if(!workoutTable || workoutTable.length === 0){
-            
-            //saveDemoWorkout()
-            
-        }
+        // if(!workoutTable || workoutTable.length === 0){ //убрать эту хуйню отсюда и закинуть в app
+        //     //saveDemoWorkout()
+        // }
         
     },[])
 
@@ -130,6 +126,7 @@ export const DatabaseProvider = ({ children }) => {
         //console.log("Data created!")
     }
 
+    /*
     const changeTemplate = () => {
         realm.write(()=>{
             const currentDate = Math.floor(Date.now() / 1000) 
@@ -243,8 +240,7 @@ export const DatabaseProvider = ({ children }) => {
             }, 'modified');
         })
     }
-    
-
+    */
 
     const uploadToDrive = async () => {
     //console.log("uploadToDrive WORKED!")
@@ -271,20 +267,16 @@ export const DatabaseProvider = ({ children }) => {
         return;
     }
 
+    const dateFormatter = new Intl.DateTimeFormat('ru-RU',{
+        day:'2-digit',
+        month:'2-digit',
+        year:'2-digit'
+    })
     function getFormattedDate(ts) {
-        if (ts !== undefined && ts !== null) {
-            return new Date(ts * 1000).toLocaleDateString('ru-RU',{
-                day:'2-digit',
-                month:'2-digit',
-                year:'2-digit'
-            })
-        }
-
-        return new Date().toLocaleDateString('ru-RU',{
-                day:'2-digit',
-                month:'2-digit',
-                year:'2-digit'
-            });
+        const date = (ts !== undefined && ts !== null)
+            ? new Date(ts*1000)
+            : new Date();
+        return dateFormatter.format(date)
     }
 
     function checkHours(hours, lastCheck) {

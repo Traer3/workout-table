@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 
 
 export default function DateForm({ newDay, setNewDay }) {
-    const {getFormattedDate} = useDatabase()
+    const { getFormattedDate } = useDatabase()
     const [date, setDate] = useState(0 || getFormattedDate());
-    
+
     //заменить useEffect на считывание кнопки согласия или другого определителя завершения проверки дня 
-    useEffect(()=>{
+    useEffect(() => {
         //console.log("date", date)
-        setNewDay({'day': date})
-    },[date])
-    
+        setNewDay({ 'day': date })
+    }, [date])
+
     return (
         < View style={styles.dateBlock} >
             <Text>{date}</Text>
