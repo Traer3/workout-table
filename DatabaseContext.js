@@ -110,7 +110,7 @@ export const DatabaseProvider = ({ children }) => {
         });
         console.log("\n","MY BODY IS A MACHINE","\n","FOR NOW")
         */
-        const currentDate = Math.floor(Date.now() / 1000) 
+       
         realm.write(()=>{
             
             realm.create('WorkoutDay', {
@@ -302,6 +302,11 @@ export const DatabaseProvider = ({ children }) => {
         }
     };
 
+    function getCurrentDate() {
+        const currentDate = Math.floor(Date.now() / 1000) 
+        return currentDate
+    }
+
 
     return (
         <DatabaseContext.Provider
@@ -315,7 +320,8 @@ export const DatabaseProvider = ({ children }) => {
                 getFormattedDate,
                 checkHours,
                 categories,
-                workoutTemplate
+                workoutTemplate,
+                getCurrentDate
             }}
         >
             {children}

@@ -9,7 +9,7 @@ import ExerciseButton from "./ExerciseButton";
 import ChoiceAnswer from "./ChoiceAnswer";
 
 export default function ExerciseMain({ newDay, setNewDay }) {
-    const { categories, presetsHistory, getFormattedDate, workoutTemplate } = useDatabase();
+    const { categories, presetsHistory, getFormattedDate, workoutTemplate, checkHours, getCurrentDate } = useDatabase();
     const presetsHistoryData = useQuery(presetsHistory)
     const workoutTemplateData = useQuery(workoutTemplate);
     const realm = useRealm()
@@ -18,11 +18,17 @@ export default function ExerciseMain({ newDay, setNewDay }) {
     const [selectedExercises, setSelectedExercises] = useState(new Set())
     const [selectedCategory, setSelectedCategory] = useState(null)
 
+    const currentDate = getCurrentDate()
 
     useEffect(() => {
         if (presetsHistoryData && presetsHistoryData.length > 0 && presetsHistoryData[0]?.exercise) {
             setSelectedExercises(presetsHistoryData[0].exercise.map(exercis => exercis.fullName))
             setSelectedCategory(presetsHistoryData[0].exercise.map(element => element.category))
+
+            const clearZeroIdPresets = checkHours(presetsHistoryData[0].timestamp, 12);
+            if (clearZeroIdPresets) {
+                zeroIdSave()
+            }
         }
     }, [presetsHistoryData, activeCategory])
 
@@ -60,76 +66,26 @@ export default function ExerciseMain({ newDay, setNewDay }) {
             } else {
                 nextSet.add(exerciseName);
             }
-            //каждое действие юзера 
             const exercises = assembleExercises(nextSet)
-            saveUserInput(exercises);
-
-            //console.log("nextSet: ", nextSet)
-
+            zeroIdSave(exercises);
             return nextSet;
         })
     }, []);
 
     function assembleExercises(selectedExercises) {
-        //console.log("selectedExercises: ", selectedExercises)
         const exercises = []
-        const lastIndex = presetsHistoryData.length - 1
-        const maxId = presetsHistoryData[lastIndex].id + 1
         selectedExercises.forEach(elementName => {
-            //console.log("name: ", element)
             const foundExercise = realm.objects(workoutTemplate)
                 .filtered('exercise.fullName == $0', elementName)[0];
             if (foundExercise) {
-                //console.log("exercise: ", foundExercise.exercise)
                 exercises.push(foundExercise.exercise)
-
-                //console.log(foundExercise.category)
             }
         });
-
-        //console.log("exercises: ", exercises)
-        //saveUserInput(exercises, maxId)
-        //console.log("PRESET SAVED!")
-
-        setSelectedCategory()
         return exercises;
     }
 
 
-    const saveUserInput = (exercises, id) => {
-        const currentDate = Math.floor(Date.now() / 1000)
-        //console.log("exercises: ", exercises)
-        //console.log("id: ", id)
-
-        if (exercises && exercises.length > 0) {
-            if (id > 0) {
-                realm.write(() => {
-                    realm.create(presetsHistory, {
-                        id: id,
-                        timestamp: currentDate,
-                        exercise: exercises
-                    }, 'modified')
-                });
-                return;
-            }
-            zeroIdSave(currentDate, exercises)
-            return
-            // realm.write(() => {
-            //     realm.create(presetsHistory, {
-            //         id: 0,
-            //         timestamp: currentDate,
-            //         exercise: exercises
-            //     }, 'modified')
-            // });
-        }
-        if (exercises.length <= 0) {
-            zeroIdSave(currentDate, exercises)
-        }
-
-    };
-
-    const zeroIdSave = (currentDate, userData) => {
-        //console.log("userData: ", userData)
+    const zeroIdSave = (userData) => {
         let exercises = userData;
         if (!userData || userData.length < 0) {
             exercises = [{
@@ -138,7 +94,6 @@ export default function ExerciseMain({ newDay, setNewDay }) {
                 "reps1": { color: '', value: 0 }, "reps2": { color: '', value: 0 }, "rest1": { color: '', value: 0 }, "rest2": { color: '', value: 0 }
             }]
         }
-        //console.log("saved Data: ", exercises)
         realm.write(() => {
             realm.create(presetsHistory, {
                 id: 0,
@@ -178,7 +133,12 @@ export default function ExerciseMain({ newDay, setNewDay }) {
                         //borderWidth:1,
                         height: '7%'
                     }}>
-                        <ChoiceAnswer setActiveCategory={setActiveCategory} selectedExercises={selectedExercises} assembleExercises={assembleExercises} />
+                        <ChoiceAnswer
+                            setActiveCategory={setActiveCategory}
+                            selectedExercises={selectedExercises}
+                            assembleExercises={assembleExercises}
+
+                        />
                     </View>
                 </View>
                 :

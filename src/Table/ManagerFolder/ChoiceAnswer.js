@@ -1,71 +1,49 @@
 import { Pressable, View, StyleSheet, Text } from "react-native";
 import { useState } from "react";
 import { useDatabase } from "../../../DatabaseContext";
-import { useQuery, useRealm } from "../../db/realm";
+import { useRealm } from "../../db/realm";
+import { useMaxId } from "../../hooks/useMaxId";
 
 export default function ChoiceAnswer({ setActiveCategory, selectedExercises, assembleExercises }) {
     const [active, setActive] = useState(false)
-    const {presetsHistory, workoutTemplate} = useDatabase();
-    const presetsHistoryData = useQuery(presetsHistory)
-    const workoutTemplateData = useQuery(workoutTemplate)
-    //console.log("workoutTemplate: ", workoutTemplate)
+    const { workoutTable, getCurrentDate } = useDatabase();
+
     const realm = useRealm();
 
-    /*
-    {
-                    category:'string?',
-                    fullName: 'Lying Barbell Triceps Extension',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    category:'string?',
-                    fullName: 'Reverse Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    category:'string?',
-                    fullName: 'Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    category:'string?',
-                    fullName: 'Wrist Side Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    category:'string?',
-                    fullName: 'Wrist Pronation',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    category:'string?',
-                    fullName: 'Wrist Suplination',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-    */
+    const { id: nexId } = useMaxId(workoutTable)
+    const currentDate = getCurrentDate()
 
-    /*
-     realm.write(() => {
-            const currentDate = Math.floor(Date.now() / 1000) 
-            realm.create('PresetsHistory', {
-                id:0,
-                timestamp: currentDate,
-                exercises:[
+    const saveUserInput = (exercises, id) => {
+        if (exercises && exercises.length > 0) {
+            realm.write(() => {
+                realm.create(workoutTable, {
+                    id: id,
+                    timestamp: currentDate,
+                    exercises: exercises
+                }, 'modified');
+            })
+        }
+    };
 
-                ]
-            }, 'modified');
-    */
+    const saveNewPreset = () => {
+        if (exercises && exercises.length > 0) {
+            console.log("exercises: ", exercises)
+            console.log("id: ", id)
+            // realm.write(() => {
+            //     realm.create(presetsHistory, {
+            //         id: id,
+            //         timestamp: currentDate,
+            //         exercise: exercises
+            //     }, 'modified')
+            // });
+            // return;
+        }
+    }
 
-    
     const onPressIn = () => {
-        /*
-        const element = realm.objectForPrimaryKey("PresetsHistory",1)
-        realm.write(()=>{
-            realm.delete(element);
-        })
-        */
         setActive(true)
-        //assembleExercises(selectedExercises);
-        return
-    
+        const exercises = assembleExercises(selectedExercises);
+        saveUserInput(exercises, nexId)
     }
 
     const onPressOut = () => {
