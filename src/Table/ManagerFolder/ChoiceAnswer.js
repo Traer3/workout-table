@@ -4,11 +4,8 @@ import { useDatabase } from "../../../DatabaseContext";
 import { useRealm } from "../../db/realm";
 import { useMaxId } from "../../hooks/useMaxId";
 
-export default function ChoiceAnswer({ setActiveCategory, selectedExercises, assembleExercises, saveUserInput }) {
+export default function ChoiceAnswer({ onSave , onCansel,}) {
     const [active, setActive] = useState(false)
-    const { workoutTable } = useDatabase();
-
-    const { id: nexId } = useMaxId(workoutTable)
 
     // const saveNewPreset = () => {
     //     if (exercises && exercises.length > 0) {
@@ -27,20 +24,24 @@ export default function ChoiceAnswer({ setActiveCategory, selectedExercises, ass
 
     const onPressIn = () => {
         setActive(true)
-        const exercises = assembleExercises(selectedExercises);
-        saveUserInput(workoutTable, exercises, nexId)
+        onSave()
+    }
+
+    const onClose = () => {
+        onCansel()
     }
 
     const onPressOut = () => {
         setTimeout(() => {
             setActive(false)
         }, 200)
+        
     }
     return (
         <View style={styles.mainBody}>
             <Pressable
                 style={[styles.exerciseHeader, { backgroundColor: 'transparent', }]}
-                onPressIn={() => setActiveCategory(null)}
+                onPressIn={onClose}
             >
                 <Text style={[styles.buttonText, { color: 'red' }]}> Cansel</Text>
             </Pressable>
@@ -58,6 +59,8 @@ export default function ChoiceAnswer({ setActiveCategory, selectedExercises, ass
 
 const styles = StyleSheet.create({
     mainBody: {
+        // borderColor: 'red',
+        // borderWidth: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
@@ -65,7 +68,7 @@ const styles = StyleSheet.create({
         //borderWidth:1,
         //borderColor:'blue',
         borderRadius: 5,
-        height: "100%",
+        //height: "50%",
         width: '50%',
         justifyContent: 'center',
         alignItems: 'center',
@@ -73,6 +76,6 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontWeight: '600',
-        fontSize: 25,
+        fontSize: 20,
     }
 });

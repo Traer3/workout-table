@@ -6,14 +6,16 @@ import ExerciseBlockIcons from "./ExerciseBlockIcons";
 import ExerciseColumnHolder from "./ExerciseColumnHolder";
 import { useDatabase } from "../../../DatabaseContext";
 import ChoiceAnswer from "./ChoiceAnswer";
+import { useMaxId } from "../../hooks/useMaxId";
 
 export default function ExerciseMain({setSelectedExercises, selectedExercises,  colectAllExercises, assembleExercises, zeroIdSave, saveUserInput }) {
-    const { categories, presetsHistory, workoutTemplate, checkHours } = useDatabase();
+    const { categories, presetsHistory, workoutTemplate, checkHours, workoutTable } = useDatabase();
     const presetsHistoryData = useQuery(presetsHistory)
     const workoutTemplateData = useQuery(workoutTemplate);
     const [index, setIndex] = useState(0);
     const [activeCategory, setActiveCategory] = useState(null);
-    const [selectedCategory, setSelectedCategory] = useState(null)
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const { id: nexId } = useMaxId(workoutTable);
 
     useEffect(() => {
         if (presetsHistoryData && presetsHistoryData.length > 0 && presetsHistoryData[0]?.exercise) {
@@ -53,15 +55,22 @@ export default function ExerciseMain({setSelectedExercises, selectedExercises,  
         setActiveCategory(categoryName);
     }, []);
 
+    const saveUserChoise = () => {
+        const exercises = assembleExercises(selectedExercises);
+        saveUserInput(workoutTable, exercises, nexId)
+    }
 
+    const clearActiveCategory = () => {
+        setActiveCategory(null)
+    }
 
 
     return (
         <View style={styles.exerciseMainBody}>
             {activeCategory ?
                 <View style={{
-                    borderColor: 'red',
-                    borderWidth: 1,
+                    // borderColor: 'red',
+                    // borderWidth: 1,
                     overflow: 'hidden',
                     height: '100%'
                 }}>
@@ -86,10 +95,8 @@ export default function ExerciseMain({setSelectedExercises, selectedExercises,  
                         height: '7%'
                     }}>
                         <ChoiceAnswer
-                            setActiveCategory={setActiveCategory}
-                            selectedExercises={selectedExercises}
-                            assembleExercises={assembleExercises}
-                            saveUserInput={saveUserInput}
+                            onCansel={clearActiveCategory}
+                            onSave={saveUserChoise}
                         />
                     </View>
                 </View>
