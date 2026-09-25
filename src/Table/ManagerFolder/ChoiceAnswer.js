@@ -4,46 +4,31 @@ import { useDatabase } from "../../../DatabaseContext";
 import { useRealm } from "../../db/realm";
 import { useMaxId } from "../../hooks/useMaxId";
 
-export default function ChoiceAnswer({ setActiveCategory, selectedExercises, assembleExercises }) {
+export default function ChoiceAnswer({ setActiveCategory, selectedExercises, assembleExercises, saveUserInput }) {
     const [active, setActive] = useState(false)
-    const { workoutTable, getCurrentDate } = useDatabase();
-
-    const realm = useRealm();
+    const { workoutTable } = useDatabase();
 
     const { id: nexId } = useMaxId(workoutTable)
-    const currentDate = getCurrentDate()
 
-    const saveUserInput = (exercises, id) => {
-        if (exercises && exercises.length > 0) {
-            realm.write(() => {
-                realm.create(workoutTable, {
-                    id: id,
-                    timestamp: currentDate,
-                    exercises: exercises
-                }, 'modified');
-            })
-        }
-    };
-
-    const saveNewPreset = () => {
-        if (exercises && exercises.length > 0) {
-            console.log("exercises: ", exercises)
-            console.log("id: ", id)
-            // realm.write(() => {
-            //     realm.create(presetsHistory, {
-            //         id: id,
-            //         timestamp: currentDate,
-            //         exercise: exercises
-            //     }, 'modified')
-            // });
-            // return;
-        }
-    }
+    // const saveNewPreset = () => {
+    //     if (exercises && exercises.length > 0) {
+    //         console.log("exercises: ", exercises)
+    //         console.log("id: ", id)
+    //         // realm.write(() => {
+    //         //     realm.create(presetsHistory, {
+    //         //         id: id,
+    //         //         timestamp: currentDate,
+    //         //         exercise: exercises
+    //         //     }, 'modified')
+    //         // });
+    //         // return;
+    //     }
+    // }
 
     const onPressIn = () => {
         setActive(true)
         const exercises = assembleExercises(selectedExercises);
-        saveUserInput(exercises, nexId)
+        saveUserInput(workoutTable, exercises, nexId)
     }
 
     const onPressOut = () => {

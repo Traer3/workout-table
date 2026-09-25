@@ -8,10 +8,10 @@ export default function DateForm({ newDay, setNewDay }) {
     const [date, setDate] = useState(0 || getFormattedDate());
 
     //заменить useEffect на считывание кнопки согласия или другого определителя завершения проверки дня 
-    useEffect(() => {
-        //console.log("date", date)
-        setNewDay({ 'day': date })
-    }, [date])
+    // useEffect(() => {
+    //     //console.log("date", date)
+    //     setNewDay({ 'day': date })
+    // }, [date])
 
     return (
         < View style={styles.dateBlock} >

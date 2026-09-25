@@ -1,24 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
 import ExerciseBlock from "./ExerciseBlock";
-import { useQuery, useRealm } from "../../db/realm";
+import { useQuery } from "../../db/realm";
 import ExerciseBlockIcons from "./ExerciseBlockIcons";
 import ExerciseColumnHolder from "./ExerciseColumnHolder";
 import { useDatabase } from "../../../DatabaseContext";
-import ExerciseButton from "./ExerciseButton";
 import ChoiceAnswer from "./ChoiceAnswer";
 
-export default function ExerciseMain({ newDay, setNewDay }) {
-    const { categories, presetsHistory, getFormattedDate, workoutTemplate, checkHours, getCurrentDate } = useDatabase();
+export default function ExerciseMain({setSelectedExercises, selectedExercises,  colectAllExercises, assembleExercises, zeroIdSave, saveUserInput }) {
+    const { categories, presetsHistory, workoutTemplate, checkHours } = useDatabase();
     const presetsHistoryData = useQuery(presetsHistory)
     const workoutTemplateData = useQuery(workoutTemplate);
-    const realm = useRealm()
     const [index, setIndex] = useState(0);
     const [activeCategory, setActiveCategory] = useState(null);
-    const [selectedExercises, setSelectedExercises] = useState(new Set())
     const [selectedCategory, setSelectedCategory] = useState(null)
-
-    const currentDate = getCurrentDate()
 
     useEffect(() => {
         if (presetsHistoryData && presetsHistoryData.length > 0 && presetsHistoryData[0]?.exercise) {
@@ -58,50 +53,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
         setActiveCategory(categoryName);
     }, []);
 
-    const colectAllExercises = useCallback((exerciseName) => {
-        setSelectedExercises((prev) => {
-            const nextSet = new Set(prev);
-            if (nextSet.has(exerciseName)) {
-                nextSet.delete(exerciseName);
-            } else {
-                nextSet.add(exerciseName);
-            }
-            const exercises = assembleExercises(nextSet)
-            zeroIdSave(exercises);
-            return nextSet;
-        })
-    }, []);
 
-    function assembleExercises(selectedExercises) {
-        const exercises = []
-        selectedExercises.forEach(elementName => {
-            const foundExercise = realm.objects(workoutTemplate)
-                .filtered('exercise.fullName == $0', elementName)[0];
-            if (foundExercise) {
-                exercises.push(foundExercise.exercise)
-            }
-        });
-        return exercises;
-    }
-
-
-    const zeroIdSave = (userData) => {
-        let exercises = userData;
-        if (!userData || userData.length < 0) {
-            exercises = [{
-                "category": null,
-                "fullName": "",
-                "reps1": { color: '', value: 0 }, "reps2": { color: '', value: 0 }, "rest1": { color: '', value: 0 }, "rest2": { color: '', value: 0 }
-            }]
-        }
-        realm.write(() => {
-            realm.create(presetsHistory, {
-                id: 0,
-                timestamp: currentDate,
-                exercise: exercises
-            }, 'modified')
-        });
-    }
 
 
     return (
@@ -137,7 +89,7 @@ export default function ExerciseMain({ newDay, setNewDay }) {
                             setActiveCategory={setActiveCategory}
                             selectedExercises={selectedExercises}
                             assembleExercises={assembleExercises}
-
+                            saveUserInput={saveUserInput}
                         />
                     </View>
                 </View>
