@@ -1,36 +1,42 @@
 
 import { Pressable, View, StyleSheet } from "react-native";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DateForm from "./ManagerFolder/DateForm";
 import PresetForm from "./ManagerFolder/PresetForm";
 import ExerciseButtons from "./ManagerFolder/ExerciseButtons";
 import ExerciseBlock from "./ManagerFolder/ExerciseBlock";
 import ExerciseMain from "./ManagerFolder/ExerciseMain";
-import { useRealm } from "../db/realm";
+import { useQuery, useRealm } from "../db/realm";
 import { useDatabase } from "../../DatabaseContext";
+import PresetMain from "./ManagerFolder/PresetMain";
 
 
 export default function ManageWorkout({ editDay, setEditDay }) {
-    const [presetState, setPresetState] = useState(true)
+    //const [presetState, setPresetState] = useState(true)
 
     const realm = useRealm()
     const { presetsHistory, workoutTemplate, getCurrentDate } = useDatabase()
     const [selectedExercises, setSelectedExercises] = useState(new Set())
     const currentDate = getCurrentDate()
-    
+    const presetsHistoryData = useQuery(presetsHistory)
+    const [curretnPreset, setCurretnPreset] = useState(presetsHistoryData[0] || null)
+
+    //console.log("selectedEX: ", selectedExercises)
+
+
     const colectAllExercises = useCallback((exerciseName) => {
-            setSelectedExercises((prev) => {
-                const nextSet = new Set(prev);
-                if (nextSet.has(exerciseName)) {
-                    nextSet.delete(exerciseName);
-                } else {
-                    nextSet.add(exerciseName);
-                }
-                const exercises = assembleExercises(nextSet)
-                zeroIdSave(exercises);
-                return nextSet;
-            })
-        }, []);
+        setSelectedExercises((prev) => {
+            const nextSet = new Set(prev);
+            if (nextSet.has(exerciseName)) {
+                nextSet.delete(exerciseName);
+            } else {
+                nextSet.add(exerciseName);
+            }
+            const exercises = assembleExercises(nextSet)
+            zeroIdSave(exercises);
+            return nextSet;
+        })
+    }, []);
 
     function assembleExercises(selectedExercises) {
         const exercises = []
@@ -62,17 +68,25 @@ export default function ManageWorkout({ editDay, setEditDay }) {
         });
     };
 
-    const saveUserInput = (table, exercises, id) => {
+    const saveUserInput = (table, exercises, id, name) => {
         if (exercises && exercises.length > 0) {
             // console.log("table: ", table)
             // console.log("exercises: ", exercises)
             // console.log("id: ", id)
-            // return;
+            
             realm.write(() => {
+                if (name) {
+                    realm.create(table, {
+                        id: id,
+                        name: name,
+                        timestamp: currentDate,
+                        exercise: exercises
+                    }, 'modified');
+                }
                 realm.create(table, {
                     id: id,
                     timestamp: currentDate,
-                    exercises: exercises
+                    exercise: exercises
                 }, 'modified');
             })
         }
@@ -86,30 +100,31 @@ export default function ManageWorkout({ editDay, setEditDay }) {
             >
             </Pressable>
             <View style={styles.mainBody}>
-                    {/*Отдельная форма даты*/}
-                    <DateForm />
+                {/*Отдельная форма даты*/}
+                <DateForm />
 
-                    {/*Отдельная форма пресетов*/}
-                    <PresetForm
-                        editDay={editDay}
-                        setEditDay={setEditDay}  
-                        presetState={presetState} 
-                        selectedExercises={selectedExercises}
-                        assembleExercises={assembleExercises} 
-                        saveUserInput={saveUserInput}
-                    />
+                {/*Отдельная форма пресетов*/}
+                <PresetMain
+                    editDay={editDay}
+                    setEditDay={setEditDay}
+                    setCurretnPreset={setCurretnPreset}
+                    selectedExercises={selectedExercises}
+                    assembleExercises={assembleExercises}
+                    saveUserInput={saveUserInput}
+                />
 
-                    {/*Отдельная форма кнопок треши*/}
-                    <ExerciseMain 
-                        setSelectedExercises={setSelectedExercises}
-                        selectedExercises={selectedExercises}
-                        colectAllExercises={colectAllExercises} 
-                        assembleExercises={assembleExercises} 
-                        zeroIdSave={zeroIdSave}
-                        saveUserInput={saveUserInput}
-                    />
-                    
-                </View>
+                {/*Отдельная форма кнопок треши*/}
+                <ExerciseMain
+                    setSelectedExercises={setSelectedExercises}
+                    selectedExercises={selectedExercises}
+                    colectAllExercises={colectAllExercises}
+                    assembleExercises={assembleExercises}
+                    zeroIdSave={zeroIdSave}
+                    saveUserInput={saveUserInput}
+                    curretnPreset={curretnPreset}
+                />
+
+            </View>
         </View>
     )
 }
@@ -128,14 +143,14 @@ const styles = StyleSheet.create({
         //backgroundColor:'yellow',
         height: '100%',
         width: '100%',
-        
+
     },
     mainBody: {
-        position:'absolute',
+        position: 'absolute',
         borderColor: 'green',
         borderWidth: 1,
         height: '93%',
         width: '90%',
-        
+
     },
 });

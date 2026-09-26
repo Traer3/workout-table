@@ -41,13 +41,13 @@ export default function ChoiceAnswer({ onSave , onCansel,}) {
         <View style={styles.mainBody}>
             <Pressable
                 style={[styles.exerciseHeader, { backgroundColor: 'transparent', }]}
-                onPressIn={onClose}
+                onPress={onClose}
             >
                 <Text style={[styles.buttonText, { color: 'red' }]}> Cansel</Text>
             </Pressable>
             <Pressable
                 style={[styles.exerciseHeader, { backgroundColor: active ? 'rgba(76, 175, 80, 0.2)' : 'transparent', }]}
-                onPressIn={onPressIn}
+                onPress={onPressIn}
                 onPressOut={onPressOut}
             >
                 <Text style={[styles.buttonText, { color: 'green' }]}>Start</Text>

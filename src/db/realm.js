@@ -4,20 +4,20 @@ import { schema } from './schemas';
 export const { RealmProvider, useRealm, useQuery, useObject } = createRealmContext({
 
     schema: schema,
-    schemaVersion: 13,
+    schemaVersion: 14,
     
     //deleteRealmIfMigrationNeeded:true,
 
 
     
     
-    /*
+    
 
-    onMigration:(oldRealm, newRealm) => {
-        console.log("New version realm table")
-    }
+    // onMigration:(oldRealm, newRealm) => {
+    //     console.log("New version realm table")
+    // }
 
-    */
+    
     
 
     

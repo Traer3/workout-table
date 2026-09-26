@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function ExerciseColumnHolder({ groupedTemplates, categories, index, colectAllExercises, selectedExercises, activeCategory, setActiveCategory }) {
     const flatListRef = useRef(null);
-
     useEffect(() => {
         setTimeout(() => {
 

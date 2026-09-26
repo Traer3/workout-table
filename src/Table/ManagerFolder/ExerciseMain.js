@@ -8,7 +8,7 @@ import { useDatabase } from "../../../DatabaseContext";
 import ChoiceAnswer from "./ChoiceAnswer";
 import { useMaxId } from "../../hooks/useMaxId";
 
-export default function ExerciseMain({setSelectedExercises, selectedExercises,  colectAllExercises, assembleExercises, zeroIdSave, saveUserInput }) {
+export default function ExerciseMain({ setSelectedExercises, selectedExercises, colectAllExercises, assembleExercises, zeroIdSave, saveUserInput, curretnPreset }) {
     const { categories, presetsHistory, workoutTemplate, checkHours, workoutTable } = useDatabase();
     const presetsHistoryData = useQuery(presetsHistory)
     const workoutTemplateData = useQuery(workoutTemplate);
@@ -17,12 +17,25 @@ export default function ExerciseMain({setSelectedExercises, selectedExercises,  
     const [selectedCategory, setSelectedCategory] = useState(null);
     const { id: nexId } = useMaxId(workoutTable);
 
-    useEffect(() => {
-        if (presetsHistoryData && presetsHistoryData.length > 0 && presetsHistoryData[0]?.exercise) {
-            setSelectedExercises(presetsHistoryData[0].exercise.map(exercis => exercis.fullName))
-            setSelectedCategory(presetsHistoryData[0].exercise.map(element => element.category))
 
-            const clearZeroIdPresets = checkHours(presetsHistoryData[0].timestamp, 12);
+    useEffect(() => {
+        //  console.log("Current preset : ", curretnPreset)
+        //  console.log("selectedExercises : ", selectedExercises)
+
+
+
+
+
+    }, [curretnPreset,])
+
+    useEffect(() => {
+        if (presetsHistoryData && presetsHistoryData.length > 0 && curretnPreset?.exercise) {
+
+            setSelectedExercises(curretnPreset.exercise.map(exercis => exercis.fullName))
+            setSelectedCategory(curretnPreset.exercise.map(element => element.category))
+
+
+            const clearZeroIdPresets = checkHours(curretnPreset.timestamp, 12);
             if (clearZeroIdPresets) {
                 zeroIdSave()
             }
@@ -37,7 +50,7 @@ export default function ExerciseMain({setSelectedExercises, selectedExercises,  
 
 
     const groupedTemplates = workoutTemplateData.reduce((accumulator, template) => {
-        const cat = template.category;
+        const cat = template.exercise.category;
         if (cat && accumulator[cat]) {
             accumulator[cat].push(template);
         } else {
@@ -46,6 +59,8 @@ export default function ExerciseMain({setSelectedExercises, selectedExercises,  
 
         return accumulator;
     }, initialGrouped);
+
+
 
     const changeIndex = useCallback((newName) => {
         setIndex(categories.indexOf(newName));
@@ -57,6 +72,7 @@ export default function ExerciseMain({setSelectedExercises, selectedExercises,  
 
     const saveUserChoise = () => {
         const exercises = assembleExercises(selectedExercises);
+        //тут мне нужно определять присутвие id и name что бы подавать обновление присета 
         saveUserInput(workoutTable, exercises, nexId)
     }
 
