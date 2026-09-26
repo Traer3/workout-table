@@ -2,19 +2,18 @@ import { Pressable, View, StyleSheet, Text } from "react-native";
 import { useDatabase } from "../../../DatabaseContext";
 import { useObject } from "../../db/realm";
 
-export default function PresetForm({ name, id, setCurretnPreset,  onDeletion }) {
+export default function PresetForm({ name, id, setCurretnPreset,  onDeletion, zeroIdSave }) {
     if (!name || !id) return;
     const { presetsHistory } = useDatabase()
     const currentPreset = useObject(presetsHistory, id)
-    //console.log(currentPreset)
-
+    
     const loadPreset = () => {
-        console.log(currentPreset.exercise.map(exercis => exercis.fullName))
-        //setSelectedExercises(currentPreset.exercise.map(exercis => exercis.fullName))
         setCurretnPreset(currentPreset)
+        zeroIdSave(currentPreset.exercises);
     };
 
     const onLongPress = () => {
+        //хуйня выдает ошибку 
         onDeletion(id)
         //добавить окошко с предложением "удалить ли ? "
     }

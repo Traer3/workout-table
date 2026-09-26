@@ -12,16 +12,20 @@ import PresetMain from "./ManagerFolder/PresetMain";
 
 
 export default function ManageWorkout({ editDay, setEditDay }) {
-    //const [presetState, setPresetState] = useState(true)
-
     const realm = useRealm()
     const { presetsHistory, workoutTemplate, getCurrentDate } = useDatabase()
     const [selectedExercises, setSelectedExercises] = useState(new Set())
     const currentDate = getCurrentDate()
     const presetsHistoryData = useQuery(presetsHistory)
-    const [curretnPreset, setCurretnPreset] = useState(presetsHistoryData[0] || null)
+    const [curretnPreset, setCurretnPreset] = useState(null)
 
-    //console.log("selectedEX: ", selectedExercises)
+
+    useEffect(()=>{
+        if(!curretnPreset){
+           // console.log("current preset is empty ")
+            setCurretnPreset(presetsHistoryData[0])
+        }
+    },[curretnPreset])
 
 
     const colectAllExercises = useCallback((exerciseName) => {
@@ -63,30 +67,26 @@ export default function ManageWorkout({ editDay, setEditDay }) {
             realm.create(presetsHistory, {
                 id: 0,
                 timestamp: currentDate,
-                exercise: exercises
+                exercises: exercises
             }, 'modified')
         });
     };
 
     const saveUserInput = (table, exercises, id, name) => {
-        if (exercises && exercises.length > 0) {
-            // console.log("table: ", table)
-            // console.log("exercises: ", exercises)
-            // console.log("id: ", id)
-            
+        if (exercises && exercises.length > 0) { 
             realm.write(() => {
                 if (name) {
                     realm.create(table, {
                         id: id,
                         name: name,
                         timestamp: currentDate,
-                        exercise: exercises
+                        exercises: exercises
                     }, 'modified');
                 }
                 realm.create(table, {
                     id: id,
                     timestamp: currentDate,
-                    exercise: exercises
+                    exercises: exercises
                 }, 'modified');
             })
         }
@@ -111,6 +111,7 @@ export default function ManageWorkout({ editDay, setEditDay }) {
                     selectedExercises={selectedExercises}
                     assembleExercises={assembleExercises}
                     saveUserInput={saveUserInput}
+                    zeroIdSave={zeroIdSave}
                 />
 
                 {/*Отдельная форма кнопок треши*/}
@@ -122,6 +123,7 @@ export default function ManageWorkout({ editDay, setEditDay }) {
                     zeroIdSave={zeroIdSave}
                     saveUserInput={saveUserInput}
                     curretnPreset={curretnPreset}
+                    setCurretnPreset={setCurretnPreset}
                 />
 
             </View>

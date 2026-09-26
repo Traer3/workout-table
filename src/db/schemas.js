@@ -73,7 +73,7 @@ export class PresetsHistory extends Realm.Object {
             id:'int',
             name:'string?',
             timestamp: 'int',
-            exercise: 'Exercise[]',
+            exercises: 'Exercise[]',
         }
     }
 }

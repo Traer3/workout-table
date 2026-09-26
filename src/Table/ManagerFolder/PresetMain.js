@@ -8,7 +8,7 @@ import PresetForm from "./PresetForm";
 import { useQuery, useRealm } from "../../db/realm";
 
 
-export default function PresetMain({ editDay, setEditDay, presetState, selectedExercises, assembleExercises, saveUserInput, setCurretnPreset }) {
+export default function PresetMain({ editDay, setEditDay, presetState, selectedExercises, assembleExercises, saveUserInput, setCurretnPreset, zeroIdSave }) {
     const { presetsHistory } = useDatabase()
     const { id: nexId } = useMaxId(presetsHistory)
     const presetName = useRef('');
@@ -18,18 +18,14 @@ export default function PresetMain({ editDay, setEditDay, presetState, selectedE
     const realm = useRealm()
 
     const presetsData = presetsHistoryTable.filter(preset => preset.id !== 0);
-    // console.log(presetsData)
 
     const handlePresetCreation = () => {
         setWriteName(!writeName);
     }
     const onSave = () => {
-        // console.log("Presed!")
-        // console.log("presetName.current:", presetName.current)
-
         if (presetName.current.length > 0) {
             const exercises = assembleExercises(selectedExercises);
-            saveUserInput(presetsHistory, exercises, nexId, presetName.current) //Включить позже 
+            saveUserInput(presetsHistory, exercises, nexId, presetName.current)
             setEditDay(!editDay)
         } else {
             console.log("write name")
@@ -58,6 +54,7 @@ export default function PresetMain({ editDay, setEditDay, presetState, selectedE
                     id={item.id}
                     setCurretnPreset={setCurretnPreset}
                     onDeletion={onDeletion}
+                    zeroIdSave={zeroIdSave}
                 />
             )
         }
@@ -65,7 +62,6 @@ export default function PresetMain({ editDay, setEditDay, presetState, selectedE
 
     return (
         <View style={[styles.presetBlock]}>
-            {/* Обращатся к presetsHistory и закинуть все присеты не считая id 0 как кнопки  */}
             {writeName ?
                 <View style={{ width: "100%", height: '100%', }}>
                     <TextInput

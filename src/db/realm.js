@@ -4,7 +4,7 @@ import { schema } from './schemas';
 export const { RealmProvider, useRealm, useQuery, useObject } = createRealmContext({
 
     schema: schema,
-    schemaVersion: 14,
+    schemaVersion: 15,
     
     //deleteRealmIfMigrationNeeded:true,
 

@@ -8,7 +8,7 @@ import { useDatabase } from "../../../DatabaseContext";
 import ChoiceAnswer from "./ChoiceAnswer";
 import { useMaxId } from "../../hooks/useMaxId";
 
-export default function ExerciseMain({ setSelectedExercises, selectedExercises, colectAllExercises, assembleExercises, zeroIdSave, saveUserInput, curretnPreset }) {
+export default function ExerciseMain({ setSelectedExercises, selectedExercises, colectAllExercises, assembleExercises, zeroIdSave, saveUserInput, curretnPreset, setCurretnPreset }) {
     const { categories, presetsHistory, workoutTemplate, checkHours, workoutTable } = useDatabase();
     const presetsHistoryData = useQuery(presetsHistory)
     const workoutTemplateData = useQuery(workoutTemplate);
@@ -17,30 +17,18 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
     const [selectedCategory, setSelectedCategory] = useState(null);
     const { id: nexId } = useMaxId(workoutTable);
 
-
     useEffect(() => {
-        //  console.log("Current preset : ", curretnPreset)
-        //  console.log("selectedExercises : ", selectedExercises)
+        if (presetsHistoryData && presetsHistoryData.length > 0 && presetsHistoryData[0]?.exercises) {
 
+            setSelectedExercises(presetsHistoryData[0].exercises.map(exercis => exercis.fullName))
+            setSelectedCategory(presetsHistoryData[0].exercises.map(element => element.category)) 
 
-
-
-
-    }, [curretnPreset,])
-
-    useEffect(() => {
-        if (presetsHistoryData && presetsHistoryData.length > 0 && curretnPreset?.exercise) {
-
-            setSelectedExercises(curretnPreset.exercise.map(exercis => exercis.fullName))
-            setSelectedCategory(curretnPreset.exercise.map(element => element.category))
-
-
-            const clearZeroIdPresets = checkHours(curretnPreset.timestamp, 12);
+            const clearZeroIdPresets = checkHours(presetsHistoryData[0].timestamp, 12);
             if (clearZeroIdPresets) {
                 zeroIdSave()
             }
         }
-    }, [presetsHistoryData, activeCategory])
+    }, [presetsHistoryData, activeCategory, curretnPreset])
 
 
     const initialGrouped = categories.reduce((accumulator, category) => {
@@ -72,11 +60,25 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
 
     const saveUserChoise = () => {
         const exercises = assembleExercises(selectedExercises);
-        //тут мне нужно определять присутвие id и name что бы подавать обновление присета 
-        saveUserInput(workoutTable, exercises, nexId)
+        
+        if(curretnPreset.name !== null){
+            const {name , id} = curretnPreset
+            
+            saveUserInput(presetsHistory, exercises, id, name)
+            setCurretnPreset(null)
+            // console.log("Preset is updated! !")
+            return;
+        }else{
+            // console.log("Workout is save!")
+            saveUserInput(workoutTable, exercises, nexId)
+        }
     }
 
     const clearActiveCategory = () => {
+        if(curretnPreset.id > 0){
+            console.log("Exiting current preset")
+            setCurretnPreset(null)
+        }
         setActiveCategory(null)
     }
 
@@ -113,6 +115,7 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
                         <ChoiceAnswer
                             onCansel={clearActiveCategory}
                             onSave={saveUserChoise}
+                            //ебануть условие для изменения присета 
                         />
                     </View>
                 </View>
