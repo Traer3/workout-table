@@ -7,6 +7,7 @@ import { useQuery, useRealm } from "../db/realm";
 import { useDatabase } from "../../DatabaseContext";
 import PresetMain from "./ManagerFolder/PresetMain";
 import MainButtons from "./ManagerFolder/MainButtons";
+import CreatExercise from "./ManagerFolder/CreatExercise";
 
 
 export default function ManageWorkout({ editDay, setEditDay }) {
@@ -16,6 +17,7 @@ export default function ManageWorkout({ editDay, setEditDay }) {
     const currentDate = getCurrentDate()
     const presetsHistoryData = useQuery(presetsHistory)
     const [curretnPreset, setCurretnPreset] = useState(null)
+    const [addNewExercise, setAddNewExercise] = useState(false)
 
     useEffect(() => {
         if (!curretnPreset) {
@@ -70,6 +72,16 @@ export default function ManageWorkout({ editDay, setEditDay }) {
     };
 
     const saveUserInput = (table, exercises, id, name) => {
+        if (table === 'WorkoutTemplate') {
+            realm.write(() => {
+                realm.create(table, {
+                    id: id,
+                    timestamp: currentDate,
+                    exercise: exercises
+                }, 'modified');
+            })
+            return;
+        }
         if (exercises && exercises.length > 0) {
             realm.write(() => {
                 if (name) {
@@ -89,6 +101,10 @@ export default function ManageWorkout({ editDay, setEditDay }) {
         }
     };
 
+    const onAddingNewExercise = () => {
+        setAddNewExercise(!addNewExercise)
+    }
+
     return (
         <View style={styles.main}>
             <Pressable
@@ -97,10 +113,12 @@ export default function ManageWorkout({ editDay, setEditDay }) {
             >
             </Pressable>
             <View style={styles.mainBody}>
-                <DateForm/>
+                <DateForm />
                 <MainButtons
                     zeroIdSave={zeroIdSave}
                     setCurretnPreset={setCurretnPreset}
+                    onAddingNewExercise={onAddingNewExercise}
+                    saveUserInput={saveUserInput}
                 />
                 <PresetMain
                     editDay={editDay}
@@ -112,16 +130,23 @@ export default function ManageWorkout({ editDay, setEditDay }) {
                     zeroIdSave={zeroIdSave}
                     curretnPreset={curretnPreset}
                 />
-                <ExerciseMain
-                    setSelectedExercises={setSelectedExercises}
-                    selectedExercises={selectedExercises}
-                    colectAllExercises={colectAllExercises}
-                    assembleExercises={assembleExercises}
-                    zeroIdSave={zeroIdSave}
-                    saveUserInput={saveUserInput}
-                    curretnPreset={curretnPreset}
-                    setCurretnPreset={setCurretnPreset}
-                />
+                {addNewExercise ?
+                    <CreatExercise
+                        saveUserInput={saveUserInput}
+                        setAddNewExercise={setAddNewExercise}
+                    />
+                    :
+                    <ExerciseMain
+                        setSelectedExercises={setSelectedExercises}
+                        selectedExercises={selectedExercises}
+                        colectAllExercises={colectAllExercises}
+                        assembleExercises={assembleExercises}
+                        zeroIdSave={zeroIdSave}
+                        saveUserInput={saveUserInput}
+                        curretnPreset={curretnPreset}
+                        setCurretnPreset={setCurretnPreset}
+                    />
+                }
 
             </View>
         </View>

@@ -56,11 +56,11 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
 
     const saveUserChoise = () => {
         const exercises = assembleExercises(selectedExercises);
-        if(curretnPreset?.tableName){
+        if (curretnPreset?.tableName) {
             const { name, id, tableName } = curretnPreset
             saveUserInput(tableName, exercises, id, name)
             setCurretnPreset(null)
-            console.log("Workout updated!")
+            //console.log("Workout updated!")
             return;
         }
         if (curretnPreset.name !== null) {
@@ -77,7 +77,7 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
 
     const clearActiveCategory = () => {
         if (curretnPreset.id > 0) {
-            console.log("Exiting current preset")
+            //console.log("Exiting current preset")
             setCurretnPreset(null)
         }
         setActiveCategory(null)
@@ -86,7 +86,7 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
     return (
         <View style={styles.exerciseMainBody}>
             {activeCategory ?
-                <View style={{ overflow: 'hidden', height: '100%'}}>
+                <View style={{ overflow: 'hidden', height: '100%' }}>
                     <ExerciseBlockIcons
                         categories={categories}
                         specialFunction={changeIndex}
@@ -102,7 +102,7 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
                         activeCategory={activeCategory}
                         setActiveCategory={setActiveCategory}
                     />
-                    <View style={{ height: '7%'}}>
+                    <View style={{ height: '7%' }}>
                         <ChoiceAnswer
                             onCansel={clearActiveCategory}
                             onSave={saveUserChoise}
@@ -129,9 +129,9 @@ const styles = StyleSheet.create({
         //borderColor: 'red',
         borderWidth: 0.1,
         borderRadius: 5,
-        height: "79%",
+        height: "77%",
         margin: 5,
-       
+
     },
     exerciseBody: {
         borderColor: 'yellow',

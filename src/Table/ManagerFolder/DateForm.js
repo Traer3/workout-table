@@ -3,7 +3,7 @@ import { useDatabase } from "../../../DatabaseContext";
 import { useEffect, useState } from "react";
 
 
-export default function DateForm({ newDay, setNewDay , zeroIdSave}) {
+export default function DateForm({ newDay, setNewDay, zeroIdSave }) {
     const { getFormattedDate } = useDatabase()
     const [date, setDate] = useState(0 || getFormattedDate());
 
@@ -14,15 +14,15 @@ export default function DateForm({ newDay, setNewDay , zeroIdSave}) {
     // }, [date])
 
     return (
-        <Pressable 
+        <Pressable
             style={styles.dateBlock}
-            //onPress={()=> zeroIdSave()}
-            >
+        //onPress={()=> zeroIdSave()}
+        >
             < View  >
                 <Text style={{
                     fontWeight: '600',
-                    fontSize:15,
-                    color:'white'
+                    fontSize: 15,
+                    color: 'white'
                 }}>{date}</Text>
             </View >
         </Pressable>
@@ -32,7 +32,7 @@ export default function DateForm({ newDay, setNewDay , zeroIdSave}) {
 const styles = StyleSheet.create({
     dateBlock: {
         borderColor: 'blue',
-        borderWidth: 1, //0.1
+        borderWidth: 0.1, //0.1
         borderRadius: 5,
         height: '4%',
         backgroundColor: '#3D458F',
