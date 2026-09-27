@@ -10,6 +10,8 @@ export default function PresetForm({ name, id, setCurretnPreset, onDeletion, zer
     const loadPreset = () => {
         setCurretnPreset(currentPreset)
         zeroIdSave(currentPreset.exercises);
+
+        console.log("currentPreset loadPreset: ", currentPreset )
     };
 
     const onLongPress = () => {

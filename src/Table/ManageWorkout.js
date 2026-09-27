@@ -6,6 +6,7 @@ import ExerciseMain from "./ManagerFolder/ExerciseMain";
 import { useQuery, useRealm } from "../db/realm";
 import { useDatabase } from "../../DatabaseContext";
 import PresetMain from "./ManagerFolder/PresetMain";
+import MainButtons from "./ManagerFolder/MainButtons";
 
 
 export default function ManageWorkout({ editDay, setEditDay }) {
@@ -96,8 +97,10 @@ export default function ManageWorkout({ editDay, setEditDay }) {
             >
             </Pressable>
             <View style={styles.mainBody}>
-                <DateForm
+                <DateForm/>
+                <MainButtons
                     zeroIdSave={zeroIdSave}
+                    setCurretnPreset={setCurretnPreset}
                 />
                 <PresetMain
                     editDay={editDay}
@@ -147,6 +150,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         height: '93%',
         width: '90%',
-
+        //overflow:'hidden'
     },
 });

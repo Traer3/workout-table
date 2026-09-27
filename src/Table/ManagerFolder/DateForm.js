@@ -16,7 +16,7 @@ export default function DateForm({ newDay, setNewDay , zeroIdSave}) {
     return (
         <Pressable 
             style={styles.dateBlock}
-            onPress={()=> zeroIdSave()}
+            //onPress={()=> zeroIdSave()}
             >
             < View  >
                 <Text style={{
@@ -31,10 +31,10 @@ export default function DateForm({ newDay, setNewDay , zeroIdSave}) {
 
 const styles = StyleSheet.create({
     dateBlock: {
-        //borderColor: 'red',
-        borderWidth: 0.1,
+        borderColor: 'blue',
+        borderWidth: 1, //0.1
         borderRadius: 5,
-        height: '8%',
+        height: '4%',
         backgroundColor: '#3D458F',
         margin: 5,
         justifyContent: 'center',

@@ -56,6 +56,13 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
 
     const saveUserChoise = () => {
         const exercises = assembleExercises(selectedExercises);
+        if(curretnPreset?.tableName){
+            const { name, id, tableName } = curretnPreset
+            saveUserInput(tableName, exercises, id, name)
+            setCurretnPreset(null)
+            console.log("Workout updated!")
+            return;
+        }
         if (curretnPreset.name !== null) {
             const { name, id } = curretnPreset
             saveUserInput(presetsHistory, exercises, id, name)
@@ -99,7 +106,7 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
                         <ChoiceAnswer
                             onCansel={clearActiveCategory}
                             onSave={saveUserChoise}
-                            greenButtonText={curretnPreset?.name !== null ? "Update Preset" : false}
+                            greenButtonText={curretnPreset?.name !== null ? "Update" : false}
                         />
                     </View>
                 </View>
@@ -122,9 +129,9 @@ const styles = StyleSheet.create({
         //borderColor: 'red',
         borderWidth: 0.1,
         borderRadius: 5,
-        height: "80%",
+        height: "79%",
         margin: 5,
-        backgroundColor: ''
+       
     },
     exerciseBody: {
         borderColor: 'yellow',
