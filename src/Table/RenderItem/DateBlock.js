@@ -5,12 +5,13 @@ import { useState } from "react";
 import { useDatabase } from "../../../DatabaseContext.js";
 import DateBlockQuestion from "./DateBlockQuestion.js";
 
-export default function DateBlock({ currentDayData, setLoading, loading }) {
+export default function DateBlock({ currentDayData, setLoading, loading,  }) {
     //console.log("currentDayData?.timestamp: ", currentDayData?.timestamp)
-    const { getFormattedDate } = useDatabase()
+    const { getFormattedDate, deletItem, workoutTable } = useDatabase()
     const realm = useRealm();
     const [date, setDate] = useState(() => getFormattedDate(currentDayData?.timestamp))
     const [question, setQuestion] = useState(false);
+    const [deleteId, setDeleteId] = useState(false)
 
     if (!currentDayData || !currentDayData.isValid()) return null;
 
@@ -28,25 +29,36 @@ export default function DateBlock({ currentDayData, setLoading, loading }) {
         setQuestion(!question)
         return;
     }
+
+    const deletWorkout = () => {
+        deletItem(currentDayData?.id, workoutTable)
+    }
     return (
         <>
             {question ?
-                <DateBlockQuestion specialFunction={changeDay} setQuestion={setQuestion} question={question} /> :
+                <DateBlockQuestion specialFunction={changeDay} setQuestion={setQuestion} question={question} text={'set today date ?'}/> :
+                <> 
+                {deleteId && 
+                    <DateBlockQuestion specialFunction={deletWorkout} setQuestion={setDeleteId} question={deleteId} text={'delete workout  ?'}/>
+                }
                 <Pressable
-                    style={{ justifyContent: 'center', alignItems: 'center', }}
-                    onPressIn={() => { 
+                    style={{ justifyContent: 'center', alignItems: 'center',}}
+                    onLongPress={() => { 
                         //setLoading(!loading) 
+                        setDeleteId(!deleteId)
+                        //console.log("currentDayData: ", currentDayData)
                     }}
                 >
                     <Pressable
                         style={{ width: "40%", }}
-                        onPressIn={() => setQuestion(!question)}
+                        onPress={() => setQuestion(!question)}
                     >
                         <Text style={[styles.textStyle,]}
                         >{date}
                         </Text>
                     </Pressable>
                 </Pressable>
+                </>
             }
         </>
     )

@@ -307,6 +307,20 @@ export const DatabaseProvider = ({ children }) => {
         return currentDate
     }
 
+    const deletItem = (id, tableName) => {
+        // if (curretnWorkout && curretnWorkout.id === id) {
+        //     setCurretnPreset(null)
+        // }
+        setTimeout(() => {
+            realm.write(() => {
+                const element = realm.objectForPrimaryKey(tableName, id)
+                if (element) {
+                    realm.delete(element);
+                }
+            })
+        }, 100)
+    };
+
 
     return (
         <DatabaseContext.Provider
@@ -321,7 +335,8 @@ export const DatabaseProvider = ({ children }) => {
                 checkHours,
                 categories,
                 workoutTemplate,
-                getCurrentDate
+                getCurrentDate,
+                deletItem
             }}
         >
             {children}

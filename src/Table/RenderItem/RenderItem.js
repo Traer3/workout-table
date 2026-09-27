@@ -9,6 +9,7 @@ import styles, { BorderColor } from './renderItemStyles.js';
 import { useDatabase } from "../../../DatabaseContext.js";
 
 const RenderItem = ({ item, index, data, setData, flatListRef, }) => {
+  if (!item) return null
   const [loading, setLoading] = useState(false);
   const {workoutTable} = useDatabase();
   const currentDayData = useObject(workoutTable, item);
@@ -19,7 +20,7 @@ const RenderItem = ({ item, index, data, setData, flatListRef, }) => {
   if (!currentDayData || !currentDayData.isValid()) {
     return null;
   }
-  if (!item) return null
+  
 
 
   return (

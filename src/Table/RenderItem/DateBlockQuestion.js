@@ -1,10 +1,10 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function DateBlockQuestion({ specialFunction, setQuestion, question }) {
+export default function DateBlockQuestion({ specialFunction, setQuestion, question, text }) {
     return (
         <View style={styles.mainBody}>
             <Text style={[styles.textStyle, { color: 'white' }]}>
-                set today date ?
+                {text}
             </Text>
             <View style={styles.buttonHolder}>
                 <Pressable style={[styles.pressableStyle, { marginRight: 50 }]}
@@ -29,11 +29,13 @@ export default function DateBlockQuestion({ specialFunction, setQuestion, questi
 const styles = StyleSheet.create({
     mainBody: {
         alignItems: 'center',
-        height: 80
+        height: 80,
+
     },
     textStyle: {
         fontWeight: 'bold',
         fontSize: 20,
+        textAlign:'center'
     },
     buttonHolder: {
         alignItems: 'center',

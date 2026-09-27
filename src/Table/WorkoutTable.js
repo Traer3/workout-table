@@ -44,13 +44,15 @@ export default function WorkoutTable({ editDay, setEditDay }) {
     await uploadToDrive();
   }
 
-  const renderItem = useCallback(({ item, index }) => (
+  const renderItem = useCallback(({ item, index }) => {
+    if(!item) return null
+    return(
     <RenderItem
       item={item}
       index={index}
       flatListRef={flatListRef}
     />
-  ),[]);
+  )},[]);
 
   return (
     <>
