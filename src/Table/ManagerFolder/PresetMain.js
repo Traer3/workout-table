@@ -7,26 +7,27 @@ import ChoiceAnswer from "./ChoiceAnswer";
 import PresetForm from "./PresetForm";
 import { useQuery, useRealm } from "../../db/realm";
 
-
-export default function PresetMain({ editDay, setEditDay, presetState, selectedExercises, assembleExercises, saveUserInput, setCurretnPreset, zeroIdSave }) {
-    const { presetsHistory } = useDatabase()
+export default function PresetMain({selectedExercises, assembleExercises, saveUserInput, setCurretnPreset, zeroIdSave, curretnPreset }) {
+    const { presetsHistory, workoutTable } = useDatabase()
     const { id: nexId } = useMaxId(presetsHistory)
+    const { id: nexWorkoutId } = useMaxId(workoutTable)
     const presetName = useRef('');
     const [writeName, setWriteName] = useState(false);
-
     const presetsHistoryTable = useQuery(presetsHistory)
     const realm = useRealm()
 
-    const presetsData = presetsHistoryTable.filter(preset => preset.id !== 0);
+    const presetsData = presetsHistoryTable.filtered('id != 0');
 
     const handlePresetCreation = () => {
         setWriteName(!writeName);
+
     }
     const onSave = () => {
         if (presetName.current.length > 0) {
             const exercises = assembleExercises(selectedExercises);
             saveUserInput(presetsHistory, exercises, nexId, presetName.current)
-            setEditDay(!editDay)
+            //setEditDay(!editDay)
+            setWriteName(false)
         } else {
             console.log("write name")
         }
@@ -35,35 +36,45 @@ export default function PresetMain({ editDay, setEditDay, presetState, selectedE
         setWriteName(false)
     };
 
-    
-
     const onDeletion = (id) => {
-        realm.write(() => {
-           const element = realm.objectForPrimaryKey(presetsHistory,id)
-                if(element){
+        if (curretnPreset && curretnPreset.id === id) {
+            setCurretnPreset(null)
+        }
+        setTimeout(() => {
+            realm.write(() => {
+                const element = realm.objectForPrimaryKey(presetsHistory, id)
+                if (element) {
                     realm.delete(element);
                 }
-        })
+            })
+        }, 100)
     };
 
+    const saveLastWorkout = () => {
+        const lastWorkout = realm.objectForPrimaryKey(workoutTable, nexWorkoutId - 1)
+        const lastExercises = lastWorkout.exercises;
+        saveUserInput(presetsHistory, lastExercises, nexWorkoutId, presetName.current)
+        setWriteName(false)
+    }
+
     const renderItem = ({ item }) => {
-        if (item) {
-            return (
-                <PresetForm
-                    name={item.name}
-                    id={item.id}
-                    setCurretnPreset={setCurretnPreset}
-                    onDeletion={onDeletion}
-                    zeroIdSave={zeroIdSave}
-                />
-            )
-        }
+        if (!item || !item.isValid()) return null
+        return (
+            <PresetForm
+                name={item.name}
+                id={item.id}
+                setCurretnPreset={setCurretnPreset}
+                onDeletion={onDeletion}
+                zeroIdSave={zeroIdSave}
+                curretnPreset={curretnPreset}
+            />
+        )
     }
 
     return (
         <View style={[styles.presetBlock]}>
             {writeName ?
-                <View style={{ width: "100%", height: '100%', }}>
+                <View style={{ width: "100%", height: '100%' }}>
                     <TextInput
                         multiline={true}
                         style={styles.inputStyle}
@@ -75,6 +86,10 @@ export default function PresetMain({ editDay, setEditDay, presetState, selectedE
                     <ChoiceAnswer
                         onCansel={onCansel}
                         onSave={onSave}
+                        greenButtonText={"Save Preset"}
+                        thirdButton={"Save last workout ?"}
+                        onSpecial={saveLastWorkout}
+                        fontSize={13}
                     />
                 </View> :
                 <>
@@ -101,11 +116,8 @@ export default function PresetMain({ editDay, setEditDay, presetState, selectedE
                             </Pressable>
                         )}
                     />
-
-
                 </>
             }
-
         </View>
     )
 };
@@ -118,9 +130,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#3D458F',
         margin: 5,
         flexDirection: 'row',
-
         alignItems: 'center',
-        //padding: 5
     },
     pressableCell: {
         borderColor: '#2E346E',
@@ -130,26 +140,11 @@ const styles = StyleSheet.create({
         width: 80,
         justifyContent: 'center',
         alignItems: 'center',
-
     },
-    exerciseCell: {
-        borderColor: '#2E346E',
-        borderWidth: 0.2,
-        borderRadius: 5,
-        margin: 5,
-        //backgroundColor:'yellow',
-        width: '20%',
 
-
-    },
-    textStyle: {
-        textAlign: 'center',
-        color: 'white',
-        fontWeight: '600'
-    },
     inputStyle: {
-        //borderColor:'yellow',
-        //borderWidth:1,
+        // borderColor:'yellow',
+        // borderWidth:1,
         height: '50%',
         fontSize: 11,
         paddingBottom: 0,
@@ -161,7 +156,6 @@ const styles = StyleSheet.create({
         width: '100%',
         // borderWidth: 1,
         // borderColor: 'green',
-
     },
     flatListContet: {
         height: '100%',
@@ -172,5 +166,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 5
     },
-
+    buttonText: {
+        fontWeight: '600',
+        fontSize: 20,
+    }
 });

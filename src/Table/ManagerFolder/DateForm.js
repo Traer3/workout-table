@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from "react-native"
+import { Pressable, StyleSheet, Text, View } from "react-native"
 import { useDatabase } from "../../../DatabaseContext";
 import { useEffect, useState } from "react";
 
 
-export default function DateForm({ newDay, setNewDay }) {
+export default function DateForm({ newDay, setNewDay , zeroIdSave}) {
     const { getFormattedDate } = useDatabase()
     const [date, setDate] = useState(0 || getFormattedDate());
 
@@ -14,9 +14,18 @@ export default function DateForm({ newDay, setNewDay }) {
     // }, [date])
 
     return (
-        < View style={styles.dateBlock} >
-            <Text>{date}</Text>
-        </View >
+        <Pressable 
+            style={styles.dateBlock}
+            onPress={()=> zeroIdSave()}
+            >
+            < View  >
+                <Text style={{
+                    fontWeight: '600',
+                    fontSize:15,
+                    color:'white'
+                }}>{date}</Text>
+            </View >
+        </Pressable>
     )
 };
 
@@ -30,6 +39,7 @@ const styles = StyleSheet.create({
         margin: 5,
         justifyContent: 'center',
         alignItems: 'center',
+        //backgroundColor:'green'
 
     },
 });

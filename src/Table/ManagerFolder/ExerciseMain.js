@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, StyleSheet } from "react-native";
 import ExerciseBlock from "./ExerciseBlock";
 import { useQuery } from "../../db/realm";
 import ExerciseBlockIcons from "./ExerciseBlockIcons";
@@ -19,9 +19,8 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
 
     useEffect(() => {
         if (presetsHistoryData && presetsHistoryData.length > 0 && presetsHistoryData[0]?.exercises) {
-
             setSelectedExercises(presetsHistoryData[0].exercises.map(exercis => exercis.fullName))
-            setSelectedCategory(presetsHistoryData[0].exercises.map(element => element.category)) 
+            setSelectedCategory(presetsHistoryData[0].exercises.map(element => element.category))
 
             const clearZeroIdPresets = checkHours(presetsHistoryData[0].timestamp, 12);
             if (clearZeroIdPresets) {
@@ -44,11 +43,8 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
         } else {
             accumulator["Unique"].push(template);
         }
-
         return accumulator;
     }, initialGrouped);
-
-
 
     const changeIndex = useCallback((newName) => {
         setIndex(categories.indexOf(newName));
@@ -60,38 +56,30 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
 
     const saveUserChoise = () => {
         const exercises = assembleExercises(selectedExercises);
-        
-        if(curretnPreset.name !== null){
-            const {name , id} = curretnPreset
-            
+        if (curretnPreset.name !== null) {
+            const { name, id } = curretnPreset
             saveUserInput(presetsHistory, exercises, id, name)
             setCurretnPreset(null)
             // console.log("Preset is updated! !")
             return;
-        }else{
+        } else {
             // console.log("Workout is save!")
             saveUserInput(workoutTable, exercises, nexId)
         }
     }
 
     const clearActiveCategory = () => {
-        if(curretnPreset.id > 0){
+        if (curretnPreset.id > 0) {
             console.log("Exiting current preset")
             setCurretnPreset(null)
         }
         setActiveCategory(null)
     }
 
-
     return (
         <View style={styles.exerciseMainBody}>
             {activeCategory ?
-                <View style={{
-                    // borderColor: 'red',
-                    // borderWidth: 1,
-                    overflow: 'hidden',
-                    height: '100%'
-                }}>
+                <View style={{ overflow: 'hidden', height: '100%'}}>
                     <ExerciseBlockIcons
                         categories={categories}
                         specialFunction={changeIndex}
@@ -107,15 +95,11 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
                         activeCategory={activeCategory}
                         setActiveCategory={setActiveCategory}
                     />
-                    <View style={{
-                        //borderColor:'yellow',
-                        //borderWidth:1,
-                        height: '7%'
-                    }}>
+                    <View style={{ height: '7%'}}>
                         <ChoiceAnswer
                             onCansel={clearActiveCategory}
                             onSave={saveUserChoise}
-                            //ебануть условие для изменения присета 
+                            greenButtonText={curretnPreset?.name !== null ? "Update Preset" : false}
                         />
                     </View>
                 </View>
@@ -140,6 +124,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         height: "80%",
         margin: 5,
+        backgroundColor: ''
     },
     exerciseBody: {
         borderColor: 'yellow',

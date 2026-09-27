@@ -2,9 +2,6 @@
 import { Pressable, View, StyleSheet } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import DateForm from "./ManagerFolder/DateForm";
-import PresetForm from "./ManagerFolder/PresetForm";
-import ExerciseButtons from "./ManagerFolder/ExerciseButtons";
-import ExerciseBlock from "./ManagerFolder/ExerciseBlock";
 import ExerciseMain from "./ManagerFolder/ExerciseMain";
 import { useQuery, useRealm } from "../db/realm";
 import { useDatabase } from "../../DatabaseContext";
@@ -19,13 +16,12 @@ export default function ManageWorkout({ editDay, setEditDay }) {
     const presetsHistoryData = useQuery(presetsHistory)
     const [curretnPreset, setCurretnPreset] = useState(null)
 
-
-    useEffect(()=>{
-        if(!curretnPreset){
-           // console.log("current preset is empty ")
+    useEffect(() => {
+        if (!curretnPreset) {
+            // console.log("current preset is empty ")
             setCurretnPreset(presetsHistoryData[0])
         }
-    },[curretnPreset])
+    }, [curretnPreset])
 
 
     const colectAllExercises = useCallback((exerciseName) => {
@@ -73,7 +69,7 @@ export default function ManageWorkout({ editDay, setEditDay }) {
     };
 
     const saveUserInput = (table, exercises, id, name) => {
-        if (exercises && exercises.length > 0) { 
+        if (exercises && exercises.length > 0) {
             realm.write(() => {
                 if (name) {
                     realm.create(table, {
@@ -100,10 +96,9 @@ export default function ManageWorkout({ editDay, setEditDay }) {
             >
             </Pressable>
             <View style={styles.mainBody}>
-                {/*Отдельная форма даты*/}
-                <DateForm />
-
-                {/*Отдельная форма пресетов*/}
+                <DateForm
+                    zeroIdSave={zeroIdSave}
+                />
                 <PresetMain
                     editDay={editDay}
                     setEditDay={setEditDay}
@@ -112,9 +107,8 @@ export default function ManageWorkout({ editDay, setEditDay }) {
                     assembleExercises={assembleExercises}
                     saveUserInput={saveUserInput}
                     zeroIdSave={zeroIdSave}
+                    curretnPreset={curretnPreset}
                 />
-
-                {/*Отдельная форма кнопок треши*/}
                 <ExerciseMain
                     setSelectedExercises={setSelectedExercises}
                     selectedExercises={selectedExercises}

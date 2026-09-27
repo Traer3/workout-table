@@ -1,26 +1,8 @@
 import { Pressable, View, StyleSheet, Text } from "react-native";
 import { useState } from "react";
-import { useDatabase } from "../../../DatabaseContext";
-import { useRealm } from "../../db/realm";
-import { useMaxId } from "../../hooks/useMaxId";
 
-export default function ChoiceAnswer({ onSave , onCansel,}) {
+export default function ChoiceAnswer({ onSave, onCansel, greenButtonText, redButtonText, thirdButton, onSpecial, fontSize }) {
     const [active, setActive] = useState(false)
-
-    // const saveNewPreset = () => {
-    //     if (exercises && exercises.length > 0) {
-    //         console.log("exercises: ", exercises)
-    //         console.log("id: ", id)
-    //         // realm.write(() => {
-    //         //     realm.create(presetsHistory, {
-    //         //         id: id,
-    //         //         timestamp: currentDate,
-    //         //         exercise: exercises
-    //         //     }, 'modified')
-    //         // });
-    //         // return;
-    //     }
-    // }
 
     const onPressIn = () => {
         setActive(true)
@@ -35,7 +17,7 @@ export default function ChoiceAnswer({ onSave , onCansel,}) {
         setTimeout(() => {
             setActive(false)
         }, 200)
-        
+
     }
     return (
         <View style={styles.mainBody}>
@@ -43,15 +25,36 @@ export default function ChoiceAnswer({ onSave , onCansel,}) {
                 style={[styles.exerciseHeader, { backgroundColor: 'transparent', }]}
                 onPress={onClose}
             >
-                <Text style={[styles.buttonText, { color: 'red' }]}> Cansel</Text>
+                <Text
+                    style={[styles.buttonText, { color: 'red', fontSize: fontSize ? fontSize : 20 }]}
+                >
+                    {redButtonText ? redButtonText : "Cansel"}
+                </Text>
             </Pressable>
             <Pressable
                 style={[styles.exerciseHeader, { backgroundColor: active ? 'rgba(76, 175, 80, 0.2)' : 'transparent', }]}
                 onPress={onPressIn}
                 onPressOut={onPressOut}
             >
-                <Text style={[styles.buttonText, { color: 'green' }]}>Start</Text>
+                <Text
+                    style={[styles.buttonText, { color: 'green', fontSize: fontSize ? fontSize : 20 }]}
+                >
+                    {greenButtonText ? greenButtonText : "Start"}
+                </Text>
             </Pressable>
+            {thirdButton &&
+                <Pressable
+                    style={[styles.exerciseHeader, { backgroundColor: 'transparent', }]}
+                    onPress={onSpecial}
+                    onPressOut={onPressOut}
+                >
+                    <Text
+                        style={[styles.buttonText, { color: 'yellow', fontSize: fontSize ? fontSize : 20 }]}
+                    >
+                        {thirdButton}
+                    </Text>
+                </Pressable>
+            }
 
         </View>
     )
@@ -59,23 +62,25 @@ export default function ChoiceAnswer({ onSave , onCansel,}) {
 
 const styles = StyleSheet.create({
     mainBody: {
+        marginTop: 5,
         // borderColor: 'red',
         // borderWidth: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        height: 27
     },
     exerciseHeader: {
-        //borderWidth:1,
-        //borderColor:'blue',
+        // borderWidth: 1,
+        // borderColor: 'blue',
         borderRadius: 5,
         //height: "50%",
-        width: '50%',
+        width: '33%',
         justifyContent: 'center',
         alignItems: 'center',
 
     },
     buttonText: {
         fontWeight: '600',
-        fontSize: 20,
+
     }
 });
