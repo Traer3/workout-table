@@ -27,7 +27,7 @@ export default function App() {
 
         /*нужно переработать WorkoutTable,
          1. Нормально реализовать key 
-         2. Исправить проблемы с прототипным наследованием 
+         2. Ебануть в InfoBlock каждуя ячейку с свой memo и передавать функции черезе useCallback 
          3. доделать таблицу с весом ) 
         */
         <WorkoutTable editDay={editDay} setEditDay={setEditDay} />
