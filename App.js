@@ -1,5 +1,3 @@
-//npx expo install @react-native-async-storage/async-storage
-//npx expo install expo-sharing expo-file-system
 import { View } from "react-native";
 
 import WorkoutTable from "./src/Table/WorkoutTable";
@@ -16,7 +14,6 @@ export default function App() {
   const workoutTemplateData = useQuery(workoutTemplate);
 
   useEffect(() => {
-    //console.log(workoutTemplateData.length);
     if (!workoutTemplateData || workoutTemplateData.length <= 0) {
       initialTemplate();
     }

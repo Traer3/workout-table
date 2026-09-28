@@ -1,11 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react"
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Realm } from "realm";
-
+import { createContext, useContext, useState } from "react"
 import * as Sharing from 'expo-sharing'
-import { useQuery, useRealm, } from "./src/db/realm";
-import { Directory, File } from "expo-file-system";
-//import RNFS from 'react-native-fs'
+import { useRealm, } from "./src/db/realm";
+import { File } from "expo-file-system";
 
 export const DatabaseContext = createContext()
 
@@ -19,19 +15,6 @@ export const DatabaseProvider = ({ children }) => {
     const weightHistory = 'ExerciseWeightHistory'
     const presetsHistory = 'PresetsHistory'
     const workoutTemplate = 'WorkoutTemplate'
-
-    const deleteAllIds = () => {
-        realm.write(() => {
-            for (let i = 0; i < 100; i++) {
-                console.log("Index: ", i);
-                const element = realm.objectForPrimaryKey("WorkoutDay", i)
-                if (element) {
-                    realm.delete(element);
-                }
-            }
-            console.log("Elements deleted!")
-        })
-    }
 
     const initialTemplate = () => {
         const createEx = (category, name) => ({
