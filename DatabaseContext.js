@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Realm } from "realm";
 
 import * as Sharing from 'expo-sharing'
-import { useQuery, useRealm,  } from "./src/db/realm";
+import { useQuery, useRealm, } from "./src/db/realm";
 import { Directory, File } from "expo-file-system";
 //import RNFS from 'react-native-fs'
 
@@ -12,29 +12,20 @@ export const DatabaseContext = createContext()
 export const DatabaseProvider = ({ children }) => {
     const realm = useRealm();
     const [loading, setLoading] = useState(true);
-    
-    const categories = ["Neck", "Deltoids", "Chest", "Back", "Arms" , "Forearms", "Core", "Glutes", "Thighs", "Calves", "Unique"];
 
-    const workoutTable =  'WorkoutDay'//useQuery('WorkoutDay')
-    const weightHistory = 'ExerciseWeightHistory'// useQuery('ExerciseWeightHistory')
-    const presetsHistory =  'PresetsHistory'//useQuery('PresetsHistory')
-    const workoutTemplate =  'WorkoutTemplate'//useQuery('WorkoutTemplate')
+    const categories = ["Neck", "Deltoids", "Chest", "Back", "Arms", "Forearms", "Core", "Glutes", "Thighs", "Calves", "Unique"];
 
-    useEffect(()=>{
-        //changeTemplate()
-        //saveDemoWorkout()
-        // if(!workoutTable || workoutTable.length === 0){ //убрать эту хуйню отсюда и закинуть в app
-        //     //saveDemoWorkout()
-        // }
-        
-    },[])
+    const workoutTable = 'WorkoutDay'
+    const weightHistory = 'ExerciseWeightHistory'
+    const presetsHistory = 'PresetsHistory'
+    const workoutTemplate = 'WorkoutTemplate'
 
-    const deleteAllIds = () =>{
-        realm.write(()=>{
+    const deleteAllIds = () => {
+        realm.write(() => {
             for (let i = 0; i < 100; i++) {
                 console.log("Index: ", i);
-                const element = realm.objectForPrimaryKey("WorkoutDay",i)
-                if(element){
+                const element = realm.objectForPrimaryKey("WorkoutDay", i)
+                if (element) {
                     realm.delete(element);
                 }
             }
@@ -42,217 +33,39 @@ export const DatabaseProvider = ({ children }) => {
         })
     }
 
-    const saveDemoWorkout = () => {
-        /*
-        const createEx = (key, name) => ({
-            exerciseKey: key,
+    const initialTemplate = () => {
+        const createEx = (category, name) => ({
+            category: category,
             fullName: name,
-            reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, 
+            reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 },
             reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
         });
 
-        const arms = () => [
-            createEx('LBTE', 'Lying Barbell Triceps Extension'),
-            createEx('RWC', 'Reverse Wrist Curl'),
-            createEx('WC', 'Wrist Curl'),
-            createEx('WSC', 'Wrist Side Curl'),
-            createEx('WP', 'Wrist Pronation'),
-            createEx('WS', 'Wrist Suplination')
-        ];
-
-        const legsAndAbs = () => [
-            createEx('RD', 'Romanian Deadlift'),
-            createEx('SU', 'Sit-Ups'),
-            createEx('Sq', 'Squats'),
-            createEx('ETK', 'Elbow To Knee'),
-            createEx('BSS', 'Bulgarian Split Squats'),
-            createEx('LR', 'Leg Raises'),
-            createEx('SCR', 'Standing Calf Raise'),
-            createEx('RT', 'Russian Twist')
-        ];
-
-        const upperBody = () => [
-            createEx('BOR', 'Bent Over Row'),
-            createEx('BP', 'Bench Press')
-        ];
-
-        realm.write(()=>{
-            realm.create('WorkoutDay', { id: 1, timestamp: 1788220800, exercises: arms() }, 'modified');
-            realm.create('WorkoutDay', { id: 2, timestamp: 1788480000, exercises: legsAndAbs() }, 'modified');
-            realm.create('WorkoutDay', { id: 3, timestamp: 1788566400, exercises: upperBody() }, 'modified');
-            realm.create('WorkoutDay', { id: 4, timestamp: 1788739200, exercises: arms() }, 'modified');
-            realm.create('WorkoutDay', { id: 5, timestamp: 1788998400, exercises: legsAndAbs() }, 'modified');
-            realm.create('WorkoutDay', { id: 6, timestamp: 1789084800, exercises: upperBody() }, 'modified');
-            realm.create('WorkoutDay', { id: 7, timestamp: 1789257600, exercises: arms() }, 'modified');
-            realm.create('WorkoutDay', { id: 8, timestamp: 1789516800, exercises: legsAndAbs() }, 'modified');
-            realm.create('WorkoutDay', { id: 9, timestamp: 1789603200, exercises: upperBody() }, 'modified');
-            realm.create('WorkoutDay', { id: 10, timestamp: 1789776000, exercises: arms() }, 'modified');
-            realm.create('WorkoutDay', { id: 11, timestamp: 1790035200, exercises: legsAndAbs() }, 'modified');
-            realm.create('WorkoutDay', { id: 12, timestamp: 1790121600, exercises: upperBody() }, 'modified');
-            realm.create('WorkoutDay', { id: 13, timestamp: 1790294400, exercises: arms() }, 'modified');
-            realm.create('WorkoutDay', { id: 14, timestamp: 1790553600, exercises: legsAndAbs() }, 'modified');
-            realm.create('WorkoutDay', { id: 15, timestamp: 1790640000, exercises: upperBody() }, 'modified');
-            realm.create('WorkoutDay', { id: 16, timestamp: 1790812800, exercises: arms() }, 'modified');
-            realm.create('WorkoutDay', { id: 17, timestamp: 1791072000, exercises: legsAndAbs() }, 'modified');
-            realm.create('WorkoutDay', { id: 18, timestamp: 1791158400, exercises: upperBody() }, 'modified');
-            realm.create('WorkoutDay', { id: 19, timestamp: 1791331200, exercises: arms() }, 'modified');
-            realm.create('WorkoutDay', { id: 20, timestamp: 1791590400, exercises: legsAndAbs() }, 'modified');
-            realm.create('WorkoutDay', { id: 21, timestamp: 1791676800, exercises: upperBody() }, 'modified');
-            realm.create('WorkoutDay', { id: 22, timestamp: 1791849600, exercises: arms() }, 'modified');
-            realm.create('WorkoutDay', { id: 23, timestamp: 1792108800, exercises: legsAndAbs() }, 'modified');
-            realm.create('WorkoutDay', { id: 24, timestamp: 1792195200, exercises: upperBody() }, 'modified');
-            realm.create('WorkoutDay', { id: 25, timestamp: 1792368000, exercises: arms() }, 'modified');
-            realm.create('WorkoutDay', { id: 26, timestamp: 1792627200, exercises: legsAndAbs() }, 'modified');
-            realm.create('WorkoutDay', { id: 27, timestamp: 1792713600, exercises: upperBody() }, 'modified');
-            realm.create('WorkoutDay', { id: 28, timestamp: 1792886400, exercises: arms() }, 'modified');
-            realm.create('WorkoutDay', { id: 29, timestamp: 1793145600, exercises: legsAndAbs() }, 'modified');
-            realm.create('WorkoutDay', { id: 30, timestamp: 1793232000, exercises: upperBody() }, 'modified');
-        });
-        console.log("\n","MY BODY IS A MACHINE","\n","FOR NOW")
-        */
-       
-        realm.write(()=>{
-            
-            realm.create('WorkoutDay', {
-                id: 1,
-                timestamp: currentDate,
-                exercises:[{
-                    exerciseKey: 'LBTE',
-                    fullName: 'Lying Barbell Triceps Extension',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },]
-            }, 'modified');
-        })
-        //console.log("Data created!")
-    }
-
-    /*
-    const changeTemplate = () => {
-        realm.write(()=>{
-            const currentDate = Math.floor(Date.now() / 1000) 
-       realm.create('WorkoutTemplate', {
-                id: 0,
-                
-                timestamp: currentDate,
-                exercise: {
-                    category:'Forearms',
-                    exerciseKey: 'RWC',
-                    fullName: 'Reverse Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 1,
-                
-                timestamp: currentDate,
-                exercise: {
-                    category:'Arms',
-                    exerciseKey: 'BC',
-                    fullName: 'Barbell Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 2,
-                
-                timestamp: currentDate,
-                exercise: {
-                    category:'Core',
-                    exerciseKey: 'SU',
-                    fullName: 'Sit Ups',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 3,
-                
-                timestamp: currentDate,
-                exercise: {
-                    category:'Back',
-                    exerciseKey: 'BR',
-                    fullName: 'Barbell Row',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 4,
-                
-                timestamp: currentDate,
-                exercise: {
-                    category:'Thighs',
-                    exerciseKey: 'Sq',
-                    fullName: 'Squats',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-            
-
-            realm.create('WorkoutTemplate', {
-                id: 5,
-                
-                timestamp: currentDate,
-                exercise: {
-                    category:'Deltoids',
-                    exerciseKey: 'LR',
-                    fullName: 'Lateral Raise',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 6,
-                
-                timestamp: currentDate,
-                exercise: {
-                    category:'Glutes',
-                    exerciseKey: 'LP',
-                    fullName: 'Sled 45° Leg Press',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 7,
-                
-                timestamp: currentDate,
-                exercise: {
-                    category:'Chest',
-                    exerciseKey: 'BP',
-                    fullName: 'Bench Press',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 8,
-                
-                timestamp: currentDate,
-                exercise: {
-                    category:'Unique',
-                    exerciseKey: 'RB',
-                    fullName: 'Rice Bucket',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
+        realm.write(() => {
+            const currentDate = Math.floor(Date.now() / 1000)
+            realm.create(workoutTemplate, { id: 0, timestamp: currentDate, exercise: createEx('Forearms', 'Reverse Wrist Curl') }, 'modified');
+            realm.create(workoutTemplate, { id: 1, timestamp: currentDate, exercise: createEx('Arms', 'Barbell Curl') }, 'modified');
+            realm.create(workoutTemplate, { id: 2, timestamp: currentDate, exercise: createEx('Core', 'Sit Ups') }, 'modified');
+            realm.create(workoutTemplate, { id: 3, timestamp: currentDate, exercise: createEx('Back', 'Barbell Row') }, 'modified');
+            realm.create(workoutTemplate, { id: 4, timestamp: currentDate, exercise: createEx('Thighs', 'Squats') }, 'modified');
+            realm.create(workoutTemplate, { id: 5, timestamp: currentDate, exercise: createEx('Deltoids', 'Lateral Raise') }, 'modified');
+            realm.create(workoutTemplate, { id: 6, timestamp: currentDate, exercise: createEx('Glutes', 'Sled 45° Leg Press') }, 'modified');
+            realm.create(workoutTemplate, { id: 7, timestamp: currentDate, exercise: createEx('Chest', 'Bench Press') }, 'modified');
+            realm.create(workoutTemplate, { id: 8, timestamp: currentDate, exercise: createEx('Unique', 'Rice Bucket') }, 'modified');
         })
     }
-    */
 
     const uploadToDrive = async () => {
-    //console.log("uploadToDrive WORKED!")
+        //console.log("uploadToDrive WORKED!")
         const backupUri = realm.path.replace('default.realm', 'backup.realm');
         const formattedUri = backupUri.startsWith('file://') ? backupUri : `file://${backupUri}`;
         const backupFile = new File(formattedUri);
-        try{
-            if(backupFile.exists){
+        try {
+            if (backupFile.exists) {
                 backupFile.delete();
                 console.log("Old backup deleted!")
             }
-            realm.writeCopyTo({path: backupUri});
+            realm.writeCopyTo({ path: backupUri });
             console.log("Backup created")
 
             if (await Sharing.isAvailableAsync()) {
@@ -261,30 +74,30 @@ export const DatabaseProvider = ({ children }) => {
                     dialogTitle: 'Backup save'
                 });
             }
-        }catch(err){
+        } catch (err) {
             console.log("Error: ", err)
         }
         return;
     }
 
-    const dateFormatter = new Intl.DateTimeFormat('ru-RU',{
-        day:'2-digit',
-        month:'2-digit',
-        year:'2-digit'
+    const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit'
     })
     function getFormattedDate(ts) {
         const date = (ts !== undefined && ts !== null)
-            ? new Date(ts*1000)
+            ? new Date(ts * 1000)
             : new Date();
         return dateFormatter.format(date)
     }
 
     function checkHours(hours, lastCheck) {
-        if(!lastCheck){
-            console.log("checkHours need lastCheck: ",lastCheck)
+        if (!lastCheck) {
+            console.log("checkHours need lastCheck: ", lastCheck)
             return null;
         };
-        
+
         const lastCheckData = typeof lastCheck === 'number'
             ? new Date(lastCheck * 1000)
             : new Date(lastCheck);
@@ -293,17 +106,17 @@ export const DatabaseProvider = ({ children }) => {
         const diffMs = now.getTime() - lastCheckData.getTime();
         const diffHours = diffMs / (1000 * 60 * 60);
 
-        if(diffHours >= hours){
+        if (diffHours >= hours) {
             //console.log(`🕘 More than ${hours} hours have passed,  it's time to check  `);
             return true
-        }else{
+        } else {
             //console.log(`It's still early! It's only been ${diffHours.toFixed(1)} hours.`);
             return false
         }
     };
 
     function getCurrentDate() {
-        const currentDate = Math.floor(Date.now() / 1000) 
+        const currentDate = Math.floor(Date.now() / 1000)
         return currentDate
     }
 
@@ -336,7 +149,8 @@ export const DatabaseProvider = ({ children }) => {
                 categories,
                 workoutTemplate,
                 getCurrentDate,
-                deletItem
+                deletItem,
+                initialTemplate
             }}
         >
             {children}
@@ -351,315 +165,3 @@ export const useDatabase = () => {
     }
     return context;
 }
-
-// test
-            
-            /*
-            realm.create('ExerciseWeightHistory', {
-                id: 12 ,
-                timestamp: Math.floor(Date.now() / 1000),
-                fullName: 'Push Ups',
-                weightData: {
-                    color: "green", 
-                    value: 7.5 
-                }
-            }, 'modified');
-            */
-
-            /*
-            realm.create('WorkoutTemplate', {
-                id: 0,
-                category:'Forearms',
-                timestamp: currentDate,
-                exercise: {
-                    exerciseKey: 'RWC',
-                    fullName: 'Reverse Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 1,
-                category:'Arms',
-                timestamp: currentDate,
-                exercise: {
-                    exerciseKey: 'BC',
-                    fullName: 'Barbell Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 2,
-                category:'Core',
-                timestamp: currentDate,
-                exercise: {
-                    exerciseKey: 'SU',
-                    fullName: 'Sit Ups',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 3,
-                category:'Back',
-                timestamp: currentDate,
-                exercise: {
-                    exerciseKey: 'BR',
-                    fullName: 'Barbell Row',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 4,
-                category:'Thighs',
-                timestamp: currentDate,
-                exercise: {
-                    exerciseKey: 'Sq',
-                    fullName: 'Squats',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-            
-
-            realm.create('WorkoutTemplate', {
-                id: 5,
-                category:'Deltoids',
-                timestamp: currentDate,
-                exercise: {
-                    exerciseKey: 'LR',
-                    fullName: 'Lateral Raise',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 6,
-                category:'Glutes',
-                timestamp: currentDate,
-                exercise: {
-                    exerciseKey: 'LP',
-                    fullName: 'Sled 45° Leg Press',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 7,
-                category:'Chest',
-                timestamp: currentDate,
-                exercise: {
-                    exerciseKey: 'BP',
-                    fullName: 'Bench Press',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-
-            realm.create('WorkoutTemplate', {
-                id: 8,
-                category:'Unique',
-                timestamp: currentDate,
-                exercise: {
-                    exerciseKey: 'RB',
-                    fullName: 'Rice Bucket',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-            }, 'modified');
-            */    
-/*
-    хуйня имеет странные проблемы с тем что бы создавать дни в цикле и записывать их 
-    Он создает через день , пропуская 0 id , 
-    создает хуй пойми как , но с патерном 
-    const saveDemoWorkout = () => {
-        let currentTimestamp = Math.floor(new Date('2026-09-01T00:00:00Z').getTime()/ 1000);
-        const ONE_DAY = 86400;
-
-        const templates = {
-            arms:[
-                { exerciseKey: 'LBTE', fullName: 'Lying Barbell Triceps Extension', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'RWC', fullName: 'Reverse Wrist Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'WC', fullName: 'Wrist Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'WSC', fullName: 'Wrist Side Curl', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'WP', fullName: 'Wrist Pronation', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'WS', fullName: 'Wrist Suplination', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-            ],
-            legsAndAbs:[
-                { exerciseKey: 'RD', fullName: 'Romanian Deadlift', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'SU', fullName: 'Sit-Ups', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'Sq', fullName: 'Squats', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'ETK', fullName: 'Elbow To Knee', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'BSS', fullName: 'Bulgarian Split Squats', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'LR', fullName: 'Leg Raises', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'SCR', fullName: 'Standing Calf Raise', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'RT', fullName: 'Russian Twist', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-            ],
-            upperBody:[
-                { exerciseKey: 'BOR', fullName: 'Bent Over Row', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-                { exerciseKey: 'BP', fullName: 'Bench Press', reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 } },
-            ],
-        };
-
-        const schedulePattern = [
-            {template: templates.arms, restDaysAfter: 3},
-            {template: templates.legsAndAbs, restDaysAfter: 1},
-            {template: templates.upperBody, restDaysAfter: 2},
-            {template: templates.arms, restDaysAfter: 3},
-        ];
-
-        realm.write(()=>{
-            for (let i = 0; i < 30; i++) {
-                const step = schedulePattern[i % schedulePattern.length];
-
-                const clonedExercises = step.template.map(ex => ({
-                    exerciseKey: ex.exerciseKey,
-                    fullName: ex.fullName,
-                    reps1: {...ex.reps1},
-                    rest1: {...ex.rest1},
-                    reps2: {...ex.reps2},
-                    rest2: {...ex.rest2},
-                }));
-
-                realm.create('WorkoutDay',{
-                    id:i,
-                    timestamp: currentTimestamp,
-                    exercises: clonedExercises,
-                },'modified');
-
-                currentTimestamp += step.restDaysAfter * ONE_DAY;
-            }
-        });
-        console.log("\n","MY BODY IS A MACHINE","\n","FOR NOW")
-    } 
-    */
-    //old NEW
-    /*
-    const saveDemoWorkout = () => {
-        realm.write(() => {
-            const currentDate = Math.floor(Date.now() / 1000) 
-            realm.create('WorkoutDay', {
-                id:0,
-                timestamp: currentDate,
-                exercises:[{
-                    exerciseKey: 'LBTE',
-                    fullName: 'Lying Barbell Triceps Extension',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'RWC',
-                    fullName: 'Reverse Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'WC',
-                    fullName: 'Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WSC',
-                    fullName: 'Wrist Side Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WP',
-                    fullName: 'Wrist Pronation',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WS',
-                    fullName: 'Wrist Suplination',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },]
-            }, 'modified');
-
-            realm.create('WorkoutDay', {
-                id:1,
-                timestamp: currentDate,
-                exercises:[{
-                    exerciseKey: 'RD',
-                    fullName: 'Romanian Deadlift',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'SU',
-                    fullName: 'Sit-Ups',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'Sq',
-                    fullName: 'Reverse Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'ETK',
-                    fullName: 'Elbow To Knee',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'BSS',
-                    fullName: 'Bulgarian Slit Squats',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'LR',
-                    fullName: 'Leg Raises',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'SCR',
-                    fullName: 'Standing Calf Raise',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'RT',
-                    fullName: 'Russian Twist',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },]
-            }, 'modified');
-
-            realm.create('WorkoutDay', {
-                id:2,
-                timestamp: currentDate,
-                exercises:[{
-                    exerciseKey: 'BOR',
-                    fullName: 'Bent Over Row',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'BP',
-                    fullName: 'Bench Press',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                }]
-            }, 'modified');
-
-            realm.create('WorkoutDay', {
-                id:3,
-                timestamp: currentDate,
-                exercises:[{
-                    exerciseKey: 'LBTE',
-                    fullName: 'Lying Barbell Triceps Extension',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'RWC',
-                    fullName: 'Reverse Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },{
-                    exerciseKey: 'WC',
-                    fullName: 'Wrist Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WSC',
-                    fullName: 'Wrist Side Curl',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WP',
-                    fullName: 'Wrist Pronation',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },
-                {
-                    exerciseKey: 'WS',
-                    fullName: 'Wrist Suplination',
-                    reps1: { color: '', value: 0 }, rest1: { color: '', value: 0 }, reps2: { color: '', value: 0 }, rest2: { color: '', value: 0 }
-                },]
-            }, 'modified');
-          
-        });
-        
-        console.log("Data successfully saved! ");
-    };
-    */

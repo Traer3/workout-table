@@ -145,6 +145,7 @@ export default function ManageWorkout({ editDay, setEditDay }) {
                         saveUserInput={saveUserInput}
                         curretnPreset={curretnPreset}
                         setCurretnPreset={setCurretnPreset}
+                        setEditDay={setEditDay}
                     />
                 }
 

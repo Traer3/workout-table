@@ -9,19 +9,16 @@ import styles, { BorderColor } from './renderItemStyles.js';
 import { useDatabase } from "../../../DatabaseContext.js";
 
 const RenderItem = ({ item, index, data, setData, flatListRef, }) => {
-  if (!item) return null
+  if (item === undefined || item === null) return null
   const [loading, setLoading] = useState(false);
-  const {workoutTable} = useDatabase();
+  const { workoutTable } = useDatabase();
   const currentDayData = useObject(workoutTable, item);
   //console.log("currentDayData: ", currentDayData)
-
   const [editingCell, setEditingCell] = useState(null);
 
   if (!currentDayData || !currentDayData.isValid()) {
     return null;
   }
-  
-
 
   return (
     <View style={{ marginBottom: 64, }}>

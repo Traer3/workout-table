@@ -8,7 +8,7 @@ import { useDatabase } from "../../../DatabaseContext";
 import ChoiceAnswer from "./ChoiceAnswer";
 import { useMaxId } from "../../hooks/useMaxId";
 
-export default function ExerciseMain({ setSelectedExercises, selectedExercises, colectAllExercises, assembleExercises, zeroIdSave, saveUserInput, curretnPreset, setCurretnPreset }) {
+export default function ExerciseMain({ setSelectedExercises, selectedExercises, colectAllExercises, assembleExercises, zeroIdSave, saveUserInput, curretnPreset, setCurretnPreset, setEditDay }) {
     const { categories, presetsHistory, workoutTemplate, checkHours, workoutTable } = useDatabase();
     const presetsHistoryData = useQuery(presetsHistory)
     const workoutTemplateData = useQuery(workoutTemplate);
@@ -72,6 +72,7 @@ export default function ExerciseMain({ setSelectedExercises, selectedExercises, 
         } else {
             // console.log("Workout is save!")
             saveUserInput(workoutTable, exercises, nexId)
+            setEditDay(false)
         }
     }
 

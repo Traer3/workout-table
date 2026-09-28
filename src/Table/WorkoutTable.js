@@ -1,12 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-
 import { useDatabase } from "../../DatabaseContext";
 import IconButton from "../IconButton.js";
 import RenderItem from "./RenderItem/RenderItem.js";
 import { useQuery } from "../db/realm.js";
-
-
 
 export default function WorkoutTable({ editDay, setEditDay }) {
   const { uploadToDrive, workoutTable } = useDatabase()
@@ -15,7 +12,6 @@ export default function WorkoutTable({ editDay, setEditDay }) {
   const allIds = getAllIds(workoutTableData);
 
   function getAllIds(allData) {
-    //console.log("all data: ", allData)
     const ids = []
     if (!allData) return ids;
 
@@ -27,11 +23,9 @@ export default function WorkoutTable({ editDay, setEditDay }) {
     return ids
   }
 
-
   useEffect(() => {
-    if (allIds.length <= 0 || !allIds) return;
+    if (allIds.length < 0 || !allIds) return;
     const index = allIds.length - 1;
-    
     setTimeout(() => {
       flatListRef.current.scrollToIndex({
         index: index,
@@ -45,14 +39,15 @@ export default function WorkoutTable({ editDay, setEditDay }) {
   }
 
   const renderItem = useCallback(({ item, index }) => {
-    if(!item) return null
-    return(
-    <RenderItem
-      item={item}
-      index={index}
-      flatListRef={flatListRef}
-    />
-  )},[]);
+    if (item === undefined || item === null) return null
+    return (
+      <RenderItem
+        item={item}
+        index={index}
+        flatListRef={flatListRef}
+      />
+    )
+  }, [allIds]);
 
   return (
     <>
@@ -89,17 +84,3 @@ const styles = StyleSheet.create({
   },
 
 });
-
-  /*
-  const realm = useRealm(); 
-  const deleteAllIds = (allIds) => {
-    allIds.map(day =>{
-          console.log("Deleting day :" ,day)
-          realm.write(() => {
-            const deletee = realm.objectForPrimaryKey('WorkoutDay', day)
-            realm.delete(deletee);
-          })
-    })
-    <IconButton buttFunction={() => deleteAllIds(allIds)} color={true}/>
-  }
-  */

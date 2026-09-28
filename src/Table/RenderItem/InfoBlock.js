@@ -25,8 +25,12 @@ export default function InfoBlock({ currentDayData, editingCell, setEditingCell,
 
     const updateValue = (fieldKey, subKey, i, userData) => {
         if (!currentDayData) return;
+        // console.log("currentDayData.exercises[i - 1]", currentDayData.exercises[i - 1] )
+        // console.log("fieldKey", fieldKey)
+        // console.log("subKey", subKey )
+        // console.log("userData", userData )
         realm.write(() => {
-            if (currentDayData.exercises[i - 1] && currentDayData.exercises[i - 1].exerciseKey === fieldKey) { // убрать exerciseKey и заменить на fullName, я уже передаю fullName как ключ
+            if (currentDayData.exercises[i - 1] && currentDayData.exercises[i - 1].fullName === fieldKey) { // убрать exerciseKey и заменить на fullName, я уже передаю fullName как ключ
                 currentDayData.exercises[i - 1][subKey].value = Number(userData) || 0;
             }
         })

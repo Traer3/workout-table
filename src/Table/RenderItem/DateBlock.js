@@ -54,7 +54,7 @@ export default function DateBlock({ currentDayData, setLoading, loading,  }) {
                         onPress={() => setQuestion(!question)}
                     >
                         <Text style={[styles.textStyle,]}
-                        >{date}
+                        >{currentDayData.id} {date}
                         </Text>
                     </Pressable>
                 </Pressable>
