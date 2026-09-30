@@ -24,14 +24,12 @@ export default function App() {
 
       {editDay ?
         <ManageWorkout editDay={editDay} setEditDay={setEditDay} /> :
-
         /*нужно переработать WorkoutTable,
          1. Нормально реализовать key 
          2. Ебануть в InfoBlock каждуя ячейку с свой memo и передавать функции черезе useCallback 
          3. доделать таблицу с весом ) 
         */
         <WorkoutTable editDay={editDay} setEditDay={setEditDay} />
-
       }
     </View>
   );
