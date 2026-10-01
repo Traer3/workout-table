@@ -39,7 +39,6 @@ export const DatabaseProvider = ({ children }) => {
     }
 
     const uploadToDrive = async () => {
-        //console.log("uploadToDrive WORKED!")
         const backupUri = realm.path.replace('default.realm', 'backup.realm');
         const formattedUri = backupUri.startsWith('file://') ? backupUri : `file://${backupUri}`;
         const backupFile = new File(formattedUri);
